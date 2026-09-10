@@ -198,11 +198,27 @@ export function hibaOldal(uzenet, kod) {
 export const SORO_TOKEN = "ae5705a7-538a-4668-a744-06d66764f1eb";
 const SORO_ALAP = "https://app.trysoro.com";
 
+/**
+ * A Soro CSAK akkor adja oda a cikkeket, ha a kérésben ott a Referer —
+ * anélkül üres listával válaszol, hibaüzenet nélkül. A válaszán ott is van
+ * a `Vary: Referer`, csakhogy a Cloudflare éle a Vary-t (az Accept-Encoding
+ * kivételével) nem veszi figyelembe, ezért egy fejléc nélküli, üres válasz
+ * be tud ragadni a gyorsítótárba. Emiatt megy vele az `?src=eskuszom` is:
+ * saját gyorsítótár-kulcsot ad, és mindig ugyanezzel a fejléccel kérünk.
+ */
+const SORO_FEJLEC = {
+  Referer: "https://eskuszom.hu/tippek/",
+  Origin: "https://eskuszom.hu",
+  "User-Agent": "Mozilla/5.0 (compatible; EskuszomSSR/1.0; +https://eskuszom.hu/)",
+};
+const SORO_KULCS = "?src=eskuszom";
+
 /** A cikkek listája a beágyazó szkriptből. */
 export async function soroLista() {
   try {
-    const v = await fetch(`${SORO_ALAP}/api/embed/${SORO_TOKEN}`, {
-      cf: { cacheTtl: 600, cacheEverything: true },
+    const v = await fetch(`${SORO_ALAP}/api/embed/${SORO_TOKEN}${SORO_KULCS}`, {
+      headers: SORO_FEJLEC,
+      cf: { cacheTtl: 300, cacheEverything: true },
     });
     if (!v.ok) return [];
     const js = await v.text();
@@ -220,9 +236,10 @@ export async function soroLista() {
 export async function soroTartalom(cikk) {
   if (cikk?.content) return cikk.content;
   try {
-    const v = await fetch(`${SORO_ALAP}/api/embed/${SORO_TOKEN}/article/${cikk.id}`, {
-      cf: { cacheTtl: 600, cacheEverything: true },
-    });
+    const v = await fetch(
+      `${SORO_ALAP}/api/embed/${SORO_TOKEN}/article/${cikk.id}${SORO_KULCS}`,
+      { headers: SORO_FEJLEC, cf: { cacheTtl: 300, cacheEverything: true } },
+    );
     if (!v.ok) return "";
     const j = await v.json();
     return String(j?.content ?? "");
