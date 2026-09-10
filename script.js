@@ -317,3 +317,49 @@ partnereketBetolt();
     if (kod) localStorage.setItem("eskuszom-kod", kod.toUpperCase());
   } catch (e) { /* privát ablakban nincs tároló — nem baj */ }
 })();
+
+
+/* ── „Küldöm a páromnak" ─────────────────────────────────────────────
+   Esküvői döntést sosem egy ember hoz. Telefonon a rendszer megosztó
+   ablakát nyitjuk (üzenet, Messenger, bármi), gépen vágólapra másolunk —
+   és mindkét esetben megmondjuk, mi történt. */
+(function () {
+  var gombok = document.querySelectorAll("[data-megoszt]");
+  if (!gombok.length) return;
+
+  var SZOVEG = "Nézd meg ezt: az esküvőnk vendéglistája, meghívója és "
+             + "ültetésrendje egy helyen.";
+  var CIM = "https://eskuszom.hu/";
+
+  function visszajelzes(gomb, szoveg) {
+    var eredeti = gomb.textContent;
+    gomb.textContent = szoveg;
+    gomb.classList.add("kesz");
+    setTimeout(function () {
+      gomb.textContent = eredeti;
+      gomb.classList.remove("kesz");
+    }, 2200);
+  }
+
+  gombok.forEach(function (gomb) {
+    gomb.addEventListener("click", async function () {
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: "Esküszöm", text: SZOVEG, url: CIM });
+          return;
+        } catch (e) {
+          // A megszakított megosztás nem hiba — ilyenkor nem csinálunk semmit
+          if (e && e.name === "AbortError") return;
+        }
+      }
+      try {
+        await navigator.clipboard.writeText(SZOVEG + " " + CIM);
+        visszajelzes(gomb, "Kimásoltam — beillesztheted");
+      } catch (e) {
+        window.location.href = "mailto:?subject="
+          + encodeURIComponent("Esküszöm — nézd meg")
+          + "&body=" + encodeURIComponent(SZOVEG + "\n\n" + CIM);
+      }
+    });
+  });
+})();

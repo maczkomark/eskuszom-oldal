@@ -1002,3 +1002,50 @@ section { padding: clamp(4rem, 9vw, 7rem) 0; }
 @media (prefers-reduced-motion: reduce) {
   .suti-sav { transition: opacity .2s ease; transform: translate(-50%, 0); }
 }
+
+
+/* ═══════════════════════════════════════════ ár: tételes bontás */
+
+/* A puszta címke semmit nem mond annak, aki még nem szervezett esküvőt.
+   Minden tétel mellé odaírjuk, mit ad — így az ár nem attól tűnik jónak,
+   hogy alacsony, hanem hogy látszik, mi van mögötte. */
+.ar-lista.reszletes li {
+  align-items: flex-start;
+  gap: .7rem;
+}
+.ar-lista.reszletes li > span {
+  display: block;
+}
+.ar-lista.reszletes strong {
+  display: block;
+  font-weight: 500;
+  color: var(--tinta);
+}
+.ar-tetel-mit {
+  display: block;
+  font-size: .84rem;
+  color: var(--tinta-halvany);
+  line-height: 1.5;
+  margin-top: .1rem;
+}
+
+.ar-gombok {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .7rem;
+  justify-content: center;
+}
+.ar-zaras {
+  margin-top: 1.6rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--vonal);
+  font-size: .9rem;
+  line-height: 1.7;
+  color: var(--tinta-halvany);
+}
+
+/* A megosztás gomb visszajelzése — sosem dönt el semmit némán */
+.megoszt.kesz {
+  border-color: var(--mauve-vilagos);
+  color: var(--mauve);
+}
