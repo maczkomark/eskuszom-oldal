@@ -363,3 +363,60 @@ partnereketBetolt();
     });
   });
 })();
+
+
+/* ── vélemények ──────────────────────────────────────────────────────
+   A vezérlőpultból jönnek, és csak jóváhagyott kerülhet ide. Ha egy sincs
+   vagy nem érjük el, a szakasz rejtve marad — üres idézőjelekkel rosszabb
+   lenne, mint sehogy. */
+async function velemenyeketBetolt() {
+  var szakasz = document.getElementById("velemenyek");
+  var doboz = document.getElementById("velemenyek-lista");
+  if (!szakasz || !doboz) return;
+
+  function csillagok(n) {
+    if (!n) return "";
+    var ki = "";
+    for (var i = 0; i < n; i++) {
+      ki += '<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">'
+          + '<path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.6L12 17l-5.9 3.3 1.3-6.6L2.5 9.1l6.6-.8z"/></svg>';
+    }
+    return '<div class="velemeny-csillagok">' + ki + "</div>";
+  }
+
+  function biztonsagos(sz) {
+    var d = document.createElement("div");
+    d.textContent = String(sz == null ? "" : sz);
+    return d.innerHTML;
+  }
+
+  function honap(iso) {
+    if (!iso) return "";
+    var r = String(iso).slice(0, 10).split("-");
+    if (r.length !== 3) return "";
+    var nevek = ["január","február","március","április","május","június",
+                 "július","augusztus","szeptember","október","november","december"];
+    return r[0] + ". " + (nevek[Number(r[1]) - 1] || "");
+  }
+
+  try {
+    var v = await fetch("https://adminsite.mmdigital.hu/api/eskuvo/velemeny");
+    var j = await v.json();
+    var lista = (j && j.velemenyek) || [];
+    if (lista.length === 0) return;
+
+    doboz.innerHTML = lista.map(function (x) {
+      return '<article class="velemeny">'
+        + csillagok(x.csillag)
+        + "<p>„" + biztonsagos(x.szoveg) + "”</p>"
+        + "<footer><strong>" + biztonsagos(x.nev) + "</strong>"
+        + (x.datum ? honap(x.datum) + " · esküvő" : "")
+        + "</footer></article>";
+    }).join("");
+
+    szakasz.hidden = false;
+  } catch (e) {
+    /* ha nem érhető el, a szakasz marad rejtve */
+  }
+}
+velemenyeketBetolt();
