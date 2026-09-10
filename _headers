@@ -1,3 +1,9 @@
+# Cloudflare Pages fejlécek.
+#
+# A stíluslap és a szkript egy napig a gyorsítótárban marad, ezért a
+# HTML-ben verziószámmal hivatkozunk rájuk (stilus.css?v=ÉÉÉÉHHNN).
+# CSS- vagy szkriptmódosítás után a verziószámot LÉPTETNI KELL, különben
+# a látogatók a régit kapják:  node ../verzio.mjs 20261231
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
