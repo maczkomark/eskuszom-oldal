@@ -25,7 +25,8 @@ export function datum(iso) {
 
 /** A cikkek betűtípusa és elrendezése — a hirdető oldal stílusára épül. */
 const STILUS = `
-  .cikk-fej { padding: 120px 0 40px; text-align: center; }
+  /* A szakasznak már van felső margója, ide nem kell még egy adag */
+  .cikk-fej { padding: 0 0 40px; text-align: center; }
   .cikk-fej .folcim { margin-bottom: 14px; }
   .cikk-fej h1 { font-family: var(--serif); font-weight: 400;
                  font-size: clamp(30px, 5vw, 50px); line-height: 1.15;
