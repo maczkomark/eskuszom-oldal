@@ -96,6 +96,14 @@ export function oldal({ cim, leiras, fejlecek, tartalom, url }) {
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/stilus.css">
 <style>${STILUS}</style>
+<!-- Google Analytics (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2N1ZZ0YD86"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-2N1ZZ0YD86');
+</script>
 ${fejlecek ?? ""}
 </head>
 <body>
@@ -172,4 +180,110 @@ export function hibaOldal(uzenet, kod) {
     }),
     { status: kod, headers: { "Content-Type": "text/html; charset=utf-8" } },
   );
+}
+
+/* ═══════════════════════════════════════════════════ Soro cikkek ═══ */
+
+/**
+ * A Soro (trysoro.com) blogja.
+ *
+ * A Soro beágyazó kódja böngészőben rajzolja ki a cikkeket, és `?post=slug`
+ * alakú címeket ad. Kettő is baj van ezzel: az MI-robotok nem futtatnak
+ * JavaScriptet, a lekérdezőjeles cím pedig a keresőnek egyetlen oldal.
+ *
+ * Ezért a beágyazó szkriptet MI kérjük le itt, kiszedjük belőle a cikkek
+ * listáját, és rendes HTML-t rajzolunk saját címekre. A tartalom ugyanabból
+ * a nyilvános végpontból jön, amit a szkript is hív.
+ */
+export const SORO_TOKEN = "ae5705a7-538a-4668-a744-06d66764f1eb";
+const SORO_ALAP = "https://app.trysoro.com";
+
+/** A cikkek listája a beágyazó szkriptből. */
+export async function soroLista() {
+  try {
+    const v = await fetch(`${SORO_ALAP}/api/embed/${SORO_TOKEN}`, {
+      cf: { cacheTtl: 600, cacheEverything: true },
+    });
+    if (!v.ok) return [];
+    const js = await v.text();
+    const m = js.match(/var SORO_ARTICLES\s*=\s*(\[[\s\S]*?\]);/);
+    if (!m) return [];
+    const lista = JSON.parse(m[1]);
+    return Array.isArray(lista) ? lista : [];
+  } catch {
+    // Ha a Soro nem elérhető, a saját cikkek akkor is menjenek ki
+    return [];
+  }
+}
+
+/** Egy cikk törzse. A listában is jöhet, olyankor nem kérdezünk újra. */
+export async function soroTartalom(cikk) {
+  if (cikk?.content) return cikk.content;
+  try {
+    const v = await fetch(`${SORO_ALAP}/api/embed/${SORO_TOKEN}/article/${cikk.id}`, {
+      cf: { cacheTtl: 600, cacheEverything: true },
+    });
+    if (!v.ok) return "";
+    const j = await v.json();
+    return String(j?.content ?? "");
+  } catch {
+    return "";
+  }
+}
+
+/* ─────────────────────────────────────────────────── tisztítás ─── */
+
+const ENGEDETT = new Set(["p", "br", "hr", "h2", "h3", "h4", "ul", "ol", "li",
+  "strong", "b", "em", "i", "blockquote", "code", "pre", "a", "img",
+  "figure", "figcaption", "table", "thead", "tbody", "tr", "th", "td"]);
+const TULAJDONSAG = { a: ["href", "title"], img: ["src", "alt", "title"] };
+const KIDOBANDO = ["script", "style", "iframe", "object", "embed", "form",
+                   "noscript", "template", "svg", "math"];
+
+/**
+ * Idegen HTML megtisztítása, mielőtt kikerül az eskuszom.hu-ra.
+ *
+ * Nem azért, mert a Sorótól rosszat várunk, hanem mert a saját domainünkön
+ * futó szkriptnek soha nem szabad kívülről érkeznie. Amit nem ismerünk fel,
+ * azt eldobjuk: a rossz eset egy elveszett formázás, nem egy futó kód.
+ */
+export function tisztit(nyers) {
+  let s = String(nyers ?? "");
+  for (const t of KIDOBANDO) {
+    // String.raw kell: sima sablonszövegben a \b visszatörlés-karakterré,
+    // a \s sima s betűvé válna, és a minta némán rosszul működne.
+    s = s.replace(new RegExp(String.raw`<${t}\b[\s\S]*?</${t}\s*>`, "gi"), "");
+    s = s.replace(new RegExp(String.raw`<${t}\b[^>]*/?>`, "gi"), "");
+  }
+  s = s.replace(/<!--[\s\S]*?-->/g, "");
+
+  let eredmeny = "", hol = 0, m;
+  const cimke = /<\s*(\/?)\s*([a-zA-Z][a-zA-Z0-9]*)([^>]*)>/g;
+
+  while ((m = cimke.exec(s)) !== null) {
+    eredmeny += s.slice(hol, m.index).replace(/</g, "&lt;");
+    hol = m.index + m[0].length;
+
+    let nev = m[2].toLowerCase();
+    if (nev === "h1") nev = "h2";          // a főcímet az oldal adja
+    if (!ENGEDETT.has(nev)) continue;
+    if (m[1] === "/") { eredmeny += `</${nev}>`; continue; }
+
+    let tul = "";
+    const jellemzo = /([a-zA-Z_:][-a-zA-Z0-9_:.]*)\s*=\s*("([^"]*)"|'([^']*)'|([^\s"'>]+))/g;
+    let j;
+    while ((j = jellemzo.exec(m[3])) !== null) {
+      const kulcs = j[1].toLowerCase();
+      if (!(TULAJDONSAG[nev] ?? []).includes(kulcs)) continue;
+      const ertek = j[3] ?? j[4] ?? j[5] ?? "";
+      if ((kulcs === "href" || kulcs === "src")
+          && !/^(https?:|mailto:|\/|#)/i.test(ertek.trim())) continue;
+      tul += ` ${kulcs}="${ki(ertek)}"`;
+    }
+    if (nev === "a" && tul.includes('href="http')) tul += ' target="_blank" rel="noopener nofollow"';
+    if (nev === "img") { if (!tul.includes("src=")) continue; tul += ' loading="lazy"'; }
+
+    eredmeny += `<${nev}${tul}>`;
+  }
+  return (eredmeny + s.slice(hol).replace(/</g, "&lt;")).trim();
 }

@@ -1,35 +1,76 @@
 // /tippek/ és /tippek/<cikk>/ — a blog oldalai.
 //
-// Egy fájl kezeli mindkettőt, mert a Cloudflare Pages a záró perjeles és
-// perjel nélküli címet is ide irányítja. Ha nincs útvonalrész, a lista jön,
-// egyébként a cikk.
-import { ALAP, ki, datum, oldal, hibaOldal } from "../_kozos.js";
+// Két forrásból dolgozik:
+//   • a Soro (trysoro.com), ami magától ír és publikál,
+//   • a vezérlőpult, ha saját cikket teszünk ki.
+// Ha az egyik nem elérhető, a másik akkor is megjelenik.
+//
+// Mindkettőt SZERVEROLDALON rendereljük. A Soro beágyazó kódja böngészőben
+// rajzolna, `?post=slug` címekre — az MI-robotok nem futtatnak JavaScriptet,
+// a lekérdezőjeles cím pedig a keresőnek egyetlen oldal. Így viszont minden
+// cikk saját címen, kész HTML-ként áll ott.
+import {
+  ALAP, ki, datum, oldal, hibaOldal, soroLista, soroTartalom, tisztit,
+} from "../_kozos.js";
 
-/** A cikkek listája. */
-async function lista() {
-  const v = await fetch(`${ALAP}/api/eskuvo/cikkek`, {
-    headers: { Accept: "application/json" },
-    cf: { cacheTtl: 300, cacheEverything: true },
-  });
-  if (!v.ok) throw new Error("lista " + v.status);
-  const j = await v.json();
-  return Array.isArray(j?.cikkek) ? j.cikkek : [];
+/* ─────────────────────────────────────────────── a két forrás ─── */
+
+/** A vezérlőpultban tárolt saját cikkek. */
+async function sajatLista() {
+  try {
+    const v = await fetch(`${ALAP}/api/eskuvo/cikkek`, {
+      headers: { Accept: "application/json" },
+      cf: { cacheTtl: 300, cacheEverything: true },
+    });
+    if (!v.ok) return [];
+    const j = await v.json();
+    return (Array.isArray(j?.cikkek) ? j.cikkek : []).map((c) => ({
+      forras: "sajat",
+      slug: c.slug,
+      title: c.title,
+      lead: c.lead,
+      kep: c.cover_url,
+      mikor: String(c.created_at ?? "").slice(0, 10),
+    }));
+  } catch {
+    return [];
+  }
 }
+
+/** A Soro cikkei. */
+async function soroCikkek() {
+  return (await soroLista()).map((a) => ({
+    forras: "soro",
+    id: a.id,
+    slug: a.slug,
+    title: a.title,
+    lead: a.excerpt ?? null,
+    kep: a.image ?? null,
+    mikor: String(a.isoDate ?? "").slice(0, 10),
+    nyers: a,
+  }));
+}
+
+/** Mindkét forrás, legfrissebbel elöl. Azonos cím esetén a saját nyer. */
+async function mindenCikk() {
+  const [sajat, soro] = await Promise.all([sajatLista(), soroCikkek()]);
+  const cimek = new Set(sajat.map((c) => c.slug));
+  return [...sajat, ...soro.filter((c) => !cimek.has(c.slug))]
+    .sort((a, b) => String(b.mikor).localeCompare(String(a.mikor)));
+}
+
+/* ──────────────────────────────────────────────── a lista ─────── */
 
 function listaOldal(cikkek) {
   const kartyak = cikkek.map((c) => `
       <a class="tipp" href="/tippek/${ki(c.slug)}/">
-        ${c.cover_url ? `<img src="${ki(c.cover_url)}" alt="" loading="lazy">` : ""}
+        ${c.kep ? `<img src="${ki(c.kep)}" alt="" loading="lazy">` : ""}
         <div class="belso">
           <h2>${ki(c.title)}</h2>
           ${c.lead ? `<p>${ki(c.lead)}</p>` : ""}
-          <div class="mikor">${ki(datum(c.created_at))}</div>
+          <div class="mikor">${ki(datum(c.mikor))}</div>
         </div>
       </a>`).join("");
-
-  const ures = `<p class="vezeto" style="text-align:center;margin-inline:auto">
-      Most írjuk az elsőket. Nézz vissza pár nap múlva.
-    </p>`;
 
   return oldal({
     cim: "Esküvőszervezési tippek pároknak | Esküszöm",
@@ -51,7 +92,7 @@ function listaOldal(cikkek) {
         "@type": "BlogPosting",
         headline: c.title,
         url: `https://eskuszom.hu/tippek/${c.slug}/`,
-        datePublished: String(c.created_at ?? "").slice(0, 10),
+        datePublished: c.mikor,
       })),
     })}</script>`,
     tartalom: `
@@ -65,28 +106,34 @@ function listaOldal(cikkek) {
         meghívóról, ültetésrendről és időzítésről.
       </p>
     </div>
-    <div class="tippek-racs">${kartyak || ""}</div>
-    ${cikkek.length ? "" : ures}
+    ${cikkek.length
+      ? `<div class="tippek-racs">${kartyak}</div>`
+      : `<p class="vezeto" style="text-align:center;margin-inline:auto">
+           Most írjuk az elsőket. Nézz vissza pár nap múlva.
+         </p>`}
   </div>
 </section>`,
   });
 }
 
-/** Egy cikk. */
-async function cikket(slug) {
-  const v = await fetch(`${ALAP}/api/eskuvo/cikkek?slug=${encodeURIComponent(slug)}`, {
+/* ─────────────────────────────────────────────── egy cikk ─────── */
+
+/** A törzs a forrásától függően jön — de mindkettő átmegy a tisztítón. */
+async function torzset(c) {
+  if (c.forras === "soro") return tisztit(await soroTartalom(c.nyers));
+
+  const v = await fetch(`${ALAP}/api/eskuvo/cikkek?slug=${encodeURIComponent(c.slug)}`, {
     headers: { Accept: "application/json" },
     cf: { cacheTtl: 300, cacheEverything: true },
   });
-  if (v.status === 404) return null;
-  if (!v.ok) throw new Error("cikk " + v.status);
+  if (!v.ok) return "";
   const j = await v.json();
-  return j?.cikk ?? null;
+  // A vezérlőpult már tisztán tárolja, de a kétszeri szűrés nem árt
+  return tisztit(String(j?.cikk?.body_html ?? ""));
 }
 
-function cikkOldal(c) {
+function cikkOldal(c, torzs) {
   const url = `https://eskuszom.hu/tippek/${c.slug}/`;
-  const megjelent = String(c.created_at ?? "").slice(0, 10);
 
   return oldal({
     cim: `${c.title} | Esküszöm`,
@@ -95,15 +142,14 @@ function cikkOldal(c) {
     fejlecek: `<meta property="og:type" content="article">
 <meta property="og:title" content="${ki(c.title)}">
 ${c.lead ? `<meta property="og:description" content="${ki(c.lead)}">` : ""}
-<meta property="og:image" content="${ki(c.cover_url || "https://eskuszom.hu/og-kep.png")}">
+<meta property="og:image" content="${ki(c.kep || "https://eskuszom.hu/og-kep.png")}">
 <script type="application/ld+json">${JSON.stringify({
       "@context": "https://schema.org",
       "@type": "BlogPosting",
       headline: c.title,
-      description: c.lead ?? undefined,
-      image: c.cover_url ?? "https://eskuszom.hu/og-kep.png",
-      datePublished: megjelent,
-      dateModified: String(c.updated_at ?? c.created_at ?? "").slice(0, 10),
+      ...(c.lead ? { description: c.lead } : {}),
+      image: c.kep ?? "https://eskuszom.hu/og-kep.png",
+      datePublished: c.mikor,
       inLanguage: "hu-HU",
       mainEntityOfPage: url,
       isPartOf: { "@id": "https://eskuszom.hu/tippek/#blog" },
@@ -127,12 +173,12 @@ ${c.lead ? `<meta property="og:description" content="${ki(c.lead)}">` : ""}
         <div class="folcim"><a href="/tippek/" style="color:inherit">Tippek</a></div>
         <h1>${ki(c.title)}</h1>
         ${c.lead ? `<p class="vezeto">${ki(c.lead)}</p>` : ""}
-        <div class="cikk-datum">${ki(datum(c.created_at))}</div>
+        <div class="cikk-datum">${ki(datum(c.mikor))}</div>
       </div>
 
       <div class="cikk-torzs">
-        ${c.cover_url ? `<img src="${ki(c.cover_url)}" alt="" style="width:100%">` : ""}
-        ${c.body_html}
+        ${c.kep ? `<img src="${ki(c.kep)}" alt="" style="width:100%">` : ""}
+        ${torzs}
 
         <div class="cikk-lab">
           <p class="vezeto" style="margin-inline:auto">
@@ -140,7 +186,7 @@ ${c.lead ? `<meta property="og:description" content="${ki(c.lead)}">` : ""}
             vendéglista, meghívó QR-kóddal, ültetésrend, program és fotógaléria.
           </p>
           <p style="margin-top:22px">
-            <a href="/#ar" class="gomb gomb-fo">Megnézem, mit tud</a>
+            <a href="/ar/" class="gomb gomb-fo">Megnézem, mit tud</a>
             <a href="/tippek/" class="gomb gomb-halk">Több tipp</a>
           </p>
         </div>
@@ -151,35 +197,39 @@ ${c.lead ? `<meta property="og:description" content="${ki(c.lead)}">` : ""}
   });
 }
 
+/* ──────────────────────────────────────────────── útvonalak ─── */
+
 export async function onRequest({ params }) {
-  // Az [[ut]] tömböt ad; üres, ha a /tippek/ címet kérték
   const reszek = (params.ut ?? []).filter(Boolean);
 
   try {
+    const cikkek = await mindenCikk();
+
     if (reszek.length === 0) {
-      return new Response(listaOldal(await lista()), {
+      return new Response(listaOldal(cikkek), {
         headers: {
           "Content-Type": "text/html; charset=utf-8",
           "Cache-Control": "public, max-age=300",
         },
       });
     }
-
     if (reszek.length > 1) {
       return hibaOldal("Ilyen cím nincs a tippek között.", 404);
     }
 
-    const c = await cikket(reszek[0]);
+    const c = cikkek.find((x) => x.slug === reszek[0]);
     if (!c) return hibaOldal("Lehet, hogy elírás csúszott a címbe, vagy levettük.", 404);
 
-    return new Response(cikkOldal(c), {
+    const torzs = await torzset(c);
+    if (!torzs) return hibaOldal("A cikk törzsét most nem érjük el. Próbáld pár perc múlva.", 503);
+
+    return new Response(cikkOldal(c, torzs), {
       headers: {
         "Content-Type": "text/html; charset=utf-8",
         "Cache-Control": "public, max-age=300",
       },
     });
-  } catch (e) {
-    // Ha a vezérlőpult épp nem elérhető, ne fehér lap fogadja a látogatót
+  } catch {
     return hibaOldal("Most nem érjük el a cikkeket. Próbáld meg pár perc múlva.", 503);
   }
 }
