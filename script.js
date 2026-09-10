@@ -64,7 +64,8 @@ if ("IntersectionObserver" in window) {
 }
 
 // ── évszám a láblécben ────────────────────────────────────────────────
-document.getElementById("ev").textContent = String(new Date().getFullYear());
+const evDoboz = document.getElementById("ev");
+if (evDoboz) evDoboz.textContent = String(new Date().getFullYear());
 
 // ── űrlap ─────────────────────────────────────────────────────────────
 const urlap = document.getElementById("urlap");
@@ -72,11 +73,12 @@ const kuldes = document.getElementById("kuldes");
 const uzenetDoboz = document.getElementById("urlap-uzenet");
 
 function uzenet(szoveg, tipus) {
+  if (!uzenetDoboz) return;
   uzenetDoboz.textContent = szoveg;
   uzenetDoboz.className = "urlap-uzenet " + tipus;
 }
 
-urlap.addEventListener("submit", async (e) => {
+urlap?.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const adat = Object.fromEntries(new FormData(urlap).entries());

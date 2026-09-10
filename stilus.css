@@ -849,3 +849,56 @@ section { padding: clamp(4rem, 9vw, 7rem) 0; }
   font-size: .9rem;
   padding: 2rem 0;
 }
+
+/* ═══════════════════════════════════════════ többoldalas felépítés */
+
+/* Az aloldalakon a szakasz címe a főcím — h1, de a szakaszcímek méretében,
+   különben a hős-méretű h1 szétvetné az elrendezést. */
+.szakasz-fej h1 {
+  font-size: clamp(2rem, 4.2vw, 3.1rem);
+  margin-bottom: 1.1rem;
+}
+
+/* Továbblépés a főoldal szakaszainak végén a részletes oldalra */
+.szakasz-tovabb {
+  margin-top: clamp(2rem, 4vw, 3rem);
+  text-align: center;
+}
+.szakasz-tovabb a {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .95rem;
+  font-weight: 500;
+  color: var(--mauve);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 2px;
+  transition: border-color .2s ease, gap .2s ease;
+}
+.szakasz-tovabb a:hover {
+  border-bottom-color: var(--mauve-vilagos);
+  gap: .75rem;
+}
+
+/* Az aloldalak alján: hova lehet innen menni */
+.tovabb-menu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .6rem 1.4rem;
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  padding-top: clamp(1.6rem, 3vw, 2.2rem);
+  border-top: 1px solid var(--vonal);
+}
+.tovabb-menu a {
+  font-size: .88rem;
+  color: var(--tinta-lagy);
+  text-decoration: none;
+  transition: color .2s ease;
+}
+.tovabb-menu a:hover { color: var(--mauve); }
+
+/* A menüben az épp nyitott oldal */
+.menu a.aktiv,
+.menu a.aktiv:hover { color: var(--mauve); }

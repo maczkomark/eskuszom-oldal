@@ -105,54 +105,6 @@
         "priceValidUntil": "2027-12-31",
         "seller": { "@id": "https://eskuszom.hu/#szervezet" }
       }
-    },
-    {
-      "@type": "FAQPage",
-      "@id": "https://eskuszom.hu/#kerdesek",
-      "isPartOf": { "@id": "https://eskuszom.hu/#webhely" },
-      "inLanguage": "hu-HU",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "Mi van, ha nem értünk a számítógéphez?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Semmi baj — pont ezért így épült. Nem üres űrlapokat kaptok, hanem egyszerre egy kérdést, mindig azt, ami épp aktuális. Amit nem tudtok, azt kihagyhatjátok, és később visszatérhettek rá. Az induláskor végigmegyünk rajta együtt." }
-        },
-        {
-          "@type": "Question",
-          "name": "És ha a nagyszülők nem tudják beolvasni a QR-kódot?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Számítottunk rá. A meghívón a kód mellett ott a rövid webcím is, amit be lehet gépelni, és minden vendéghez tartozik egy egyszerű négyjegyű kód. Aki pedig egyáltalán nem használ telefont, annak ugyanúgy tudtok papíron mindent adni — a rendszer kinyomtatja." }
-        },
-        {
-          "@type": "Question",
-          "name": "Meddig a miénk az oldal?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Az esküvő napjáig biztosan, és utána még egy hónapig, hogy a képeket nyugodtan letölthessétek. Ha szeretnétek, hogy megmaradjon emlékoldalnak a fotókkal és a vendégek üzeneteivel, azt évi 4 900 Ft-ért lehet kérni — de ez nem kötelező, és nem automatikus." }
-        },
-        {
-          "@type": "Question",
-          "name": "Kell hozzá saját domain?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Nem. Alapból kaptok egy saját címet, például zsofiesmarci.eskuszom.hu — ez azonnal él, nem kell semmit vennetek. Ha viszont szeretnétek a saját nevetekre (zsofiesmarci.hu), azt megvesszük és ráállítjuk, a domain árán." }
-        },
-        {
-          "@type": "Question",
-          "name": "A szolgáltatóink is használhatják?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Igen, és ez az egyik legjobb rész. A fotós, a videós, a DJ, a vendéglátós, a vőfély saját belépést kap, és mindenki csak azt látja, ami rá tartozik: a saját idővonalát, a létszámot, a névsort. Nem kell nekik külön e-mailezni, ha változik valami." }
-        },
-        {
-          "@type": "Question",
-          "name": "Biztonságban vannak a vendégeink adatai?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Igen. Az adatok magyarországi kiszolgálón vannak, nem adjuk tovább őket senkinek, és nem használjuk hirdetésre. A szolgáltatók csak azt látják, amit ti engedtek nekik. Az esküvő után bármikor kérhetitek, hogy töröljünk mindent." }
-        },
-        {
-          "@type": "Question",
-          "name": "Mi van, ha valaki lemondja az utolsó héten?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Egy helyen írjátok át. A létszám, a menürendelés, az ültetésrend és az ültetőkártya magától követi. A vendéglátós a saját linkjén rögtön az új számot látja — nem kell újra átküldeni neki semmit." }
-        },
-        {
-          "@type": "Question",
-          "name": "Mennyivel az esküvő előtt érdemes elkezdeni?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Amint megvan a dátum. A rendszer visszafelé számol tőle, és onnantól szól, mikor mi következik. De ha három hónap van hátra, akkor sem késtetek el — a vendéglista és a meghívó ilyenkor is rengeteg időt spórol." }
-        }
-      ]
     }
   ]
 }
@@ -165,12 +117,13 @@
   <div class="hatar fejlec-sor">
     <a href="#" class="logo">Esk<em>ü</em>szöm</a>
     <nav class="menu" id="menu">
-      <a href="#mit-tud">Mit tud</a>
-      <a href="#vendeg">A vendégeknek</a>
-      <a href="#hogyan">Hogyan megy</a>
-      <a href="#partnerek">Partnerek</a>
-      <a href="#ar">Ár</a>
-      <a href="#kerdesek">Kérdések</a>
+      <a href="/mit-tud/">Mit tud</a>
+      <a href="/a-vendegeknek/">A vendégeknek</a>
+      <a href="/hogyan-megy/">Hogyan megy</a>
+      <a href="/partnerek/">Partnerek</a>
+      <a href="/tippek/">Tippek</a>
+      <a href="/ar/">Ár</a>
+      <a href="/kerdesek/">Kérdések</a>
     </nav>
     <a href="#kapcsolat" class="gomb gomb-fo">Kérek egy bemutatót</a>
     <button class="menu-gomb" id="menu-gomb" aria-label="Menü" aria-expanded="false">
@@ -434,6 +387,8 @@
       </article>
 
     </div>
+  
+    <p class="szakasz-tovabb"><a href="/mit-tud/">Mind a nyolc, részletesen <span aria-hidden="true">→</span></a></p>
   </div>
 </section>
 
@@ -483,6 +438,8 @@
         </p>
       </div>
     </div>
+  
+    <p class="szakasz-tovabb"><a href="/a-vendegeknek/">Mit lát pontosan egy vendég <span aria-hidden="true">→</span></a></p>
   </div>
 </section>
 
@@ -540,6 +497,8 @@
         </div>
       </div>
     </div>
+  
+    <p class="szakasz-tovabb"><a href="/hogyan-megy/">A négy lépés részletesen <span aria-hidden="true">→</span></a></p>
   </div>
 </section>
 
@@ -559,6 +518,8 @@
     <div class="partnerek" id="partnerek-lista">
       <div class="partnerek-ures">Töltjük a listát…</div>
     </div>
+  
+    <p class="szakasz-tovabb"><a href="/partnerek/">Az összes partnerünk <span aria-hidden="true">→</span></a></p>
   </div>
 </section>
 
@@ -643,6 +604,8 @@
         Számlát minden esetben adunk. Magánszemélyként és cégként is fizethettek.
       </p>
     </div>
+  
+    <p class="szakasz-tovabb"><a href="/ar/">Mi van benne az árban <span aria-hidden="true">→</span></a></p>
   </div>
 </section>
 
@@ -711,44 +674,7 @@
           azt megvesszük és ráállítjuk, a domain árán.
         </p>
       </details>
-
-      <details class="kerdes uszo">
-        <summary>A szolgáltatóink is használhatják?</summary>
-        <p>
-          Igen, és ez az egyik legjobb rész. A fotós, a videós, a DJ, a vendéglátós,
-          a vőfély saját belépést kap, és mindenki csak azt látja, ami rá tartozik:
-          a saját idővonalát, a létszámot, a névsort. Nem kell nekik külön
-          e-mailezni, ha változik valami.
-        </p>
-      </details>
-
-      <details class="kerdes uszo">
-        <summary>Biztonságban vannak a vendégeink adatai?</summary>
-        <p>
-          Igen. Az adatok magyarországi kiszolgálón vannak, nem adjuk tovább őket
-          senkinek, és nem használjuk hirdetésre. A szolgáltatók csak azt látják,
-          amit ti engedtek nekik. Az esküvő után bármikor kérhetitek, hogy töröljünk
-          mindent.
-        </p>
-      </details>
-
-      <details class="kerdes uszo">
-        <summary>Mi van, ha valaki lemondja az utolsó héten?</summary>
-        <p>
-          Egy helyen írjátok át. A létszám, a menürendelés, az ültetésrend és az
-          ültetőkártya magától követi. A vendéglátós a saját linkjén rögtön az új
-          számot látja — nem kell újra átküldeni neki semmit.
-        </p>
-      </details>
-
-      <details class="kerdes uszo">
-        <summary>Mennyivel az esküvő előtt érdemes elkezdeni?</summary>
-        <p>
-          Amint megvan a dátum. A rendszer visszafelé számol tőle, és onnantól
-          szól, mikor mi következik. De ha három hónap van hátra, akkor sem késtetek
-          el — a vendéglista és a meghívó ilyenkor is rengeteg időt spórol.
-        </p>
-      </details>
+    <p class="szakasz-tovabb"><a href="/kerdesek/">Az összes kérdés és válasz <span aria-hidden="true">→</span></a></p>
     </div>
   </div>
 </section>
@@ -847,10 +773,14 @@
     <div class="lablec-sor">
       <a href="#" class="logo">Esk<em>ü</em>szöm</a>
       <nav class="lablec-menu">
-        <a href="#mit-tud">Mit tud</a>
-        <a href="#vendeg">A vendégeknek</a>
-        <a href="#ar">Ár</a>
-        <a href="#kerdesek">Kérdések</a>
+        <a href="/mit-tud/">Mit tud</a>
+        <a href="/a-vendegeknek/">A vendégeknek</a>
+        <a href="/hogyan-megy/">Hogyan megy</a>
+        <a href="/partnerek/">Partnerek</a>
+        <a href="/tippek/">Tippek</a>
+        <a href="/ar/">Ár</a>
+        <a href="/kerdesek/">Kérdések</a>
+        <a href="/minta/">Minta oldal</a>
         <a href="#kapcsolat">Kapcsolat</a>
       </nav>
     </div>

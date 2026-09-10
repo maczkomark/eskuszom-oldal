@@ -73,3 +73,4 @@ User-agent: cohere-ai
 Allow: /
 
 Sitemap: https://eskuszom.hu/sitemap.xml
+Sitemap: https://eskuszom.hu/sitemap-tippek.xml
