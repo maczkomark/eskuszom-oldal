@@ -958,3 +958,47 @@ section { padding: clamp(4rem, 9vw, 7rem) 0; }
   transition: color .2s ease;
 }
 .lablec-kapcsolat a:hover { color: var(--mauve); }
+
+/* ═══════════════════════════════════════════════════ süti-sáv */
+
+/* Alul ül, nem takarja el az oldalt, és nem kér többet, mint amennyit
+   muszáj: két gomb, egyenrangúan — az elutasítás nem nehezebb. */
+.suti-sav {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translate(-50%, 130%);
+  z-index: 200;
+  width: min(760px, calc(100vw - 32px));
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.6rem;
+  padding: 1.1rem 1.3rem;
+  background: var(--feher);
+  border: 1px solid var(--vonal);
+  border-radius: 16px;
+  box-shadow: 0 18px 48px rgba(60, 40, 50, .16);
+  opacity: 0;
+  transition: transform .34s cubic-bezier(.2, .7, .3, 1), opacity .34s ease;
+}
+.suti-sav.lathato { transform: translate(-50%, 0); opacity: 1; }
+
+.suti-szoveg { flex: 1 1 300px; min-width: 0; }
+.suti-szoveg strong { display: block; font-size: .95rem; margin-bottom: .3rem; }
+.suti-szoveg p { font-size: .84rem; line-height: 1.6; color: var(--tinta-lagy); }
+.suti-szoveg a { color: var(--mauve); text-decoration: underline;
+                 text-underline-offset: 2px; }
+
+.suti-gombok { display: flex; gap: .6rem; flex: 0 0 auto; }
+.suti-gombok .gomb { font-size: .86rem; padding: .6rem 1.2rem; }
+
+@media (max-width: 560px) {
+  .suti-sav { bottom: 10px; padding: 1rem; }
+  .suti-gombok { width: 100%; }
+  .suti-gombok .gomb { flex: 1; justify-content: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .suti-sav { transition: opacity .2s ease; transform: translate(-50%, 0); }
+}

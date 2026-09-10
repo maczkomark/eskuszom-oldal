@@ -99,14 +99,6 @@ export function oldal({ cim, leiras, fejlecek, tartalom, url, robots }) {
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/stilus.css?v=20260911b">
 <style>${STILUS}</style>
-<!-- Google Analytics (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-2N1ZZ0YD86"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-2N1ZZ0YD86');
-</script>
 ${fejlecek ?? ""}
 </head>
 <body>
@@ -155,6 +147,8 @@ ${tartalom}
       <div class="lablec-kapcsolat">
         <a href="tel:+36204087765">+36 20 408 7765</a>
         <a href="mailto:info@mmdigital.hu">info@mmdigital.hu</a>
+        <a href="/impresszum/">Impresszum</a>
+        <a href="/adatkezeles/">Adatkezelés</a>
       </div>
     <div class="lablec-also">
       <span>&copy; ${new Date().getFullYear()} Esküszöm — minden jog fenntartva</span>
@@ -164,6 +158,7 @@ ${tartalom}
 </footer>
 
 <script src="/script.js?v=20260911b"></script>
+<script src="/suti.js?v=20260911b"></script>
 <script defer src="https://adminsite.mmdigital.hu/analitika.js" data-kulcs="Rb3DJSMLP9XD"></script>
 </body>
 </html>`;

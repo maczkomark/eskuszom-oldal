@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Adatkezelési tájékoztató – Esküszöm</title>
+<meta name="description" content="Milyen adatot kezelünk, miért és meddig — a megkereséstől a vendéglistán át a sütikig, közérthetően.">
+<meta name="theme-color" content="#8c6b74">
+<link rel="canonical" href="https://eskuszom.hu/adatkezeles/">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Esküszöm">
+<meta property="og:title" content="Adatkezelési tájékoztató – Esküszöm">
+<meta property="og:description" content="Milyen adatot kezelünk, miért és meddig — a megkereséstől a vendéglistán át a sütikig, közérthetően.">
+<meta property="og:url" content="https://eskuszom.hu/adatkezeles/">
+<meta property="og:locale" content="hu_HU">
+<meta property="og:image" content="https://eskuszom.hu/og-kep.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/stilus.css?v=20260911b">
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Főoldal","item":"https://eskuszom.hu/"},{"@type":"ListItem","position":2,"name":"Adatkezelési tájékoztató","item":"https://eskuszom.hu/adatkezeles/"}]}</script>
+<style>
+  .jogi { max-width: 760px; margin: 0 auto; padding-bottom: 90px; }
+  .jogi-fej { text-align: center; padding-bottom: 40px; }
+  .jogi-fej h1 { font-family: var(--serif); font-weight: 400;
+                 font-size: clamp(30px, 5vw, 48px); line-height: 1.15;
+                 margin-bottom: 14px; }
+  .jogi-fej .vezeto { max-width: 56ch; margin: 0 auto; }
+  .jogi-fej .mikor { color: var(--tinta-halvany); font-size: .82rem; margin-top: 18px; }
+
+  .jogi h2 { font-family: var(--serif); font-weight: 400;
+             font-size: clamp(22px, 3vw, 30px); margin: 2.8rem 0 .9rem; }
+  .jogi h3 { font-weight: 600; font-size: 1rem; margin: 1.8rem 0 .5rem; }
+  .jogi p, .jogi li { line-height: 1.75; color: var(--tinta-lagy); }
+  .jogi p + p { margin-top: .9rem; }
+  .jogi ul { padding-left: 1.3rem; margin-top: .7rem; }
+  .jogi li + li { margin-top: .45rem; }
+  .jogi a { color: var(--mauve); text-decoration: underline; text-underline-offset: 3px; }
+  .jogi strong { color: var(--tinta); font-weight: 600; }
+
+  .adatlap { background: var(--feher); border: 1px solid var(--vonal);
+             border-radius: 16px; padding: clamp(1.3rem, 3vw, 1.9rem);
+             margin-top: 1.4rem; }
+  .adatlap dl { display: grid; grid-template-columns: minmax(140px, auto) 1fr;
+                gap: .7rem 1.4rem; }
+  .adatlap dt { color: var(--tinta-halvany); font-size: .86rem; }
+  .adatlap dd { font-size: .96rem; word-break: break-word; }
+  @media (max-width: 520px) {
+    .adatlap dl { grid-template-columns: 1fr; gap: .25rem; }
+    .adatlap dd + dt { margin-top: .8rem; }
+  }
+
+  /* Az adatkezelési táblázat kis kijelzőn is olvasható marad */
+  .adat-tabla { margin-top: 1.2rem; overflow-x: auto; }
+  .adat-tabla table { width: 100%; border-collapse: collapse; font-size: .9rem;
+                      min-width: 540px; }
+  .adat-tabla th, .adat-tabla td { border: 1px solid var(--vonal);
+                                   padding: .7rem .85rem; text-align: left;
+                                   vertical-align: top; }
+  .adat-tabla th { background: var(--papir-melyebb); font-weight: 600;
+                   color: var(--tinta); }
+  .adat-tabla td { color: var(--tinta-lagy); line-height: 1.6; }
+
+  .kiemelt-doboz { background: var(--papir-melyebb); border-radius: 14px;
+                   padding: 1.2rem 1.4rem; margin-top: 1.4rem; }
+  .kiemelt-doboz p { color: var(--tinta-lagy); font-size: .92rem; }
+
+  .jogi-lab { border-top: 1px solid var(--vonal); margin-top: 3rem;
+              padding-top: 1.6rem; font-size: .86rem; color: var(--tinta-halvany); }
+</style>
+</head>
+<body>
+
+<header class="fejlec" id="fejlec">
+  <div class="hatar fejlec-sor">
+    <a href="/" class="logo">Esk<em>ü</em>szöm</a>
+    <nav class="menu" id="menu">
+      <a href="/mit-tud/">Mit tud</a>
+      <a href="/a-vendegeknek/">A vendégeknek</a>
+      <a href="/hogyan-megy/">Hogyan megy</a>
+      <a href="/partnerek/">Partnerek</a>
+      <a href="/tippek/">Tippek</a>
+      <a href="/ar/">Ár</a>
+      <a href="/kerdesek/">Kérdések</a>
+    </nav>
+    <a href="/#kapcsolat" class="gomb gomb-fo">Kérek egy bemutatót</a>
+    <button class="menu-gomb" id="menu-gomb" aria-label="Menü" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <path d="M3 6h18M3 12h18M3 18h18"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<main>
+
+<section class="vilagos">
+  <div class="hatar">
+    <div class="jogi">
+      <div class="jogi-fej">
+        <div class="folcim">Adatkezelés</div>
+        <h1>Mit tudunk rólatok, és miért?</h1>
+        <p class="vezeto">
+          Röviden: annyit, amennyi a munkához kell, és semmivel sem többet.
+          Nem adunk el adatot, nem hirdetünk vele, és nem gyűjtünk semmit
+          „hátha jó lesz” alapon. Lent végigvesszük tételesen.
+        </p>
+        <p class="mikor">Hatályos: 2026. szeptember 11.</p>
+      </div>
+
+      <h2>1. Ki kezeli az adatokat?</h2>
+      <div class="adatlap">
+        <dl>
+          <dt>Adatkezelő</dt>
+          <dd>Maczkó Márk egyéni vállalkozó</dd>
+          <dt>Székhely</dt>
+          <dd>9700 Szombathely, Fadrusz János utca 34/B</dd>
+          <dt>Adószám</dt>
+          <dd>92073018-1-38</dd>
+          <dt>Nyilvántartási szám</dt>
+          <dd>62341127</dd>
+          <dt>Telefon</dt>
+          <dd><a href="tel:+36204087765">+36 20 408 7765</a></dd>
+          <dt>E-mail</dt>
+          <dd><a href="mailto:info@mmdigital.hu">info@mmdigital.hu</a></dd>
+        </dl>
+      </div>
+      <p>
+        Adatvédelmi tisztviselő kijelölésére nem vagyunk kötelesek, ezért nincs —
+        adatvédelmi kérdésekben a fenti elérhetőségeken válaszolunk.
+      </p>
+
+      <h2>2. Milyen adatot, mire, meddig?</h2>
+      <div class="adat-tabla">
+        <table>
+          <thead>
+            <tr><th>Mikor</th><th>Milyen adat</th><th>Miért</th><th>Jogalap</th><th>Meddig</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Ha írtok nekünk (bemutatókérés, kapcsolatfelvétel)</td>
+              <td>nevetek, e-mail, telefonszám, az esküvő tervezett napja,
+                  vendéglétszám, helyszín, üzenet</td>
+              <td>hogy válaszolni tudjunk és ajánlatot adjunk</td>
+              <td>hozzájárulás, illetve a szerződéskötést megelőző lépések
+                  (GDPR 6. cikk (1) a) és b) pont)</td>
+              <td>legfeljebb 2 év, ha nem lesz belőle megrendelés</td>
+            </tr>
+            <tr>
+              <td>Megrendeléskor</td>
+              <td>a fentiek, továbbá számlázási név, cím, ha kéritek adószám,
+                  a kívánt webcím</td>
+              <td>a szerződés teljesítése, számlázás, az utalás beazonosítása</td>
+              <td>szerződés teljesítése és jogi kötelezettség
+                  (GDPR 6. cikk (1) b) és c) pont)</td>
+              <td>a számlázási adatok a számviteli törvény szerint 8 év</td>
+            </tr>
+            <tr>
+              <td>Az esküvői oldalatokon</td>
+              <td>vendégek neve, elérhetősége, visszajelzése, étkezési igénye,
+                  ültetése, feltöltött fényképek</td>
+              <td>az esküvő szervezése — ezeket ti visziük fel, illetve a
+                  vendégeitek adják meg</td>
+              <td>itt ti vagytok az adatkezelő, mi adatfeldolgozóként járunk el
+                  (lásd a 4. pontot)</td>
+              <td>az esküvő után 3 hónapig, utána töröljük, hacsak nem kéritek
+                  az emlékoldalt</td>
+            </tr>
+            <tr>
+              <td>Minden látogatásnál</td>
+              <td>a megnyitott oldal címe, az eszköz típusa, a küldő oldal
+                  domainje, és egy naponta cserélődő, visszafejthetetlen
+                  azonosító</td>
+              <td>hogy lássuk, hány látogató jár az oldalon</td>
+              <td>jogos érdek: enélkül nem tudnánk, működik-e az oldal
+                  (GDPR 6. cikk (1) f) pont)</td>
+              <td>összesítve, 24 hónap</td>
+            </tr>
+            <tr>
+              <td>Ha elfogadjátok a sütiket</td>
+              <td>Google Analytics mérési azonosító, hozzávetőleges földrajzi
+                  hely, eszköz- és böngészőadatok</td>
+              <td>részletesebb látogatottsági kimutatás</td>
+              <td>hozzájárulás (GDPR 6. cikk (1) a) pont)</td>
+              <td>legfeljebb 14 hónap</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Az étkezési igényekről külön</h3>
+      <p>
+        Az ételérzékenység és az allergia <strong>egészségügyi adat</strong>, ami
+        különleges védelmet élvez. A vendég ezt önként, a saját döntése alapján
+        adja meg, kizárólag azért, hogy a vendéglátó tudja, mit tálalhat neki. Nem
+        adjuk tovább senkinek a vendéglátóson kívül, nem elemezzük, és az esküvő
+        után az egész vendéglistával együtt törlődik. Megadása soha nem kötelező.
+      </p>
+
+      <h2>3. Sütik</h2>
+      <p>
+        A <strong>saját látogatásmérőnk nem használ sütit</strong> és nem tárol
+        semmit a gépeteken: a látogatót egy naponta cserélődő, visszafejthetetlen
+        ujjlenyomat azonosítja, amiből másnap már más lesz. Ezért nincs belőle
+        tartós követés.
+      </p>
+      <p>
+        A <strong>Google Analytics</strong> viszont sütit használ. Ezt csak akkor
+        töltjük be, ha az oldal alján megjelenő sávon elfogadjátok — addig a
+        kódja be sem kerül a lapba. Ha a „Csak a szükséges” gombot választjátok,
+        semmilyen Google-süti nem kerül a gépetekre.
+      </p>
+      <div class="kiemelt-doboz">
+        <p>
+          <strong>Meggondoltátok magatokat?</strong> Az alábbi gombbal bármikor
+          újra előhozhatjátok a választást.
+        </p>
+        <p style="margin-top:1rem">
+          <button type="button" class="gomb gomb-halk" onclick="window.sutiUjra && window.sutiUjra()">
+            Süti-beállítások módosítása
+          </button>
+        </p>
+      </div>
+
+      <h2>4. A vendégek adatai — ki miért felel?</h2>
+      <p>
+        Ez fontos, ezért kimondjuk világosan. Az esküvői oldalatokra felvitt
+        vendégadatokért <strong>ti vagytok a felelősek</strong> (a jog nyelvén: ti
+        vagytok az adatkezelő). Mi a rendszert adjuk hozzá, és
+        <strong>adatfeldolgozóként</strong> járunk el: azt csináljuk az adatokkal,
+        amit ti kértek, mást nem.
+      </p>
+      <p>Ez a gyakorlatban azt jelenti, hogy:</p>
+      <ul>
+        <li>nem nézünk bele a vendéglistátokba, csak ha ti kértek segítséget;</li>
+        <li>nem küldünk a vendégeiteknek semmit a saját nevünkben;</li>
+        <li>nem használjuk fel a vendégek adatait semmilyen más célra;</li>
+        <li>ha törölni kéritek, töröljük — és az alvállalkozóinktól is töröltetjük.</li>
+      </ul>
+      <p>
+        Cserébe tőletek azt kérjük, hogy a vendégeiteket tájékoztassátok róla,
+        hogy az adataik egy ilyen oldalra kerülnek. A meghívóba szánt szöveget
+        szívesen adunk hozzá.
+      </p>
+
+      <h2>5. Kik férhetnek hozzá?</h2>
+      <p>
+        Az adataitokat nem adjuk el és nem adjuk át harmadik félnek marketing
+        céljából. Ahhoz viszont, hogy a szolgáltatás működjön, néhány
+        alvállalkozót igénybe veszünk:
+      </p>
+      <ul>
+        <li><strong>Rackhost Zrt.</strong> (9024 Győr, Répce utca 24. I/1.) —
+            a szerver, ahol a rendszer és az adatbázis fut. Magyarország.</li>
+        <li><strong>Cloudflare, Inc.</strong> (USA) — a nyilvános oldal
+            kiszolgálása, gyorsítás és védelem a támadások ellen.</li>
+        <li><strong>Google Ireland Limited / Google LLC</strong> — a leveleink
+            kiküldése, illetve hozzájárulás esetén a Google Analytics.</li>
+      </ul>
+      <p>
+        A Cloudflare és a Google részben az Európai Unión kívül is kezel adatot.
+        Ezek a cégek az Európai Bizottság által jóváhagyott adatvédelmi keretben,
+        illetve általános szerződési feltételek alapján működnek, ami megfelelő
+        védelmi szintet ír elő.
+      </p>
+      <p>
+        Ezen felül hatóság megkeresésére, jogszabályi kötelezettség alapján
+        adhatunk ki adatot — ez a könyvelőnkre és az esetleges hatósági
+        eljárásokra vonatkozik.
+      </p>
+
+      <h2>6. Hogyan vigyázunk rá?</h2>
+      <ul>
+        <li>Minden kapcsolat titkosított (HTTPS), a jelszavakat nem tároljuk
+            visszafejthető formában.</li>
+        <li>A rendszerhez csak név szerint azonosított munkatárs fér hozzá, és
+            csak ahhoz, amihez a munkájához szükség van.</li>
+        <li>Az adatbázisról rendszeres mentés készül.</li>
+        <li>A vendégek a saját oldalukat egyedi, kitalálhatatlan kóddal érik el —
+            egyik vendég nem látja a másik adatait.</li>
+      </ul>
+
+      <h2>7. Milyen jogaitok vannak?</h2>
+      <p>Bármikor kérhetitek tőlünk, hogy</p>
+      <ul>
+        <li><strong>megmondjuk</strong>, milyen adatot kezelünk rólatok
+            (hozzáférés);</li>
+        <li><strong>javítsuk</strong>, ami hibás vagy elavult (helyesbítés);</li>
+        <li><strong>töröljük</strong> az adataitokat (elfeledtetés) — kivéve amit
+            jogszabály miatt őriznünk kell, például a számlákat;</li>
+        <li><strong>korlátozzuk</strong> a kezelést, amíg egy vitás kérdés
+            eldől;</li>
+        <li><strong>kiadjuk</strong> az adataitokat géppel olvasható formában
+            (hordozhatóság);</li>
+        <li><strong>abbahagyjuk</strong> a jogos érdeken alapuló kezelést
+            (tiltakozás);</li>
+        <li><strong>visszavonjuk</strong> a hozzájárulásotokat — ez a jövőre nézve
+            hat, a korábbi kezelést nem teszi jogszerűtlenné.</li>
+      </ul>
+      <p>
+        Írjatok a <a href="mailto:info@mmdigital.hu">info@mmdigital.hu</a> címre, és
+        <strong>30 napon belül</strong> válaszolunk. Ez ingyenes, kivéve, ha
+        valaki nyilvánvalóan megalapozatlanul vagy túlzó gyakorisággal kéri.
+      </p>
+
+      <h2>8. Ha nem vagytok elégedettek</h2>
+      <p>
+        Elsőként minket keressetek — a legtöbb dolog egy levélváltással
+        rendeződik. Ha ez nem vezet eredményre, panaszt tehettek a felügyeleti
+        hatóságnál:
+      </p>
+      <div class="adatlap">
+        <dl>
+          <dt>Hatóság</dt>
+          <dd>Nemzeti Adatvédelmi és Információszabadság Hatóság (NAIH)</dd>
+          <dt>Cím</dt>
+          <dd>1055 Budapest, Falk Miksa utca 9–11.</dd>
+          <dt>Telefon</dt>
+          <dd><a href="tel:+3613911400">+36 1 391 1400</a></dd>
+          <dt>E-mail</dt>
+          <dd><a href="mailto:ugyfelszolgalat@naih.hu">ugyfelszolgalat@naih.hu</a></dd>
+          <dt>Weboldal</dt>
+          <dd><a href="https://naih.hu" rel="noopener nofollow">naih.hu</a></dd>
+        </dl>
+      </div>
+      <p>
+        Bírósághoz is fordulhattok, a lakóhelyetek szerinti törvényszéken.
+      </p>
+
+      <h2>9. Ha változik</h2>
+      <p>
+        Ha módosítjuk ezt a tájékoztatót, a tetején látszó dátum is változik.
+        Lényeges változásról a megrendelőinket e-mailben is értesítjük.
+      </p>
+
+      <div class="jogi-lab">
+        <p>
+          Ez a tájékoztató a saját működésünket írja le közérthetően. Nem
+          helyettesíti a jogi tanácsadást — ha valamiben bizonytalanok vagytok,
+          kérdezzetek minket a fenti elérhetőségeken.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="lablec">
+  <div class="hatar">
+    <div class="lablec-sor">
+      <a href="/" class="logo">Esk<em>ü</em>szöm</a>
+      <nav class="lablec-menu">
+        <a href="/mit-tud/">Mit tud</a>
+        <a href="/a-vendegeknek/">A vendégeknek</a>
+        <a href="/hogyan-megy/">Hogyan megy</a>
+        <a href="/partnerek/">Partnerek</a>
+        <a href="/tippek/">Tippek</a>
+        <a href="/ar/">Ár</a>
+        <a href="/kerdesek/">Kérdések</a>
+        <a href="/minta/">Minta oldal</a>
+        <a href="/#kapcsolat">Kapcsolat</a>
+      </nav>
+    </div>
+      <div class="lablec-kapcsolat">
+        <a href="tel:+36204087765">+36 20 408 7765</a>
+        <a href="mailto:info@mmdigital.hu">info@mmdigital.hu</a>
+        <a href="/impresszum/">Impresszum</a>
+        <a href="/adatkezeles/">Adatkezelés</a>
+      </div>
+    <div class="lablec-also">
+      <span>&copy; <span id="ev">2026</span> Esküszöm — minden jog fenntartva</span>
+      <span>Az esküvőtök, egy helyen.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/script.js?v=20260911b"></script>
+<script src="/suti.js?v=20260911b"></script>
+<script defer src="https://adminsite.mmdigital.hu/analitika.js" data-kulcs="Rb3DJSMLP9XD"></script>
+</body>
+</html>
