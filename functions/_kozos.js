@@ -103,14 +103,21 @@ ${fejlecek ?? ""}
 <header class="fejlec" id="fejlec">
   <div class="hatar fejlec-sor">
     <a href="/" class="logo">Esk<em>ü</em>szöm</a>
-    <nav class="menu">
-      <a href="/#mit-tud">Mit tud</a>
-      <a href="/#vendeg">A vendégeknek</a>
+    <nav class="menu" id="menu">
+      <a href="/mit-tud/">Mit tud</a>
+      <a href="/a-vendegeknek/">A vendégeknek</a>
+      <a href="/hogyan-megy/">Hogyan megy</a>
+      <a href="/partnerek/">Partnerek</a>
       <a href="/tippek/">Tippek</a>
-      <a href="/#ar">Ár</a>
-      <a href="/#kerdesek">Kérdések</a>
+      <a href="/ar/">Ár</a>
+      <a href="/kerdesek/">Kérdések</a>
     </nav>
     <a href="/#kapcsolat" class="gomb gomb-fo">Kérek egy bemutatót</a>
+    <button class="menu-gomb" id="menu-gomb" aria-label="Menü" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <path d="M3 6h18M3 12h18M3 18h18"/>
+      </svg>
+    </button>
   </div>
 </header>
 
@@ -123,11 +130,14 @@ ${tartalom}
     <div class="lablec-sor">
       <a href="/" class="logo">Esk<em>ü</em>szöm</a>
       <nav class="lablec-menu">
-        <a href="/#mit-tud">Mit tud</a>
-        <a href="/#vendeg">A vendégeknek</a>
+        <a href="/mit-tud/">Mit tud</a>
+        <a href="/a-vendegeknek/">A vendégeknek</a>
+        <a href="/hogyan-megy/">Hogyan megy</a>
+        <a href="/partnerek/">Partnerek</a>
         <a href="/tippek/">Tippek</a>
+        <a href="/ar/">Ár</a>
+        <a href="/kerdesek/">Kérdések</a>
         <a href="/minta/">Minta oldal</a>
-        <a href="/#ar">Ár</a>
         <a href="/#kapcsolat">Kapcsolat</a>
       </nav>
     </div>
@@ -138,6 +148,7 @@ ${tartalom}
   </div>
 </footer>
 
+<script src="/script.js"></script>
 <script defer src="https://adminsite.mmdigital.hu/analitika.js" data-kulcs="Rb3DJSMLP9XD"></script>
 </body>
 </html>`;
