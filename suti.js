@@ -76,6 +76,14 @@
     });
   }
 
+  // Az adatkezelési tájékoztató „Meggondoltam magam" gombja ide szól vissza.
+  // FONTOS, hogy a lenti korai kilépések ELŐTT álljon: aki már döntött, annak
+  // egyébként létre sem jönne — pedig pont ő az, aki módosítani akar.
+  window.sutiUjra = function () {
+    try { localStorage.removeItem(KULCS); } catch (e) { /* nincs mit törölni */ }
+    if (!document.querySelector(".suti-sav")) savBe();
+  };
+
   var dontes = olvas();
   if (dontes && dontes.elfogadva) { analitikaBe(); return; }
   if (dontes) return;                              // nemet mondott, nem kérdezünk újra
@@ -85,10 +93,4 @@
   } else {
     savBe();
   }
-
-  // Az adatkezelési tájékoztató „Meggondoltam magam" gombja ide szól vissza
-  window.sutiUjra = function () {
-    try { localStorage.removeItem(KULCS); } catch (e) { /* nincs mit törölni */ }
-    if (!document.querySelector(".suti-sav")) savBe();
-  };
 })();
