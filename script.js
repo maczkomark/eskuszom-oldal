@@ -202,3 +202,104 @@ if ("requestIdleCallback" in window) {
 } else {
   setTimeout(inditAsszisztens, 2500);
 }
+
+/* ══════════════════════════════════════════════════════════════════════
+   Partnerek betöltése.
+
+   A listát a vezérlőpult adja (Esküvő → Szolgáltatók), így ha egy partner
+   bekerül vagy kikerül, ez az oldal magától követi — nem kell HTML-t írni.
+   Ha a végpont nem elérhető, a szakasz csendben eltűnik: egy üres doboz
+   rosszabb, mint ha ott sem lenne.
+   ══════════════════════════════════════════════════════════════════════ */
+const PARTNER_API = "https://adminsite.mmdigital.hu/api/eskuvo/partnerek";
+
+const SZAKMA_NEV = {
+  fotos: "Fotós", videos: "Videós", dj: "DJ", zenekar: "Zenekar",
+  dekoracio: "Dekoráció", vendeglatas: "Vendéglátás", vofely: "Vőfély",
+  ceremoniamester: "Ceremóniamester", torta: "Torta", ruha: "Ruha",
+  smink: "Smink / fodrász", helyszin: "Helyszín", egyeb: "Egyéb",
+};
+
+function forint(n) {
+  if (n == null) return "";
+  return new Intl.NumberFormat("hu-HU").format(n) + " Ft-tól";
+}
+
+function csillagok(pont) {
+  const egesz = Math.round(pont);
+  return "★".repeat(egesz) + "☆".repeat(5 - egesz);
+}
+
+function biztonsagos(t) {
+  const d = document.createElement("div");
+  d.textContent = String(t ?? "");
+  return d.innerHTML;
+}
+
+/** Csak http/https címet engedünk — nehogy egy elgépelt mező kárt okozzon. */
+function tisztaLink(cim) {
+  if (!cim) return null;
+  const teljes = /^https?:\/\//i.test(cim) ? cim : "https://" + cim;
+  try {
+    const u = new URL(teljes);
+    return u.protocol === "http:" || u.protocol === "https:" ? u.href : null;
+  } catch { return null; }
+}
+
+async function partnereketBetolt() {
+  const doboz = document.getElementById("partnerek-lista");
+  const szakasz = document.getElementById("partnerek");
+  if (!doboz || !szakasz) return;
+
+  try {
+    const valasz = await fetch(PARTNER_API, { signal: AbortSignal.timeout(8000) });
+    if (!valasz.ok) throw new Error(String(valasz.status));
+    const e = await valasz.json();
+    const lista = Array.isArray(e.partnerek) ? e.partnerek : [];
+
+    // Ha még nincs egy partner sem, ne mutassunk üres szakaszt.
+    if (lista.length === 0) { szakasz.remove(); return; }
+
+    doboz.innerHTML = lista.map((p) => {
+      const honlap = tisztaLink(p.website);
+      const insta = p.instagram
+        ? tisztaLink(p.instagram.startsWith("@")
+            ? "instagram.com/" + p.instagram.slice(1)
+            : p.instagram)
+        : null;
+      const kep = tisztaLink(p.logo_url);
+
+      return `
+        <article class="partner uszo lathato">
+          <div class="partner-fej">
+            ${kep
+              ? `<img class="partner-jel" src="${biztonsagos(kep)}" alt="" loading="lazy">`
+              : `<span class="partner-jel">${biztonsagos((p.name || "?").charAt(0))}</span>`}
+            <div>
+              <div class="partner-szakma">${biztonsagos(SZAKMA_NEV[p.category] || p.category)}</div>
+              <div class="partner-nev">${biztonsagos(p.name)}</div>
+              <div class="partner-hol">
+                ${biztonsagos(p.city || "")}${p.city && p.price_from ? " · " : ""}${forint(p.price_from)}
+              </div>
+            </div>
+          </div>
+          ${p.description ? `<p class="partner-leiras">${biztonsagos(p.description)}</p>` : ""}
+          ${(honlap || insta || (p.parok_ertekelese && p.ertekelesek_szama))
+            ? `<div class="partner-also">
+                 ${p.parok_ertekelese && p.ertekelesek_szama
+                   ? `<span class="partner-csillag" title="${p.ertekelesek_szama} pár értékelése">
+                        ${csillagok(p.parok_ertekelese)}</span>`
+                   : ""}
+                 ${honlap ? `<a href="${biztonsagos(honlap)}" target="_blank" rel="noreferrer noopener">weboldal</a>` : ""}
+                 ${insta ? `<a href="${biztonsagos(insta)}" target="_blank" rel="noreferrer noopener">Instagram</a>` : ""}
+               </div>`
+            : ""}
+        </article>`;
+    }).join("");
+  } catch {
+    // Nem érhető el a lista — inkább nincs szakasz, mint egy hibaüzenet.
+    szakasz.remove();
+  }
+}
+
+partnereketBetolt();
