@@ -801,8 +801,11 @@ section { padding: clamp(4rem, 9vw, 7rem) 0; }
 
 .partnerek {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  /* auto-fit + felső korlát: kevés partnernél a kártyák középre kerülnek,
+     nem nyúlnak szét és nem lógnak egy üres sáv szélére */
+  grid-template-columns: repeat(auto-fit, minmax(250px, 300px));
   gap: 1.1rem;
+  justify-content: center;
 }
 .partner {
   background: var(--feher);
