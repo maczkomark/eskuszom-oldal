@@ -902,3 +902,11 @@ section { padding: clamp(4rem, 9vw, 7rem) 0; }
 /* A menüben az épp nyitott oldal */
 .menu a.aktiv,
 .menu a.aktiv:hover { color: var(--mauve); }
+
+/* Az aloldalak saját bevezetője a főcím alatt: halkabb, mint a vezető
+   mondat fölötte — így látszik, hogy magyarázat, nem újabb ígéret. */
+.szakasz-fej .bevezeto {
+  font-size: .95rem;
+  color: var(--tinta-lagy);
+  margin-top: 1rem;
+}
