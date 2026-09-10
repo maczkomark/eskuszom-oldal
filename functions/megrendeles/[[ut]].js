@@ -53,6 +53,12 @@ const STILUS = `
                 border-radius: 10px; padding: .7rem .9rem; }
   .urlap-hiba:empty { display: none; }
 
+  .kod-sor { display: flex; gap: .6rem; align-items: flex-start; }
+  .kod-sor .mezo { flex: 1; }
+  .kod-valasz { font-size: .8rem; margin-top: .4rem; min-height: 1.1rem; }
+  .kod-valasz.jo { color: #4a7c59; }
+  .kod-valasz.rossz { color: #a4453d; }
+
   /* ── állapotlap ── */
   .utalas { display: grid; gap: .7rem; margin: 1.2rem 0 0; }
   .utalas-sor { display: flex; align-items: center; gap: .8rem;
@@ -202,15 +208,30 @@ function urlapOldal() {
           </div>
         </div>
 
+        <div class="csoport">
+          <h2>Van kedvezménykódotok?</h2>
+          <p class="halk">
+            Ha egy esküvői oldalunk alján találtatok kódot, írjátok ide.
+            Ha nincs, hagyjátok üresen — enélkül is mehet a megrendelés.
+          </p>
+          <div class="mezo">
+            <label for="kedvezmenykod">Kedvezménykód</label>
+            <input id="kedvezmenykod" name="kedvezmenykod" autocomplete="off"
+                   spellcheck="false" placeholder="pl. ZSOFIESMARCI"
+                   style="text-transform:uppercase">
+            <div class="kod-valasz" id="kod-valasz"></div>
+          </div>
+        </div>
+
         <input class="mezcsak-robot" type="text" name="honeypot" tabindex="-1"
                autocomplete="off" aria-hidden="true">
 
         <div class="ar-sor">
           <div>
             <strong>Esküvői weboldal</strong>
-            <div class="sugo">Egyszeri díj · nincs havidíj · nincs létszámkorlát</div>
+            <div class="sugo" id="ar-sugo">Egyszeri díj · nincs havidíj · nincs létszámkorlát</div>
           </div>
-          <div class="osszeg">45 000 Ft</div>
+          <div class="osszeg" id="ar-osszeg">45 000 Ft</div>
         </div>
 
         <button type="submit" class="gomb gomb-fo kuldes" id="kuldes">
@@ -232,6 +253,60 @@ function urlapOldal() {
   var urlap = document.getElementById("rendeles");
   var gomb = document.getElementById("kuldes");
   var hiba = document.getElementById("hiba");
+  var kodMezo = document.getElementById("kedvezmenykod");
+  var kodValasz = document.getElementById("kod-valasz");
+  var arOsszeg = document.getElementById("ar-osszeg");
+  var arSugo = document.getElementById("ar-sugo");
+  var TELJES = 45000;
+
+  function forint(n) {
+    // Magyarul a négyjegyű számot nem tagoljuk, ötjegyűtől igen
+    return n.toLocaleString("hu-HU") + " Ft";
+  }
+
+  // A kód jöhet a címből (?kod=…) vagy abból, amit korábban eltettünk:
+  // a vendég a saját esküvői oldaláról indul, és nem gépeli be újra.
+  try {
+    var cimKod = new URLSearchParams(location.search).get("kod");
+    var tarolt = localStorage.getItem("eskuszom-kod");
+    if (cimKod) { kodMezo.value = cimKod.toUpperCase(); localStorage.setItem("eskuszom-kod", cimKod.toUpperCase()); }
+    else if (tarolt) { kodMezo.value = tarolt; }
+  } catch (e) { /* privát ablakban nincs tároló — nem baj */ }
+
+  var kodIdozit = null;
+  async function kodEllenoriz() {
+    var k = (kodMezo.value || "").trim().toUpperCase();
+    kodValasz.className = "kod-valasz";
+    if (!k) {
+      kodValasz.textContent = "";
+      arOsszeg.textContent = forint(TELJES);
+      arSugo.textContent = "Egyszeri díj · nincs havidíj · nincs létszámkorlát";
+      return;
+    }
+    try {
+      var v = await fetch("${ALAP}/api/eskuvo/megrendeles?kod=" + encodeURIComponent(k));
+      var j = await v.json();
+      if (j.ervenyes) {
+        kodValasz.className = "kod-valasz jo";
+        kodValasz.textContent = "Rendben — " + forint(j.kedvezmeny) + " kedvezmény.";
+        arOsszeg.textContent = forint(TELJES - j.kedvezmeny);
+        arSugo.textContent = "Eredeti ár " + forint(TELJES) + ", a kedvezménnyel ennyi.";
+      } else {
+        kodValasz.className = "kod-valasz rossz";
+        kodValasz.textContent = j.hiba || "Ezt a kódot nem ismerjük fel.";
+        arOsszeg.textContent = forint(TELJES);
+        arSugo.textContent = "Egyszeri díj · nincs havidíj · nincs létszámkorlát";
+      }
+    } catch (e) {
+      // Ha nem érjük el, ne akadályozzuk a megrendelést — a szerver úgyis ellenőrzi
+      kodValasz.textContent = "";
+    }
+  }
+  kodMezo.addEventListener("input", function () {
+    clearTimeout(kodIdozit);
+    kodIdozit = setTimeout(kodEllenoriz, 450);
+  });
+  if (kodMezo.value) kodEllenoriz();
 
   urlap.addEventListener("submit", async function (e) {
     e.preventDefault();
@@ -317,6 +392,10 @@ function allapotOldal(m, token) {
             ${sor("Bank", m.bank.bank)}
             ${sor("Számlaszám", m.bank.szamla)}
             ${sor("Összeg", osszeg)}
+            ${Number(m.kedvezmeny) > 0 ? `<div class="utalas-sor kedvezmeny-sor">
+              <span class="cimke">Kedvezmény</span>
+              <span class="ertek">−${Number(m.kedvezmeny).toLocaleString("hu-HU")} Ft már levonva${m.kedvezmenykod ? ` (${ki(String(m.kedvezmenykod).toUpperCase())})` : ""}</span>
+            </div>` : ""}
             ${sor("Közlemény", m.ref, true)}
           </div>
 

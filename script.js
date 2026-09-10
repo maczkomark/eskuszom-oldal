@@ -305,3 +305,15 @@ async function partnereketBetolt() {
 }
 
 partnereketBetolt();
+
+
+/* ── kedvezménykód a címből ──────────────────────────────────────────
+   A vendég a saját esküvői oldalának aljáról indul, és a link hozza a
+   kódot. Eltesszük, hogy a megrendelőben már ne kelljen begépelnie —
+   akár napokkal később tér vissza. */
+(function () {
+  try {
+    var kod = new URLSearchParams(location.search).get("kod");
+    if (kod) localStorage.setItem("eskuszom-kod", kod.toUpperCase());
+  } catch (e) { /* privát ablakban nincs tároló — nem baj */ }
+})();
