@@ -1,0 +1,10 @@
+# eskuszom.hu
+
+User-agent: *
+Allow: /
+
+# Kereses szempontjabol ertektelen / privat utak
+Disallow: /admin/
+Disallow: /api/
+
+Sitemap: https://eskuszom.hu/sitemap.xml
