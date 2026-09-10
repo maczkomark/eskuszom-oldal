@@ -59,6 +59,12 @@ const STILUS = `
   .kod-valasz.jo { color: #4a7c59; }
   .kod-valasz.rossz { color: #a4453d; }
 
+  .surgos-jelzes { margin-top: .8rem; padding: .85rem 1rem; border-radius: 12px;
+                   background: #fdf6ec; border: 1px solid #f0dcc0;
+                   font-size: .86rem; line-height: 1.6; color: #7a5a2e; }
+  .surgos-jelzes:empty { display: none; }
+  .surgos-jelzes strong { color: #5f4522; }
+
   /* ── állapotlap ── */
   .utalas { display: grid; gap: .7rem; margin: 1.2rem 0 0; }
   .utalas-sor { display: flex; align-items: center; gap: .8rem;
@@ -139,6 +145,7 @@ function urlapOldal() {
                 <label for="wedding_date">Az esküvő napja</label>
                 <input id="wedding_date" name="wedding_date" type="date">
                 <div class="sugo">Ha még nincs meg, hagyjátok üresen.</div>
+                <div class="surgos-jelzes" id="surgos-jelzes"></div>
               </div>
               <div class="mezo">
                 <label for="cim_keres">Milyen címet szeretnétek?</label>
@@ -258,10 +265,27 @@ function urlapOldal() {
   var arOsszeg = document.getElementById("ar-osszeg");
   var arSugo = document.getElementById("ar-sugo");
   var TELJES = 45000;
+  var datumMezo = document.getElementById("wedding_date");
+  var surgosJelzes = document.getElementById("surgos-jelzes");
+  var surgosFelar = 0;
+  var kedvezmeny = 0;
 
   function forint(n) {
     // Magyarul a négyjegyű számot nem tagoljuk, ötjegyűtől igen
     return n.toLocaleString("hu-HU") + " Ft";
+  }
+
+  /* Az árat egy helyen számoljuk: a kedvezmény és a sürgősségi felár
+     egyszerre is érvényes lehet, és nem írhatják felül egymást. */
+  function arFrissit() {
+    var vegso = TELJES - kedvezmeny + surgosFelar;
+    arOsszeg.textContent = forint(vegso);
+    var reszek = [];
+    if (kedvezmeny > 0) reszek.push("kedvezmény −" + forint(kedvezmeny));
+    if (surgosFelar > 0) reszek.push("sürgősségi felár +" + forint(surgosFelar));
+    arSugo.textContent = reszek.length
+      ? "Alapár " + forint(TELJES) + " · " + reszek.join(" · ")
+      : "Egyszeri díj · nincs havidíj · nincs létszámkorlát";
   }
 
   // A kód jöhet a címből (?kod=…) vagy abból, amit korábban eltettünk:
@@ -279,8 +303,8 @@ function urlapOldal() {
     kodValasz.className = "kod-valasz";
     if (!k) {
       kodValasz.textContent = "";
-      arOsszeg.textContent = forint(TELJES);
-      arSugo.textContent = "Egyszeri díj · nincs havidíj · nincs létszámkorlát";
+      kedvezmeny = 0;
+      arFrissit();
       return;
     }
     try {
@@ -289,19 +313,51 @@ function urlapOldal() {
       if (j.ervenyes) {
         kodValasz.className = "kod-valasz jo";
         kodValasz.textContent = "Rendben — " + forint(j.kedvezmeny) + " kedvezmény.";
-        arOsszeg.textContent = forint(TELJES - j.kedvezmeny);
-        arSugo.textContent = "Eredeti ár " + forint(TELJES) + ", a kedvezménnyel ennyi.";
+        kedvezmeny = j.kedvezmeny;
       } else {
         kodValasz.className = "kod-valasz rossz";
         kodValasz.textContent = j.hiba || "Ezt a kódot nem ismerjük fel.";
-        arOsszeg.textContent = forint(TELJES);
-        arSugo.textContent = "Egyszeri díj · nincs havidíj · nincs létszámkorlát";
+        kedvezmeny = 0;
       }
+      arFrissit();
     } catch (e) {
       // Ha nem érjük el, ne akadályozzuk a megrendelést — a szerver úgyis ellenőrzi
       kodValasz.textContent = "";
     }
   }
+  /* A dátum alapján a szerver mondja meg, sürgős-e — nem az űrlap dönti el,
+     hogy a felárat ne lehessen egy átírt mezővel megkerülni. */
+  async function surgossegetNez() {
+    var nap = datumMezo.value;
+    if (!nap) {
+      surgosFelar = 0;
+      surgosJelzes.textContent = "";
+      arFrissit();
+      return;
+    }
+    try {
+      var v = await fetch("${ALAP}/api/eskuvo/megrendeles?nap=" + encodeURIComponent(nap));
+      var j = await v.json();
+      surgosFelar = j.surgos ? j.felar : 0;
+      if (j.surgos) {
+        surgosJelzes.innerHTML =
+          "<strong>Ez már nagyon közel van.</strong> " + j.hatarNap +
+          " napon belüli esküvőnél azonnal nekiállunk, és nem tudjuk más elé sorolni — " +
+          "ezért " + forint(j.felar) + " sürgősségi felárat számolunk. " +
+          "Az oldalatok így is két napon belül él.";
+      } else {
+        surgosJelzes.textContent = "";
+      }
+    } catch (e) {
+      // Ha nem érjük el, ne ijesszük meg őket — a szerver úgyis kiszámolja
+      surgosFelar = 0;
+      surgosJelzes.textContent = "";
+    }
+    arFrissit();
+  }
+  datumMezo.addEventListener("change", surgossegetNez);
+  if (datumMezo.value) surgossegetNez();
+
   kodMezo.addEventListener("input", function () {
     clearTimeout(kodIdozit);
     kodIdozit = setTimeout(kodEllenoriz, 450);
@@ -395,6 +451,10 @@ function allapotOldal(m, token) {
             ${Number(m.kedvezmeny) > 0 ? `<div class="utalas-sor kedvezmeny-sor">
               <span class="cimke">Kedvezmény</span>
               <span class="ertek">−${Number(m.kedvezmeny).toLocaleString("hu-HU")} Ft már levonva${m.kedvezmenykod ? ` (${ki(String(m.kedvezmenykod).toUpperCase())})` : ""}</span>
+            </div>` : ""}
+            ${Number(m.surgos) > 0 ? `<div class="utalas-sor surgos-sor">
+              <span class="cimke">Sürgősségi felár</span>
+              <span class="ertek">+${Number(m.surgos).toLocaleString("hu-HU")} Ft — mert három héten belül van</span>
             </div>` : ""}
             ${sor("Közlemény", m.ref, true)}
           </div>
