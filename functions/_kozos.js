@@ -77,7 +77,7 @@ const STILUS = `
  * A teljes oldal köré ugyanaz a keret, mint a hirdető oldalon: azonos
  * fejléc, betűk és lábléc, hogy ne érződjön külön világnak.
  */
-export function oldal({ cim, leiras, fejlecek, tartalom, url }) {
+export function oldal({ cim, leiras, fejlecek, tartalom, url, robots }) {
   return `<!doctype html>
 <html lang="hu">
 <head>
@@ -87,7 +87,9 @@ export function oldal({ cim, leiras, fejlecek, tartalom, url }) {
 <meta name="description" content="${ki(leiras)}">
 <meta name="theme-color" content="#8c6b74">
 <link rel="canonical" href="${ki(url)}">
-<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<!-- A megrendelés és a hibaoldalak felülírják: két robots-címke egy lapon
+     zavaros, ezért itt csak egy van, és az oldal mondja meg, mi legyen. -->
+<meta name="robots" content="${ki(robots || "index, follow, max-snippet:-1, max-image-preview:large")}">
 <meta property="og:site_name" content="Esküszöm">
 <meta property="og:locale" content="hu_HU">
 <meta property="og:url" content="${ki(url)}">
@@ -173,7 +175,7 @@ export function hibaOldal(uzenet, kod) {
     oldal({
       cim: "Ez a cikk nincs meg — Esküszöm",
       leiras: uzenet,
-      fejlecek: '<meta name="robots" content="noindex, follow">',
+      robots: "noindex, follow",
       url: "https://eskuszom.hu/tippek/",
       tartalom: `<section class="vilagos"><div class="hatar">
         <div class="cikk-fej">

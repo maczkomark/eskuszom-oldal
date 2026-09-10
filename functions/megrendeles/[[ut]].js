@@ -103,8 +103,8 @@ function urlapOldal() {
     leiras: "Rendeljétek meg az esküvői weboldalatokat: egyszeri 45 000 Ft, "
           + "banki átutalással. Két nap alatt kész, havidíj nincs.",
     url: "https://eskuszom.hu/megrendeles/",
-    fejlecek: `<meta name="robots" content="noindex, follow">
-<style>${STILUS}</style>`,
+    robots: "noindex, follow",
+    fejlecek: `<style>${STILUS}</style>`,
     tartalom: `
 <section class="vilagos">
   <div class="hatar">
@@ -291,8 +291,8 @@ function allapotOldal(m, token) {
     cim: "A megrendelésetek — Esküszöm",
     leiras: "A megrendelésetek állapota és az utalási adatok.",
     url: `https://eskuszom.hu/megrendeles/${token}/`,
-    fejlecek: `<meta name="robots" content="noindex, nofollow">
-<style>${STILUS}</style>`,
+    robots: "noindex, nofollow",
+    fejlecek: `<style>${STILUS}</style>`,
     tartalom: `
 <section class="vilagos">
   <div class="hatar">
