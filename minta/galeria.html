@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Galéria — Zsófi &amp; Marci esküvője</title>
+<meta name="theme-color" content="#7d8a6f">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="stilus.css">
+<style>
+  .szurok { display: flex; flex-wrap: wrap; gap: .6rem; justify-content: center; margin-bottom: 2rem; }
+  .szuro {
+    border: 1px solid var(--vonal); background: var(--feher); color: var(--tinta-lagy);
+    border-radius: 999px; padding: .55rem 1.25rem; font-size: .87rem; cursor: pointer;
+    font-family: inherit; transition: .2s;
+  }
+  .szuro:hover { border-color: var(--zold); color: var(--zold); }
+  .szuro.aktiv { background: var(--zold); border-color: var(--zold); color: #fff; }
+
+  .feltolto {
+    border: 2px dashed var(--zold-vilagos); border-radius: 14px;
+    display: grid; place-items: center; text-align: center; gap: .5rem;
+    padding: 2rem 1rem; color: var(--zold); background: rgba(125,138,111,.05);
+    aspect-ratio: 4/3; cursor: pointer; transition: .2s;
+  }
+  .feltolto:hover { background: rgba(125,138,111,.1); border-color: var(--zold); }
+  .feltolto span { font-size: .86rem; }
+  .feltolto small { color: var(--tinta-halvany); font-size: .76rem; }
+
+  /* nagyító */
+  .nagyito {
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(35, 32, 30, .92);
+    display: none; place-items: center; padding: 2rem 1rem;
+  }
+  .nagyito.nyitva { display: grid; }
+  .nagyito .keret { max-width: 900px; width: 100%; }
+  .nagyito .foto { aspect-ratio: 3/2; border-radius: 10px; }
+  .nagyito .felirat { color: rgba(255,255,255,.82); text-align: center; margin-top: 1rem; font-size: .92rem; }
+  .nagyito .bezar {
+    position: absolute; top: 1.2rem; right: 1.4rem;
+    background: none; border: 0; color: #fff; cursor: pointer; padding: .5rem;
+  }
+
+  .uzenet-fal { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+  .uzenet-cetli {
+    background: var(--feher); border: 1px solid var(--vonal); border-radius: 14px;
+    padding: 1.2rem 1.3rem; box-shadow: var(--arnyek);
+  }
+  .uzenet-cetli p { font-family: var(--serif); font-size: 1.12rem; color: var(--tinta); margin-bottom: .8rem; }
+  .uzenet-cetli .ki { font-size: .8rem; color: var(--tinta-halvany); }
+</style>
+</head>
+<body>
+
+<div class="minta-sav">
+  <span><strong>Minta</strong> — a közös fotógaléria és a digitális vendégkönyv.</span>
+  <a href="index.html">← Nyilvános oldal</a>
+  <a href="vendeg.html">Vendégoldal →</a>
+</div>
+
+<header class="fejlec" id="fejlec">
+  <div class="hatar fejlec-sor">
+    <a href="index.html" class="monogram">Zs <span>&amp;</span> M</a>
+    <nav>
+      <a href="index.html#program">Program</a>
+      <a href="index.html#helyszin">Helyszín</a>
+      <a href="terem.html">Ültetésrend</a>
+      <a href="galeria.html" class="aktiv">Galéria</a>
+    </nav>
+  </div>
+</header>
+
+<section>
+  <div class="hatar">
+    <div class="szakasz-fej">
+      <div class="folcim">Galéria</div>
+      <h2>A nap képei</h2>
+      <p class="vezeto" style="margin-inline:auto">
+        A fotós képei és minden fénykép, amit ti töltöttetek fel a telefonotokról.
+        Bármelyiket letölthetitek, és az egészet egyben is.
+      </p>
+    </div>
+
+    <div class="szurok">
+      <button class="szuro aktiv" data-szuro="mind">Minden kép <span style="opacity:.6">· 248</span></button>
+      <button class="szuro" data-szuro="fotos">A fotóstól <span style="opacity:.6">· 186</span></button>
+      <button class="szuro" data-szuro="vendeg">A vendégektől <span style="opacity:.6">· 62</span></button>
+      <button class="szuro" data-szuro="video">Videó <span style="opacity:.6">· 4</span></button>
+    </div>
+
+    <div class="galeria" id="galeria">
+      <div class="feltolto" id="feltolto">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/>
+        </svg>
+        <span>Töltsd fel a képeidet</span>
+        <small>Egyszerre több is mehet</small>
+      </div>
+
+      <div class="foto nagy" data-tipus="fotos" data-cimke="A szertartás — 16:12"></div>
+      <div class="foto b2" data-tipus="fotos" data-cimke="Az igen pillanata"></div>
+      <div class="foto b3" data-tipus="vendeg" data-cimke="Nagy Eszter · 17:40"></div>
+      <div class="foto b4" data-tipus="fotos" data-cimke="Gyűrűhúzás"></div>
+      <div class="foto" data-tipus="vendeg" data-cimke="Tóth Kata · 19:02"></div>
+      <div class="foto b2" data-tipus="fotos" data-cimke="Nyitótánc"></div>
+      <div class="foto b3" data-tipus="video" data-cimke="Videó · a nyitótánc"></div>
+      <div class="foto b4" data-tipus="vendeg" data-cimke="Szabó Balázs · 21:35"></div>
+      <div class="foto" data-tipus="fotos" data-cimke="A tortavágás"></div>
+      <div class="foto b2" data-tipus="vendeg" data-cimke="Kovács Péter · 23:10"></div>
+      <div class="foto b3" data-tipus="fotos" data-cimke="Menyasszonytánc"></div>
+      <div class="foto b4" data-tipus="fotos" data-cimke="Csillagszórós vonulás"></div>
+    </div>
+
+    <div style="text-align:center;margin-top:2.4rem;display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap">
+      <button class="gomb gomb-fo" id="letoltes">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v12M7 11l5 5 5-5"/><path d="M4 20h16"/></svg>
+        Az egész album letöltése
+      </button>
+      <button class="gomb gomb-halk" id="megosztas">Megosztom a vendégekkel</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ vendégkönyv -->
+<section class="melyebb">
+  <div class="hatar">
+    <div class="szakasz-fej">
+      <div class="folcim">Vendégkönyv</div>
+      <h2>Amit írtatok nekünk</h2>
+      <p class="vezeto" style="margin-inline:auto">
+        Nem veszett el egyetlen sor sem — a telefonokról egyenesen ide kerültek.
+      </p>
+    </div>
+
+    <div class="uzenet-fal">
+      <div class="uzenet-cetli">
+        <p>„Csodálatos nap volt. Zsófi, életem legszebb menyasszonya vagy. Marci, vigyázz rá!"</p>
+        <div class="ki">Nagy Eszter · 4. asztal · 22:14</div>
+      </div>
+      <div class="uzenet-cetli">
+        <p>„Nyolc éve mondtam, hogy ez így lesz. Örülök, hogy nem volt igazam semmi másban."</p>
+        <div class="ki">Kiss Réka, tanú · 23:48</div>
+      </div>
+      <div class="uzenet-cetli">
+        <p>„A gulyás hajnali négykor a legjobb dolog, ami valaha történt velem. Köszönjük!"</p>
+        <div class="ki">Fekete Gábor · 5. asztal · 04:22</div>
+      </div>
+      <div class="uzenet-cetli">
+        <p>„Kislányom. Nagyon büszke vagyok rád. Szeretlek."</p>
+        <div class="ki">Varga Mária, édesanya · 18:50</div>
+      </div>
+      <div class="uzenet-cetli">
+        <p>„Lilla azt kérdezte, mikor lesz megint ilyen. Mondtam neki, hogy remélhetőleg soha többé — nekik ez az egy volt."</p>
+        <div class="ki">Sipos Klára · 1. asztal · 21:02</div>
+      </div>
+      <div class="uzenet-cetli">
+        <p>„Sok boldogságot! És köszönjük, hogy a QR-kód miatt nem kellett asztalt keresgélni. Zseniális."</p>
+        <div class="ki">Molnár Dóra · 5. asztal · 19:26</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- nagyító -->
+<div class="nagyito" id="nagyito" role="dialog" aria-modal="true" aria-label="Kép nagyban">
+  <button class="bezar" id="bezar" aria-label="Bezárás">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 6L6 18M6 6l12 12"/></svg>
+  </button>
+  <div class="keret">
+    <div class="foto" id="nagy-foto" data-cimke=""></div>
+    <div class="felirat" id="nagy-felirat"></div>
+  </div>
+</div>
+
+<footer class="lablec">
+  <div class="hatar">
+    <a href="index.html" class="monogram">Zs <span>&amp;</span> M</a>
+    <div class="keszult">
+      Az oldalt az <a href="/">Esküszöm</a> készítette ·
+      zsofiesmarci.eskuszom.hu
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

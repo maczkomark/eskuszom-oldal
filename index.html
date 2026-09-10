@@ -1,0 +1,713 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Esküszöm — az esküvőtök, egy helyen</title>
+<meta name="description" content="Vendéglista, meghívó QR-kóddal, ültetésrend, program és fotógaléria — egy felületen. A vendégeitek a saját adataikat látják. Egyszeri 45 000 Ft, havidíj nélkül.">
+<meta name="theme-color" content="#8c6b74">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Esküszöm — az esküvőtök, egy helyen">
+<meta property="og:description" content="Az esküvőtök minden szála egy helyen: vendéglista, meghívó QR-kóddal, ültetésrend, program, fotók.">
+<meta property="og:url" content="https://eskuszom.hu">
+<meta property="og:locale" content="hu_HU">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="stilus.css">
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════ fejléc -->
+<header class="fejlec" id="fejlec">
+  <div class="hatar fejlec-sor">
+    <a href="#" class="logo">Esk<em>ü</em>szöm</a>
+    <nav class="menu" id="menu">
+      <a href="#mit-tud">Mit tud</a>
+      <a href="#vendeg">A vendégeknek</a>
+      <a href="#hogyan">Hogyan megy</a>
+      <a href="#ar">Ár</a>
+      <a href="#kerdesek">Kérdések</a>
+    </nav>
+    <a href="#kapcsolat" class="gomb gomb-fo">Kérek egy bemutatót</a>
+    <button class="menu-gomb" id="menu-gomb" aria-label="Menü" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <path d="M3 6h18M3 12h18M3 18h18"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════ hős -->
+<section class="hos">
+  <div class="hatar hos-racs">
+    <div>
+      <div class="folcim">Esküvői rendszer pároknak</div>
+      <h1>Az esküvőtök<br>minden szála<br><em>egy helyen.</em></h1>
+      <p class="vezeto">
+        A vendéglista, a meghívó, az ültetésrend, a program és a fotók nem öt helyen,
+        öt színű táblázatban élnek. Egy felületen, ahol minden magától a helyére kerül —
+        és a vendégeitek is pontosan azt látják, ami rájuk tartozik.
+      </p>
+      <div class="hos-gombok">
+        <a href="#kapcsolat" class="gomb gomb-fo">
+          Kérek egy bemutatót
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M13 6l6 6-6 6"/>
+          </svg>
+        </a>
+        <a href="#minta" class="gomb gomb-halk">Megnézem egy igazi oldalon</a>
+      </div>
+      <div class="hos-apro">
+        <span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          Egyszeri díj, nincs havidíj
+        </span>
+        <span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          Két nap alatt kész
+        </span>
+        <span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          Saját címetek lesz
+        </span>
+      </div>
+    </div>
+
+    <!-- A vendég nézete: ezt látja, aki beolvassa a meghívón a QR-kódot -->
+    <div class="makett-keret">
+      <div class="telefon">
+        <div class="telefon-kepernyo">
+          <div class="telefon-fejlec">
+            <div class="nev">Zsófi &amp; Marci</div>
+            <div class="datum">2027. június 12.</div>
+          </div>
+          <div class="telefon-test">
+            <div class="telefon-kartya">
+              <div class="cimke">A te helyed</div>
+              <div class="ertek">4. asztal</div>
+              <div class="apro">Kovács Anna &amp; kísérő · a tánctér mellett</div>
+            </div>
+            <div class="telefon-kartya">
+              <div class="cimke">A menüd</div>
+              <div class="apro" style="margin-top:.3rem">
+                Húsleves · Kacsacomb, párolt káposzta · Somlói<br>
+                <span style="color:#8c6b74">Jelezted: laktózérzékenység</span>
+              </div>
+            </div>
+            <div class="telefon-kartya">
+              <div class="cimke" style="margin-bottom:.4rem">A nap programja</div>
+              <div class="telefon-sor"><span class="ido">15:00</span><span class="mi">Gyülekező, pezsgős fogadás</span></div>
+              <div class="telefon-sor"><span class="ido">16:00</span><span class="mi">Szertartás a kertben</span></div>
+              <div class="telefon-sor"><span class="ido">18:30</span><span class="mi">Vacsora</span></div>
+              <div class="telefon-sor"><span class="ido">21:00</span><span class="mi">Nyitótánc</span></div>
+              <div class="telefon-sor"><span class="ido">23:30</span><span class="mi">Menyasszonytánc</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="qr-buborek">
+        <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#8c6b74" stroke-width="1.5">
+          <rect x="3" y="3" width="7" height="7" rx="1"/>
+          <rect x="14" y="3" width="7" height="7" rx="1"/>
+          <rect x="3" y="14" width="7" height="7" rx="1"/>
+          <path d="M14 14h3v3h-3zM19 14h2M14 19h3M19 19h2"/>
+        </svg>
+        <div>
+          <strong>Egy kód a meghívón</strong>
+          és mindenki a sajátját látja
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ a káosz -->
+<section class="vilagos" id="miert">
+  <div class="hatar">
+    <div class="szakasz-fej kozepre uszo">
+      <div class="folcim">Ismerős?</div>
+      <h2>Az esküvőszervezés nem attól nehéz,<br>hogy sok a döntés.</h2>
+      <p class="vezeto" style="margin-inline:auto">
+        Hanem attól, hogy minden más helyen van. És minden változás öt helyen kell átvezetni.
+      </p>
+    </div>
+
+    <div class="kaosz">
+      <div class="cetli uszo">„Megvan valakinél a végleges vendéglista?"</div>
+      <div class="cetli uszo">„Hány vegetáriánus lesz? A vendéglátós ma kéri."</div>
+      <div class="cetli uszo">„Julcsiék mégis jönnek — akkor ki hova ül?"</div>
+      <div class="cetli uszo">„A fotós mikor érkezik? Küldted neki a programot?"</div>
+      <div class="cetli uszo">„Kinek nem küldtük még el a meghívót?"</div>
+      <div class="cetli uszo">„Valaki átküldi a képeket? Már két hónapja kérem."</div>
+    </div>
+
+    <p class="kaosz-valasz uszo">
+      Az Esküszömben ez a hat kérdés<br><em>egy képernyő.</em>
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ mit tud -->
+<section id="mit-tud">
+  <div class="hatar">
+    <div class="szakasz-fej uszo">
+      <div class="folcim">Mit tud</div>
+      <h2>Minden, amit egy esküvő<br>tényleg megkövetel.</h2>
+      <p class="vezeto">
+        Nem funkciólista a funkciólista kedvéért. Minden pont egy valódi
+        esküvőnapi problémára válaszol.
+      </p>
+    </div>
+
+    <div class="funkciok">
+
+      <article class="funkcio uszo">
+        <div class="ikon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+          </svg>
+        </div>
+        <h3>Vendéglista, ami magától frissül</h3>
+        <p>
+          Mindenki egy sor: jön-e, kivel, mit eszik, mire allergiás, kell-e szállás.
+          Ha valaki lemondja két nappal előtte, a létszám, az ültetésrend és
+          az ültetőkártya egyszerre változik.
+        </p>
+      </article>
+
+      <article class="funkcio uszo">
+        <div class="ikon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8l10 6 10-6"/>
+          </svg>
+        </div>
+        <h3>Meghívó QR-kóddal</h3>
+        <p>
+          Válasszatok sablont, a szöveg magától kitöltődik az adataitokból.
+          Nyomdakész PDF, benne a személyre szóló QR-kóddal — és digitális
+          változat is, amit el lehet küldeni.
+        </p>
+      </article>
+
+      <article class="funkcio uszo">
+        <div class="ikon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <circle cx="12" cy="12" r="4"/><circle cx="12" cy="4" r="1.6"/><circle cx="12" cy="20" r="1.6"/>
+            <circle cx="4" cy="12" r="1.6"/><circle cx="20" cy="12" r="1.6"/>
+          </svg>
+        </div>
+        <h3>Ültetésrend, ami magától összeáll</h3>
+        <p>
+          A rendszer javaslatot ad: menyasszony oldala, vőlegény oldala, család,
+          munkatársak. Megadhatjátok, hogy ki ne üljön egy asztalhoz — a többit
+          már csak húzogatni kell.
+        </p>
+      </article>
+
+      <article class="funkcio uszo">
+        <div class="ikon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
+          </svg>
+        </div>
+        <h3>Teremterv valós méretaránnyal</h3>
+        <p>
+          Megadjátok a terem méretét és az asztal típusát, és megmondja, belefér-e,
+          hány szék megy körbe, marad-e hely a közlekedésre. Nem rajzolgatás — méretezés.
+        </p>
+      </article>
+
+      <article class="funkcio uszo">
+        <div class="ikon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
+          </svg>
+        </div>
+        <h3>Forgatókönyv, amit mindenki lát</h3>
+        <p>
+          Ugyanaz az idővonal, csak mindenki a sajátját: a fotós azt, mikor hol
+          kell lennie, a DJ a nyitótáncot, a vőfély a köszöntőket. Ha csúsztok
+          húsz percet, mindenki tudni fogja.
+        </p>
+      </article>
+
+      <article class="funkcio uszo">
+        <div class="ikon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M4 4h16v12H5.5L4 18z"/><path d="M8 9h8M8 12h5"/>
+          </svg>
+        </div>
+        <h3>A vendéglátósnak élő létszám</h3>
+        <p>
+          „84 fő, ebből 12 vegetáriánus, 3 gluténmentes, 9 gyerekmenü."
+          Kap egy linket, amin mindig az aktuális szám van — és a leadási
+          határidőnél a lista lezárul.
+        </p>
+      </article>
+
+      <article class="funkcio uszo">
+        <div class="ikon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M6 2h12v6l-6 4-6-4z"/><path d="M6 22h12v-6l-6-4-6 4z"/>
+          </svg>
+        </div>
+        <h3>Feladatlista visszaszámolva</h3>
+        <p>
+          Beírjátok a dátumot, és megkapjátok a teljes teendősort visszafelé:
+          mi kell egy évvel előtte, mi hat hónappal, mi az utolsó héten.
+          Mindig csak az jelenik meg, ami most aktuális.
+        </p>
+      </article>
+
+      <article class="funkcio uszo">
+        <div class="ikon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M4 7h3l2-3h6l2 3h3v13H4z"/><circle cx="12" cy="13" r="3.5"/>
+          </svg>
+        </div>
+        <h3>Közös fotógaléria</h3>
+        <p>
+          A vendégek a saját telefonjukról töltenek fel képet és üzenetet még a
+          helyszínen. Ti hagyjátok jóvá, aztán mindenki letöltheti — nincs több
+          „átküldenéd a képeket?".
+        </p>
+      </article>
+
+      <article class="funkcio uszo">
+        <div class="ikon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M6 2h12v20l-6-4-6 4z"/>
+          </svg>
+        </div>
+        <h3>Nyomdakész papírok</h3>
+        <p>
+          Ültetőkártya, asztalszám, menükártya, tabló a bejárathoz —
+          ugyanabból az adatból, a meghívó arculatával. Senki nem gépel újra
+          kilencven nevet.
+        </p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ a vendég szemével -->
+<section class="vendeg" id="vendeg">
+  <div class="hatar">
+    <div class="szakasz-fej uszo">
+      <div class="folcim">A vendég szemével</div>
+      <h2>Ez az, amitől a vendégeitek<br>emlegetni fogják.</h2>
+      <p class="vezeto">
+        A meghívón egy QR-kód. Beolvassák a telefonjukkal, és nem egy általános
+        oldalt kapnak, hanem a sajátjukat.
+      </p>
+    </div>
+
+    <div class="vendeg-racs">
+      <div class="vendeg-pont uszo">
+        <div class="szam">01</div>
+        <h3>Egyetlen kattintás a válasz</h3>
+        <p>
+          Jövünk, ketten leszünk, én a húst kérem, ő vegetáriánus, laktózérzékeny vagyok,
+          és kellene szállás. Két perc, és ti már tudjátok is.
+        </p>
+      </div>
+      <div class="vendeg-pont uszo">
+        <div class="szam">02</div>
+        <h3>Tudja, hova ül</h3>
+        <p>
+          Nem kell a bejáratnál tablót böngészni. A telefonján ott van az asztala,
+          a szomszédai, és hogy merre találja.
+        </p>
+      </div>
+      <div class="vendeg-pont uszo">
+        <div class="szam">03</div>
+        <h3>Tudja, mi jön most</h3>
+        <p>
+          A nap folyamán mindig azt látja, hogy éppen mi következik.
+          Nem kell senkinek magyarázni, hogy mikor lesz a nyitótánc.
+        </p>
+      </div>
+      <div class="vendeg-pont uszo">
+        <div class="szam">04</div>
+        <h3>Ott hagyhat egy üzenetet</h3>
+        <p>
+          Feltölt egy képet, ír pár sort — az beesik a galériátokba.
+          Másnap reggel egy levélben megkapja a közös albumot.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ hogyan -->
+<section id="hogyan">
+  <div class="hatar">
+    <div class="szakasz-fej uszo">
+      <div class="folcim">Hogyan megy</div>
+      <h2>Négy lépés, és megy magától.</h2>
+    </div>
+
+    <div class="lepesek">
+      <div class="lepes uszo">
+        <div class="szam">01</div>
+        <div>
+          <h3>Beszélünk tizenöt percet</h3>
+          <p>
+            Megmutatom élőben, és elmondjátok, milyen lesz az esküvőtök.
+            A végén tudni fogjátok, hogy nektek való-e. Ha nem, azt is
+            nyugodtan mondjátok meg.
+          </p>
+        </div>
+      </div>
+      <div class="lepes uszo">
+        <div class="szam">02</div>
+        <div>
+          <h3>Két napon belül él az oldalatok</h3>
+          <p>
+            Kaptok egy saját címet — például <strong>zsofiesmarci.eskuszom.hu</strong>,
+            vagy ha kéritek, a saját domainetekre tesszük.
+            Egy linkkel léptek be, jelszót kitalálni sem kell.
+          </p>
+        </div>
+      </div>
+      <div class="lepes uszo">
+        <div class="szam">03</div>
+        <div>
+          <h3>Beírjátok a dátumot — a többit kérdezi</h3>
+          <p>
+            Innentől a rendszer vezet titeket. Nem üres űrlapokat kaptok,
+            hanem egyszerre egy kérdést, mindig azt, ami most aktuális.
+            Amit nem tudtok még, azt kihagyhatjátok.
+          </p>
+        </div>
+      </div>
+      <div class="lepes uszo">
+        <div class="szam">04</div>
+        <div>
+          <h3>Kimennek a meghívók, és összeáll magától</h3>
+          <p>
+            Ahogy jönnek a válaszok, a létszám, az ültetésrend és a
+            vendéglátós listája együtt mozog. Nektek nem kell számolgatni,
+            csak eldönteni, hogy ki hova ül.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ ár -->
+<section class="melyebb" id="ar">
+  <div class="hatar">
+    <div class="szakasz-fej kozepre uszo">
+      <div class="folcim">Ár</div>
+      <h2>Egy ár. Egy alkalom.<br>Nincs havidíj.</h2>
+    </div>
+
+    <div class="ar-doboz uszo">
+      <div class="folcim" style="margin-bottom:.4rem">Teljes csomag</div>
+      <div class="ar-szam">45 000 <small>Ft</small></div>
+      <p class="ar-alcim">
+        Egyszeri díj, az esküvőtök napjáig a tiétek.<br>
+        Nem kell előfizetni, és nincs vendégszám-korlát.
+      </p>
+
+      <ul class="ar-lista">
+        <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Saját esküvői oldal, saját címen</li>
+        <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Vendéglista, korlátlan létszámmal</li>
+        <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Meghívó személyre szóló QR-kóddal</li>
+        <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Visszajelzés, menü, allergiák</li>
+        <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Ültetésrend és teremterv</li>
+        <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Program és forgatókönyv</li>
+        <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Szolgáltatói hozzáférés</li>
+        <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Nyomdakész kártyák és táblák</li>
+        <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Közös fotógaléria</li>
+        <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Segítünk az induláskor</li>
+      </ul>
+
+      <a href="#kapcsolat" class="gomb gomb-fo">Kérek egy bemutatót</a>
+
+      <div class="ar-extra">
+        <strong style="color:var(--tinta-lagy)">Amit külön lehet kérni:</strong>
+        saját domain (pl. <em>zsofiesmarci.hu</em>) a domain árán ·
+        emlékoldal az esküvő után, hogy a képek és az üzenetek megmaradjanak — 4 900 Ft/év
+      </div>
+    </div>
+
+    <!-- ── fizetés ─────────────────────────────────────────────────────
+         Egyelőre CSAK banki átutalás. A bankkártyás fizetés elő van
+         készítve (fizetes-kartya osztály), de szándékosan nincs bekapcsolva:
+         amíg nincs mögötte szolgáltatói szerződés, nem ígérünk olyat,
+         amit nem tudunk teljesíteni. -->
+    <div class="fizetes uszo">
+      <h3>Hogyan lehet fizetni?</h3>
+      <div class="fizetes-modok">
+        <div class="fizetes-mod aktiv">
+          <div class="fizetes-ikon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M3 21h18M4 21V10l8-6 8 6v11M9 21v-6h6v6"/>
+            </svg>
+          </div>
+          <div>
+            <strong>Banki átutalás</strong>
+            <p>
+              A megbeszélés után küldünk egy számlát, azt utaljátok el.
+              Nincs előleg és nincs kötbér: ha a számla kiegyenlítve, két napon
+              belül él az oldalatok.
+            </p>
+          </div>
+        </div>
+
+        <div class="fizetes-mod hamarosan">
+          <div class="fizetes-ikon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/>
+            </svg>
+          </div>
+          <div>
+            <strong>Bankkártya <span class="cimke-hamarosan">hamarosan</span></strong>
+            <p>
+              A kártyás fizetést most készítjük elő. Amint él, itt is
+              választható lesz — addig az átutalás marad.
+            </p>
+          </div>
+        </div>
+      </div>
+      <p class="fizetes-apro">
+        Számlát minden esetben adunk. Magánszemélyként és cégként is fizethettek.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ minta -->
+<section id="minta" class="vilagos">
+  <div class="hatar">
+    <div class="szakasz-fej kozepre uszo">
+      <div class="folcim">Nézd meg élőben</div>
+      <h2>Van egy igazi minta esküvőnk.</h2>
+      <p class="vezeto" style="margin-inline:auto">
+        Zsófi és Marci oldala pontosan úgy néz ki, ahogy a tiétek fog.
+        Kattintható, körbejárható — még a vendégoldalt is meg tudjátok nézni.
+      </p>
+      <div style="margin-top:2rem">
+        <a href="/minta/" class="gomb gomb-fo">Megnyitom a minta oldalt</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ kérdések -->
+<section id="kerdesek">
+  <div class="hatar">
+    <div class="szakasz-fej kozepre uszo">
+      <div class="folcim">Kérdések</div>
+      <h2>Amit a párok kérdezni szoktak.</h2>
+    </div>
+
+    <div class="kerdesek">
+      <details class="kerdes uszo">
+        <summary>Mi van, ha nem értünk a számítógéphez?</summary>
+        <p>
+          Semmi baj — pont ezért így épült. Nem üres űrlapokat kaptok, hanem
+          egyszerre egy kérdést, mindig azt, ami épp aktuális. Amit nem tudtok,
+          azt kihagyhatjátok, és később visszatérhettek rá. Az induláskor
+          végigmegyünk rajta együtt.
+        </p>
+      </details>
+
+      <details class="kerdes uszo">
+        <summary>És ha a nagyszülők nem tudják beolvasni a QR-kódot?</summary>
+        <p>
+          Számítottunk rá. A meghívón a kód mellett ott a rövid webcím is,
+          amit be lehet gépelni, és minden vendéghez tartozik egy egyszerű
+          négyjegyű kód. Aki pedig egyáltalán nem használ telefont, annak
+          ugyanúgy tudtok papíron mindent adni — a rendszer kinyomtatja.
+        </p>
+      </details>
+
+      <details class="kerdes uszo">
+        <summary>Meddig a miénk az oldal?</summary>
+        <p>
+          Az esküvő napjáig biztosan, és utána még egy hónapig, hogy a képeket
+          nyugodtan letölthessétek. Ha szeretnétek, hogy megmaradjon emlékoldalnak
+          a fotókkal és a vendégek üzeneteivel, azt évi 4 900 Ft-ért lehet kérni —
+          de ez nem kötelező, és nem automatikus.
+        </p>
+      </details>
+
+      <details class="kerdes uszo">
+        <summary>Kell hozzá saját domain?</summary>
+        <p>
+          Nem. Alapból kaptok egy saját címet, például
+          <strong>zsofiesmarci.eskuszom.hu</strong> — ez azonnal él, nem kell
+          semmit vennetek. Ha viszont szeretnétek a saját nevetekre (zsofiesmarci.hu),
+          azt megvesszük és ráállítjuk, a domain árán.
+        </p>
+      </details>
+
+      <details class="kerdes uszo">
+        <summary>A szolgáltatóink is használhatják?</summary>
+        <p>
+          Igen, és ez az egyik legjobb rész. A fotós, a videós, a DJ, a vendéglátós,
+          a vőfély saját belépést kap, és mindenki csak azt látja, ami rá tartozik:
+          a saját idővonalát, a létszámot, a névsort. Nem kell nekik külön
+          e-mailezni, ha változik valami.
+        </p>
+      </details>
+
+      <details class="kerdes uszo">
+        <summary>Biztonságban vannak a vendégeink adatai?</summary>
+        <p>
+          Igen. Az adatok magyarországi kiszolgálón vannak, nem adjuk tovább őket
+          senkinek, és nem használjuk hirdetésre. A szolgáltatók csak azt látják,
+          amit ti engedtek nekik. Az esküvő után bármikor kérhetitek, hogy töröljünk
+          mindent.
+        </p>
+      </details>
+
+      <details class="kerdes uszo">
+        <summary>Mi van, ha valaki lemondja az utolsó héten?</summary>
+        <p>
+          Egy helyen írjátok át. A létszám, a menürendelés, az ültetésrend és az
+          ültetőkártya magától követi. A vendéglátós a saját linkjén rögtön az új
+          számot látja — nem kell újra átküldeni neki semmit.
+        </p>
+      </details>
+
+      <details class="kerdes uszo">
+        <summary>Mennyivel az esküvő előtt érdemes elkezdeni?</summary>
+        <p>
+          Amint megvan a dátum. A rendszer visszafelé számol tőle, és onnantól
+          szól, mikor mi következik. De ha három hónap van hátra, akkor sem késtetek
+          el — a vendéglista és a meghívó ilyenkor is rengeteg időt spórol.
+        </p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ kapcsolat -->
+<section class="melyebb" id="kapcsolat">
+  <div class="hatar kapcsolat-racs">
+    <div class="kapcsolat-info uszo">
+      <div class="folcim">Kapcsolat</div>
+      <h2>Nézzük meg együtt.</h2>
+      <p class="vezeto">
+        Írjátok meg, mikor lesz az esküvő, és nagyjából hányan lesztek.
+        Egy napon belül válaszolok, és megbeszélünk egy tizenöt perces bemutatót.
+      </p>
+      <p style="color:var(--tinta-halvany);font-size:.9rem">
+        Semmire nem köteleztek el magatokat. Ha a végén azt mondjátok, hogy nem
+        nektek való, az teljesen rendben van.
+      </p>
+
+      <ul class="kapcsolat-lista">
+        <li>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8l10 6 10-6"/></svg>
+          <span><a href="mailto:info@mmdigital.hu">info@mmdigital.hu</a></span>
+        </li>
+        <li>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3 19.5 19.5 0 01-6-6A19.8 19.8 0 012 4.2 2 2 0 014 2h3a2 2 0 012 1.7c.1 1 .3 1.9.6 2.8a2 2 0 01-.4 2.1L8 9.8a16 16 0 006 6l1.2-1.2a2 2 0 012.1-.4c.9.3 1.8.5 2.8.6a2 2 0 011.7 2z"/></svg>
+          <span><a href="tel:+36301234567">+36 30 123 4567</a></span>
+        </li>
+        <li>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          <span>Hétköznap 9:00 – 18:00</span>
+        </li>
+      </ul>
+    </div>
+
+    <form class="urlap uszo" id="urlap" novalidate>
+      <div class="mezo">
+        <label for="par">Kik vagytok? *</label>
+        <input type="text" id="par" name="couple_names" required placeholder="Zsófi és Marci" autocomplete="name">
+      </div>
+
+      <div class="mezo-par">
+        <div class="mezo">
+          <label for="email">E-mail *</label>
+          <input type="email" id="email" name="email" required placeholder="zsofi.marci@pelda.hu" autocomplete="email">
+        </div>
+        <div class="mezo">
+          <label for="telefon">Telefon</label>
+          <input type="tel" id="telefon" name="phone" placeholder="+36 30 123 4567" autocomplete="tel">
+        </div>
+      </div>
+
+      <div class="mezo-par">
+        <div class="mezo">
+          <label for="datum">Az esküvő napja</label>
+          <input type="date" id="datum" name="wedding_date">
+        </div>
+        <div class="mezo">
+          <label for="letszam">Hányan lesztek?</label>
+          <input type="number" id="letszam" name="guest_count" min="1" max="1000" placeholder="80">
+        </div>
+      </div>
+
+      <div class="mezo">
+        <label for="helyszin">Helyszín (ha már megvan)</label>
+        <input type="text" id="helyszin" name="venue" placeholder="Kastély Rendezvényház">
+      </div>
+
+      <div class="mezo">
+        <label for="uzenet">Van kérdésetek?</label>
+        <textarea id="uzenet" name="message" placeholder="Bármi, ami eszetekbe jut…"></textarea>
+      </div>
+
+      <!-- Mézesbödön: ember nem látja, robot kitölti -->
+      <div class="mezesbodon" aria-hidden="true">
+        <label for="honeypot">Ezt hagyd üresen</label>
+        <input type="text" id="honeypot" name="honeypot" tabindex="-1" autocomplete="off">
+      </div>
+
+      <button type="submit" class="gomb gomb-fo" id="kuldes" style="width:100%;justify-content:center">
+        Elküldöm
+      </button>
+
+      <div class="urlap-uzenet" id="urlap-uzenet" role="status"></div>
+
+      <p style="font-size:.78rem;color:var(--tinta-halvany);margin:1rem 0 0;text-align:center">
+        Az adataitokat csak a válaszadáshoz használjuk, és nem adjuk tovább senkinek.
+      </p>
+    </form>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ lábléc -->
+<footer class="lablec">
+  <div class="hatar">
+    <div class="lablec-sor">
+      <a href="#" class="logo">Esk<em>ü</em>szöm</a>
+      <nav class="lablec-menu">
+        <a href="#mit-tud">Mit tud</a>
+        <a href="#vendeg">A vendégeknek</a>
+        <a href="#ar">Ár</a>
+        <a href="#kerdesek">Kérdések</a>
+        <a href="#kapcsolat">Kapcsolat</a>
+      </nav>
+    </div>
+    <div class="lablec-also">
+      <span>&copy; <span id="ev">2026</span> Esküszöm — minden jog fenntartva</span>
+      <span>Az esküvőtök, egy helyen.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════ AI asszisztens
+     Ide kerül majd a beszélgető segéd. Most még nincs bekapcsolva:
+     a beállítás a script.js tetején, az ASSZISZTENS objektumban van.
+     Amíg nincs megadva szolgáltató, ez a rész nem jelenik meg. -->
+<div id="asszisztens-helye"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
