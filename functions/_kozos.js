@@ -97,7 +97,7 @@ export function oldal({ cim, leiras, fejlecek, tartalom, url, robots }) {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="/stilus.css?v=20260911e">
+<link rel="stylesheet" href="/stilus.css?v=20260911f">
 <style>${STILUS}</style>
 ${fejlecek ?? ""}
 </head>
@@ -157,7 +157,7 @@ ${tartalom}
   </div>
 </footer>
 
-<script src="/script.js?v=20260911e"></script>
+<script src="/script.js?v=20260911f"></script>
 <script src="/suti.js?v=20260911b"></script>
 <script defer src="https://adminsite.mmdigital.hu/analitika.js" data-kulcs="Rb3DJSMLP9XD"></script>
 </body>

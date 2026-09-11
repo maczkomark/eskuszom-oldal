@@ -1099,10 +1099,16 @@ section { padding: clamp(4rem, 9vw, 7rem) 0; }
 .osszehas {
   display: grid;
   gap: clamp(1.2rem, 3vw, 2rem);
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  /* Pontosan két hasáb: ez egy összehasonlítás, nem kártyalista.
+     Az auto-fit itt hármat is csinálhatna, és akkor a két doboz
+     félrecsúszna — ezért van kimondva. */
+  grid-template-columns: 1fr 1fr;
   max-width: 980px;
   margin: 0 auto;
   align-items: start;
+}
+@media (max-width: 720px) {
+  .osszehas { grid-template-columns: 1fr; }
 }
 .osszehas-oldal {
   border-radius: 18px;
