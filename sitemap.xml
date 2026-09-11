@@ -71,6 +71,27 @@
     <priority>0.3</priority>
   </url>
 
+  <url>
+    <loc>https://eskuszom.hu/eskuvoszervezoknek/</loc>
+    <lastmod>2026-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://eskuszom.hu/ultetesrend-tervezo/</loc>
+    <lastmod>2026-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://eskuszom.hu/save-the-date/</loc>
+    <lastmod>2026-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
   <!-- A tippek (blogcikkek) a sitemap-tippek.xml címen vannak, mert
        naponta változhatnak. A parok sajat aloldalai (*.eskuszom.hu)
        SOHA nem kerulnek ide. -->
