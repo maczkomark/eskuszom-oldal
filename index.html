@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="stilus.css?v=20260911d">
+<link rel="stylesheet" href="stilus.css?v=20260911e">
 
 <link rel="canonical" href="https://eskuszom.hu/">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
@@ -525,6 +525,81 @@
   </div>
 </section>
 
+<!-- ═══════════════════════════════════════════════════ előtte-utána
+     Egy képen elmondja az egészet: ugyanaz a vendéglista, kétféleképpen.
+     Szándékosan nem képernyőkép, hanem élő HTML — így élesen jelenik meg
+     minden kijelzőn, és nem avul el, ha változik a felület. -->
+<section id="elotte-utana" class="vilagos">
+  <div class="hatar">
+    <div class="szakasz-fej kozepre uszo">
+      <div class="folcim">Mi a különbség?</div>
+      <h2>Ugyanaz a vendéglista,<br>kétféleképpen.</h2>
+    </div>
+
+    <div class="osszehas uszo">
+      <!-- előtte -->
+      <div class="osszehas-oldal elotte">
+        <div class="osszehas-cimke">Amíg nincs rendszer</div>
+        <div class="kaosz">
+          <div class="kaosz-tabla">
+            <div class="kaosz-sor kaosz-fej">
+              <span>Név</span><span>Jön?</span><span>Menü</span>
+            </div>
+            <div class="kaosz-sor"><span>Kovács Anna</span><span>igen</span><span>hús</span></div>
+            <div class="kaosz-sor"><span>Nagy Péter</span><span>?</span><span></span></div>
+            <div class="kaosz-sor athuzott"><span>Szabó Éva</span><span>igen</span><span>vega?</span></div>
+            <div class="kaosz-sor"><span>Szabó Éva +1</span><span>talán</span><span></span></div>
+            <div class="kaosz-sor"><span>Tóth Gábor</span><span>igen</span><span>hús</span></div>
+          </div>
+          <div class="kaosz-cetli cetli-1">„Mégis jövünk, de a vega menüt kérjük!”</div>
+          <div class="kaosz-cetli cetli-2">vendeglista_VEGLEGES_v4_JAVITOTT.xlsx</div>
+          <div class="kaosz-cetli cetli-3">„Anyu, a Marika néni laktózérzékeny”</div>
+        </div>
+        <ul class="osszehas-lista rossz">
+          <li>Három helyen három verzió</li>
+          <li>A vendéglátós hétfőn kéri a létszámot</li>
+          <li>Az ültetésrend külön papíron</li>
+          <li>Aki nem válaszol, azt fejből kell számon tartani</li>
+        </ul>
+      </div>
+
+      <!-- utána -->
+      <div class="osszehas-oldal utana">
+        <div class="osszehas-cimke">Az Esküszömmel</div>
+        <div class="rend">
+          <div class="rend-fejlec">
+            <span class="rend-nev">Vendégek</span>
+            <span class="rend-szam">86 fő</span>
+          </div>
+          <div class="rend-sor">
+            <span class="rend-pont ok"></span>
+            <span class="rend-szoveg"><strong>Kovács Anna</strong>4. asztal · hús</span>
+          </div>
+          <div class="rend-sor">
+            <span class="rend-pont ok"></span>
+            <span class="rend-szoveg"><strong>Szabó Éva &amp; kísérő</strong>4. asztal · vega · laktózmentes</span>
+          </div>
+          <div class="rend-sor">
+            <span class="rend-pont var"></span>
+            <span class="rend-szoveg"><strong>Nagy Péter</strong>még nem nyitotta meg</span>
+          </div>
+          <div class="rend-sor">
+            <span class="rend-pont ok"></span>
+            <span class="rend-szoveg"><strong>Tóth Gábor</strong>2. asztal · hús</span>
+          </div>
+          <div class="rend-lab">A vendéglátósnak: 61 hús · 18 vega · 7 gyerek</div>
+        </div>
+        <ul class="osszehas-lista jo">
+          <li>A vendég maga írja be, mit kér</li>
+          <li>A létszám és a menü magától áll össze</li>
+          <li>Az ültetésrend ugyanebből dolgozik</li>
+          <li>Látod, kihez nem jutott el a meghívó</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ═══════════════════════════════════════════════════ vélemények
      A tartalom szerverről jön, ezért csak jóváhagyott vélemény kerülhet
      ide. Ha egy sincs, a szakasz nem jelenik meg — üres idézőjelekkel
@@ -829,7 +904,7 @@
      Amíg nincs megadva szolgáltató, ez a rész nem jelenik meg. -->
 <div id="asszisztens-helye"></div>
 
-<script src="script.js?v=20260911d"></script>
+<script src="script.js?v=20260911e"></script>
 <!-- Látogatásmérés: a saját rendszerünk, nem Google Analytics.
      Nem használ sütit, és nem küld személyes adatot — csak az útvonalat.
      A kimutatás a vezérlőpultban: Web Kezelés → Analitika. -->
