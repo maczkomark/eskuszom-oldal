@@ -23,10 +23,10 @@ const STILUS = `
               background: var(--feher); border: 1px solid var(--vonal);
               border-radius: 18px; padding: 1.6rem;
               text-align: center; margin-bottom: 2rem; }
-  .szerv-ar .osszeg { font-family: var(--serif); font-size: clamp(2.2rem, 6vw, 3rem);
-                      color: var(--mauve); line-height: 1; }
+  .szerv-ar .osszeg { font-family: var(--serif); font-size: clamp(1.8rem, 5vw, 2.4rem);
+                      color: var(--mauve); line-height: 1.1; }
   .szerv-ar .mellette { font-size: .92rem; color: var(--tinta-lagy);
-                        text-align: left; max-width: 30ch; }
+                        text-align: left; max-width: 34ch; }
 
   .szerv-pontok { display: grid; gap: 1rem;
                   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -91,8 +91,8 @@ const STILUS = `
 function lap() {
   return oldal({
     cim: "Esküvőszervezőknek – Esküszöm",
-    leiras: "Esküvőszervező cégeknek: esküvőnként egyszeri 40 000 Ft, a saját "
-          + "nevetekkel és színeitekkel. A rendszert nem adjuk ki — kibérelhetitek.",
+    leiras: "Esküvőszervező cégeknek egyedi ajánlattal, a saját nevetekkel és "
+          + "színeitekkel. A rendszert nem adjuk ki — kibérelhetitek.",
     url: "https://eskuszom.hu/eskuvoszervezoknek/",
     fejlecek: `<style>${STILUS}</style>`,
     tartalom: `
@@ -110,10 +110,11 @@ function lap() {
       </div>
 
       <div class="szerv-ar">
-        <div class="osszeg">40 000 Ft</div>
+        <div class="osszeg">Egyedi ajánlat</div>
         <div class="mellette">
-          esküvőnként, egyszeri díj. Nincs havidíj, nincs belépési költség,
-          és nem kell előre megvenni egy csomagot.
+          Attól függ, hány esküvőt visztek, és kell-e saját arculat.
+          <a href="#ajanlat" style="color:var(--mauve)">Kérjetek ajánlatot</a>,
+          egy munkanapon belül küldjük.
         </div>
       </div>
 

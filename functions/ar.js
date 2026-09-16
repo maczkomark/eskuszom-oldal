@@ -7,34 +7,11 @@
 //
 // Ha a vezérlőpult épp nem elérhető, a beégetett alapárral megyünk tovább:
 // egy üres ár oldal rosszabb, mint egy pár perce elavult ár.
-import { ALAP, ki, oldal } from "./_kozos.js";
-
-const ALAPARAK = {
-  par: { alap: 45000, fizetendo: 45000, akcio: null },
-  szervezo: { alap: 40000, fizetendo: 40000, akcio: null },
-  emlek: 4900,
-  surgos: { nap: 21, felar: 10000 },
-  kedvezmeny: 5000,
-};
-
-/** 45000 → „45 000" */
-function ft(n) {
-  return Number(n ?? 0).toLocaleString("hu-HU");
-}
-
-async function arakLekeres() {
-  try {
-    const v = await fetch(`${ALAP}/api/eskuvo/arak`, {
-      headers: { Accept: "application/json" },
-      cf: { cacheTtl: 300, cacheEverything: true },
-    });
-    if (!v.ok) return ALAPARAK;
-    const j = await v.json();
-    return j?.ok ? j : ALAPARAK;
-  } catch {
-    return ALAPARAK;
-  }
-}
+//
+// Esküvőszervező cégeknek nincs kiírt ár: ők ajánlatot kérnek.
+import {
+  ALAP, ALAPARAK, AR_STILUS, akcioSzalag, arSzam, arakLekeres, ft, ki, oldal,
+} from "./_kozos.js";
 
 /* ─────────────────────────────────────────────── darabok ──────── */
 
@@ -63,40 +40,7 @@ const TETELEK = [
    "beállítjuk veletek, és utána is elérhetők vagyunk"],
 ];
 
-/** Akciószalag — csak ha tényleg fut valami, kód nélkül. */
-function szalag(akcio) {
-  if (!akcio || akcio.kod) return "";
-  return `
-    <div class="akcio-szalag">
-      <strong>${ki(akcio.cimke)}</strong>
-      <span>${ki(akcio.leiras || akcio.nev)}</span>
-      ${akcio.vege ? `<em>${ki(akcio.vege)}-ig</em>` : ""}
-    </div>`;
-}
-
-/** Az ár kiírása: ha akciós, mellette az áthúzott eredeti. */
-function arSzam(csomag) {
-  if (!csomag.akcio || csomag.fizetendo >= csomag.alap) {
-    return `<div class="ar-szam">${ft(csomag.alap)} <small>Ft</small></div>`;
-  }
-  return `
-    <div class="ar-szam">
-      ${ft(csomag.fizetendo)} <small>Ft</small>
-      <span class="ar-regi">${ft(csomag.alap)} Ft</span>
-    </div>`;
-}
-
-const STILUS = `
-  .akcio-szalag { display: flex; flex-wrap: wrap; align-items: baseline; gap: .6rem;
-    justify-content: center; margin: 0 auto 26px; max-width: 640px;
-    background: var(--mauve); color: #fff; border-radius: 14px;
-    padding: .85rem 1.2rem; text-align: center; }
-  .akcio-szalag strong { font-size: 1.05rem; }
-  .akcio-szalag span { opacity: .92; font-size: .9rem; }
-  .akcio-szalag em { font-style: normal; opacity: .75; font-size: .8rem; }
-  .ar-regi { font-size: 1.25rem; color: var(--tinta-halvany);
-    text-decoration: line-through; margin-left: .5rem; vertical-align: middle; }
-
+const STILUS = AR_STILUS + `
   .szolg-doboz { background: var(--feher); border: 1px solid var(--vonal);
     border-radius: 20px; padding: clamp(1.5rem, 4vw, 2.6rem);
     max-width: 780px; margin: 0 auto; }
@@ -104,9 +48,6 @@ const STILUS = `
     gap: .5rem 1rem; margin-bottom: .4rem; }
   .szolg-fej h2 { font-family: var(--serif); font-weight: 400;
     font-size: clamp(24px, 3.4vw, 32px); }
-  .szolg-ar { font-family: var(--serif); font-size: clamp(26px, 4vw, 36px);
-    color: var(--mauve); }
-  .szolg-ar small { font-size: .5em; color: var(--tinta-lagy); }
   .szolg-pontok { display: grid; gap: 1rem; margin: 1.6rem 0; }
   .szolg-pont strong { display: block; margin-bottom: .2rem; }
   .szolg-pont span { color: var(--tinta-lagy); font-size: .92rem; line-height: 1.65; }
@@ -138,12 +79,11 @@ export async function onRequest(context) {
   try {
     const a = await arakLekeres();
     const par = a.par ?? ALAPARAK.par;
-    const szerv = a.szervezo ?? ALAPARAK.szervezo;
 
     const cim = `Az Esküszöm ára – egyszeri ${ft(par.fizetendo)} Ft, havidíj nélkül`;
     const leiras = `Egyszeri ${ft(par.fizetendo)} Ft, és a tiétek az esküvő napjáig. `
       + "Nincs havidíj, nincs vendéglétszám-korlát, nincs utólagos felár. "
-      + "Esküvőszervező cégeknek külön ár.";
+      + "Esküvőszervező cégeknek egyedi ajánlat.";
 
     const tartalom = `
 <section class="melyebb" id="ar">
@@ -153,7 +93,7 @@ export async function onRequest(context) {
       <h1>Egy ár. Egy alkalom.<br>Nincs havidíj.</h1>
     </div>
 
-    ${szalag(par.akcio)}
+    ${akcioSzalag(par.akcio)}
 
     <div class="ar-doboz uszo">
       <div class="folcim" style="margin-bottom:.4rem">Teljes csomag</div>
@@ -258,19 +198,12 @@ export async function onRequest(context) {
       <div class="folcim">Szolgáltatóknak</div>
       <div class="szolg-fej">
         <h2>Esküvőszervező cégeknek</h2>
-        <div class="szolg-ar">
-          ${szerv.akcio && szerv.fizetendo < szerv.alap
-            ? `${ft(szerv.fizetendo)} <small>Ft / esküvő</small>
-               <span class="ar-regi">${ft(szerv.alap)} Ft</span>`
-            : `${ft(szerv.alap)} <small>Ft / esküvő</small>`}
-        </div>
       </div>
       <p style="color:var(--tinta-lagy);line-height:1.7">
-        Egyszeri díj esküvőnként, havidíj nélkül. Nem kell hozzá más, csak a
-        cég neve — a párok adatait ti viszitek fel, ahogy nektek kényelmes.
+        Nektek egyedi ajánlatot adunk: attól függ, hány esküvőt visztek egy
+        évben, és a saját arculatotokkal szeretnétek-e használni. Írjátok meg,
+        és egy munkanapon belül küldjük.
       </p>
-
-      ${szalag(szerv.akcio)}
 
       <div class="szolg-pontok">
         <div class="szolg-pont">
@@ -290,18 +223,16 @@ export async function onRequest(context) {
           </span>
         </div>
         <div class="szolg-pont">
-          <strong>Több esküvőre külön megállapodás</strong>
+          <strong>Egyedi ajánlat</strong>
           <span>
-            Ha évente sok esküvőt visztek, kérjetek ajánlatot — arra más
-            feltételeket tudunk adni, mint egyetlen alkalomra.
+            Egy esküvőre vagy egy egész évre — a feltételeket hozzátok
+            igazítjuk, nem egy árlistához.
           </span>
         </div>
       </div>
 
       <div class="szolg-gombok">
-        <a href="/megrendeles/?tipus=szervezo" class="gomb gomb-fo">
-          Megrendelem egy esküvőre
-        </a>
+        <a href="#ajanlat" class="gomb gomb-fo">Kérjük az ajánlatot</a>
         <a href="/eskuvoszervezoknek/" class="gomb gomb-halk">
           Részletek és white label
         </a>
@@ -311,7 +242,7 @@ export async function onRequest(context) {
            A teljes űrlap az /eskuvoszervezoknek/ oldalon van; ide csak a
            lényeg kerül, hogy ne kelljen elnavigálni az árak mellől. -->
       <div class="mini-urlap" id="ajanlat">
-        <h3>Vagy kérjetek ajánlatot</h3>
+        <h3>Kérjetek ajánlatot</h3>
         <p style="color:var(--tinta-lagy);font-size:.9rem">
           Elég a cég neve és egy elérhetőség. Egy munkanapon belül válaszolunk.
         </p>
@@ -459,7 +390,7 @@ export async function onRequest(context) {
             <h1>Az Esküszöm ára</h1>
             <p class="vezeto" style="margin-inline:auto">
               Egyszeri ${ft(ALAPARAK.par.alap)} Ft, havidíj nélkül. Esküvőszervező
-              cégeknek ${ft(ALAPARAK.szervezo.alap)} Ft esküvőnként.
+              cégeknek egyedi ajánlatot adunk.
             </p>
             <p style="margin-top:28px">
               <a href="/megrendeles/" class="gomb gomb-fo">Megrendelem</a>

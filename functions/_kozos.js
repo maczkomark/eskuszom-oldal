@@ -7,6 +7,140 @@
 
 export const ALAP = "https://adminsite.mmdigital.hu";
 
+/* ═══════════════════════════════════════════════════════ árak ═══ */
+
+/**
+ * Az árak és a futó akció a vezérlőpultból (Esküvő → Árak és akciók).
+ *
+ * Ha a vezérlőpult épp nem elérhető, a beégetett alapárral megyünk tovább:
+ * egy üres ár rosszabb, mint egy pár perce elavult ár. Esküvőszervezői ár
+ * szándékosan nincs: a cégek egyedi ajánlatot kérnek.
+ */
+export const ALAPARAK = {
+  par: { alap: 45000, fizetendo: 45000, akcio: null },
+  emlek: 4900,
+  surgos: { nap: 21, felar: 10000 },
+  kedvezmeny: 5000,
+};
+
+export async function arakLekeres() {
+  try {
+    const v = await fetch(`${ALAP}/api/eskuvo/arak`, {
+      headers: { Accept: "application/json" },
+      cf: { cacheTtl: 300, cacheEverything: true },
+    });
+    if (!v.ok) return ALAPARAK;
+    const j = await v.json();
+    return j?.ok && j.par ? j : ALAPARAK;
+  } catch {
+    return ALAPARAK;
+  }
+}
+
+/** 45000 → „45 000" */
+export function ft(n) {
+  return Number(n ?? 0).toLocaleString("hu-HU");
+}
+
+/** Akciószalag — csak ha tényleg fut valami, kód nélkül. */
+export function akcioSzalag(akcio) {
+  if (!akcio || akcio.kod) return "";
+  return `
+    <div class="akcio-szalag">
+      <strong>${ki(akcio.cimke)}</strong>
+      <span>${ki(akcio.leiras || akcio.nev)}</span>
+      ${akcio.vege ? `<em>${ki(akcio.vege)}-ig</em>` : ""}
+    </div>`;
+}
+
+/** Az ár kiírása: ha akciós, mellette az áthúzott eredeti. */
+export function arSzam(csomag) {
+  if (!csomag.akcio || csomag.fizetendo >= csomag.alap) {
+    return `<div class="ar-szam">${ft(csomag.alap)} <small>Ft</small></div>`;
+  }
+  return `
+    <div class="ar-szam">
+      ${ft(csomag.fizetendo)} <small>Ft</small>
+      <span class="ar-regi">${ft(csomag.alap)} Ft</span>
+    </div>`;
+}
+
+export const AR_STILUS = `
+  .akcio-szalag { display: flex; flex-wrap: wrap; align-items: baseline; gap: .6rem;
+    justify-content: center; margin: 0 auto 26px; max-width: 640px;
+    background: var(--mauve); color: #fff; border-radius: 14px;
+    padding: .85rem 1.2rem; text-align: center; }
+  .akcio-szalag strong { font-size: 1.05rem; }
+  .akcio-szalag span { opacity: .92; font-size: .9rem; }
+  .akcio-szalag em { font-style: normal; opacity: .75; font-size: .8rem; }
+  .ar-regi { font-size: 1.25rem; color: var(--tinta-halvany);
+    text-decoration: line-through; margin-left: .5rem; vertical-align: middle; }
+`;
+
+/* A statikus lapokon (főoldal, kérdések) a beírt ár csak alapérték. Ezeket a
+   mondatokat keressük és cseréljük az aktuálisra — ha a szöveg átfogalmazódik,
+   itt is igazítani kell, különben a régi szám marad kint. */
+const SZAM = String.raw`\d{1,3}(?:[  ]\d{3})*`;
+const MINTAK = {
+  arDoboz: new RegExp(String.raw`<div class="ar-szam">${SZAM} <small>Ft</small></div>`, "g"),
+  egyszeri: new RegExp(String.raw`Egyszeri ${SZAM} Ft`, "g"),
+  emlekEv: new RegExp(String.raw`${SZAM} Ft/év`, "g"),
+  emlekEvi: new RegExp(String.raw`évi ${SZAM} Ft-ért`, "g"),
+  jsonAr: /"price": "\d+"/g,
+  arDobozKezd: '<div class="ar-doboz uszo">',
+};
+
+/** A statikus HTML-be az aktuális árak. */
+export function arakBeillesztese(html, a) {
+  const par = a.par ?? ALAPARAK.par;
+  const emlek = ft(a.emlek ?? ALAPARAK.emlek);
+
+  let s = html
+    .replace(MINTAK.arDoboz, () => arSzam(par))
+    .replace(MINTAK.egyszeri, `Egyszeri ${ft(par.fizetendo)} Ft`)
+    .replace(MINTAK.emlekEv, `${emlek} Ft/év`)
+    .replace(MINTAK.emlekEvi, `évi ${emlek} Ft-ért`)
+    .replace(MINTAK.jsonAr, `"price": "${par.fizetendo}"`);
+
+  const szalag = akcioSzalag(par.akcio);
+  if (szalag) s = s.replace(MINTAK.arDobozKezd, szalag + "\n    " + MINTAK.arDobozKezd);
+  if (szalag || par.fizetendo < par.alap) {
+    s = s.replace("</head>", `<style>${AR_STILUS}</style>\n</head>`);
+  }
+  return s;
+}
+
+/**
+ * Statikus lap kiszolgálása az aktuális árakkal.
+ *
+ * A feltételes fejléceket levesszük, különben a tárhely 304-et adna a
+ * statikus fájl ETag-je alapján, és a böngésző a régi árat mutatná.
+ * Bármi hiba esetén a statikus lap megy ki változatlanul.
+ */
+export async function statikusArakkal(context) {
+  const { request } = context;
+  if (request.method !== "GET") return context.next();
+
+  const fejlec = new Headers(request.headers);
+  fejlec.delete("If-None-Match");
+  fejlec.delete("If-Modified-Since");
+  const valasz = await context.next(new Request(request, { headers: fejlec }));
+
+  const tipus = valasz.headers.get("Content-Type") ?? "";
+  if (valasz.status !== 200 || !tipus.includes("text/html")) return valasz;
+
+  try {
+    const [html, a] = await Promise.all([valasz.clone().text(), arakLekeres()]);
+    const kimeno = new Headers(valasz.headers);
+    kimeno.set("Cache-Control", "public, max-age=300");
+    kimeno.delete("ETag");
+    kimeno.delete("Content-Length");
+    return new Response(arakBeillesztese(html, a), { status: 200, headers: kimeno });
+  } catch {
+    return valasz;
+  }
+}
+
 /** Szöveg HTML-be — a cikkek címe kívülről jön, nem bízunk benne. */
 export function ki(s) {
   return String(s ?? "")
