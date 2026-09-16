@@ -153,7 +153,10 @@ ${tartalom}
       </div>
     <div class="lablec-also">
       <span>&copy; ${new Date().getFullYear()} Esküszöm — minden jog fenntartva</span>
-      <span>Az esküvőtök, egy helyen.</span>
+      <span>
+        Üzemelteti az
+        <a href="https://mmdigital.hu" target="_blank" rel="noopener">MM Digital</a>
+      </span>
     </div>
   </div>
 </footer>

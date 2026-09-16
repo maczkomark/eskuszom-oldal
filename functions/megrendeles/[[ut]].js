@@ -6,6 +6,29 @@
 // űrlapot a semmibe — ezért van saját állapotlapja, amit bármikor megnyithat.
 import { ALAP, ki, oldal, hibaOldal } from "../_kozos.js";
 
+/** Ha a vezérlőpult nem elérhető, ezzel megyünk tovább. */
+const ALAPARAK = { par: { alap: 45000, fizetendo: 45000 },
+                   szervezo: { alap: 40000, fizetendo: 40000 } };
+
+async function arakLekeres() {
+  try {
+    const v = await fetch(`${ALAP}/api/eskuvo/arak`, {
+      headers: { Accept: "application/json" },
+      cf: { cacheTtl: 300, cacheEverything: true },
+    });
+    if (!v.ok) return ALAPARAK;
+    const j = await v.json();
+    return j?.ok ? j : ALAPARAK;
+  } catch {
+    return ALAPARAK;
+  }
+}
+
+/** 45000 → „45 000 Ft" */
+function ft(n) {
+  return Number(n ?? 0).toLocaleString("hu-HU") + " Ft";
+}
+
 const STILUS = `
   .rendel { max-width: 660px; margin: 0 auto; padding-bottom: 90px; }
   .rendel-fej { text-align: center; padding-bottom: 34px; }
@@ -109,11 +132,26 @@ const STILUS = `
 
 /* ═══════════════════════════════════════════════ a megrendelő ═══ */
 
-function urlapOldal() {
+/**
+ * A megrendelő űrlap.
+ *
+ * Kétféle vevő van: a pár és az esküvőszervező cég. Ugyanaz a folyamat,
+ * más ár és más bekért adat — a cégtől a cégnév kell, a pár nevét ő maga
+ * tölti ki, ha már tudja.
+ */
+function urlapOldal(szervezo, arak) {
+  const csomag = (szervezo ? arak.szervezo : arak.par) ?? ALAPARAK.par;
+  const osszeg = csomag.fizetendo ?? csomag.alap;
+
   return oldal({
-    cim: "Megrendelés – Esküszöm esküvői weboldal",
-    leiras: "Rendeljétek meg az esküvői weboldalatokat: egyszeri 45 000 Ft, "
-          + "banki átutalással. Két nap alatt kész, havidíj nincs.",
+    cim: szervezo
+      ? "Megrendelés esküvőszervezőknek – Esküszöm"
+      : "Megrendelés – Esküszöm esküvői weboldal",
+    leiras: szervezo
+      ? `Esküvőszervező cégeknek: egyszeri ${ft(osszeg)} esküvőnként, `
+        + "banki átutalással. Havidíj nincs."
+      : `Rendeljétek meg az esküvői weboldalatokat: egyszeri ${ft(osszeg)}, `
+        + "banki átutalással. Két nap alatt kész, havidíj nincs.",
     url: "https://eskuszom.hu/megrendeles/",
     robots: "noindex, follow",
     fejlecek: `<style>${STILUS}</style>`,
@@ -122,22 +160,44 @@ function urlapOldal() {
   <div class="hatar">
     <div class="rendel">
       <div class="rendel-fej">
-        <div class="folcim">Megrendelés</div>
-        <h1>Kezdjük el.</h1>
+        <div class="folcim">${szervezo ? "Megrendelés esküvőszervezőknek" : "Megrendelés"}</div>
+        <h1>${szervezo ? "Indítsunk egy esküvőt." : "Kezdjük el."}</h1>
         <p class="vezeto">
-          Néhány adat, és küldjük az utalási adatokat. Előleg nincs, kötbér nincs:
-          ha megérkezett az összeg, két napon belül él az oldalatok.
+          ${szervezo
+            ? "Egy esküvőre szól, egyszeri díjjal. Elég a cég neve — a pár adatait "
+              + "utána ti viszitek fel, ahogy nektek kényelmes."
+            : "Néhány adat, és küldjük az utalási adatokat. Előleg nincs, kötbér nincs: "
+              + "ha megérkezett az összeg, két napon belül él az oldalatok."}
         </p>
       </div>
 
       <form id="rendeles" class="doboz" novalidate>
+        ${szervezo ? `<input type="hidden" name="tipus" value="szervezo">` : ""}
+
+        ${szervezo ? `
         <div class="csoport">
-          <h2>Rólatok</h2>
-          <p class="halk">Ez kerül majd az oldalatokra — később bármit átírhattok.</p>
+          <h2>A cégetek</h2>
+          <p class="halk">Erre a névre állítjuk ki a számlát.</p>
           <div class="mezok">
             <div class="mezo">
-              <label for="couple_names">A nevetek *</label>
-              <input id="couple_names" name="couple_names" required
+              <label for="company">A cég neve *</label>
+              <input id="company" name="company" required
+                     placeholder="Példa Esküvők Kft." autocomplete="organization">
+            </div>
+          </div>
+        </div>` : ""}
+
+        <div class="csoport">
+          <h2>${szervezo ? "Melyik esküvőhöz?" : "Rólatok"}</h2>
+          <p class="halk">
+            ${szervezo
+              ? "Ha már tudjátok, írjátok be — ha még nem, hagyjátok üresen, és később pótoljátok."
+              : "Ez kerül majd az oldalatokra — később bármit átírhattok."}
+          </p>
+          <div class="mezok">
+            <div class="mezo">
+              <label for="couple_names">${szervezo ? "A pár neve" : "A nevetek *"}</label>
+              <input id="couple_names" name="couple_names" ${szervezo ? "" : "required"}
                      placeholder="Zsófi és Marci" autocomplete="off">
             </div>
             <div class="mezok ketto">
@@ -216,13 +276,15 @@ function urlapOldal() {
         </div>
 
         <div class="csoport">
-          <h2>Van kedvezménykódotok?</h2>
+          <h2>${szervezo ? "Van akciós kódotok?" : "Van kedvezménykódotok?"}</h2>
           <p class="halk">
-            Ha egy esküvői oldalunk alján találtatok kódot, írjátok ide.
-            Ha nincs, hagyjátok üresen — enélkül is mehet a megrendelés.
+            ${szervezo
+              ? "Ha kaptatok tőlünk akciós kódot, írjátok ide. Enélkül is mehet a megrendelés."
+              : "Ha egy esküvői oldalunk alján találtatok kódot, írjátok ide. "
+                + "Ha nincs, hagyjátok üresen — enélkül is mehet a megrendelés."}
           </p>
           <div class="mezo">
-            <label for="kedvezmenykod">Kedvezménykód</label>
+            <label for="kedvezmenykod">${szervezo ? "Akciós kód" : "Kedvezménykód"}</label>
             <input id="kedvezmenykod" name="kedvezmenykod" autocomplete="off"
                    spellcheck="false" placeholder="pl. ZSOFIESMARCI"
                    style="text-transform:uppercase">
@@ -235,10 +297,10 @@ function urlapOldal() {
 
         <div class="ar-sor">
           <div>
-            <strong>Esküvői weboldal</strong>
+            <strong>${szervezo ? "Esküvői weboldal (szervezői ár)" : "Esküvői weboldal"}</strong>
             <div class="sugo" id="ar-sugo">Egyszeri díj · nincs havidíj · nincs létszámkorlát</div>
           </div>
-          <div class="osszeg" id="ar-osszeg">45 000 Ft</div>
+          <div class="osszeg" id="ar-osszeg">${ft(osszeg)}</div>
         </div>
 
         <button type="submit" class="gomb gomb-fo kuldes" id="kuldes">
@@ -264,7 +326,8 @@ function urlapOldal() {
   var kodValasz = document.getElementById("kod-valasz");
   var arOsszeg = document.getElementById("ar-osszeg");
   var arSugo = document.getElementById("ar-sugo");
-  var TELJES = 45000;
+  var TELJES = ${osszeg};
+  var SZERVEZO = ${szervezo ? "true" : "false"};
   var datumMezo = document.getElementById("wedding_date");
   var surgosJelzes = document.getElementById("surgos-jelzes");
   var surgosFelar = 0;
@@ -358,11 +421,15 @@ function urlapOldal() {
   datumMezo.addEventListener("change", surgossegetNez);
   if (datumMezo.value) surgossegetNez();
 
-  kodMezo.addEventListener("input", function () {
-    clearTimeout(kodIdozit);
-    kodIdozit = setTimeout(kodEllenoriz, 450);
-  });
-  if (kodMezo.value) kodEllenoriz();
+  // A kódellenőrzés a párok vendégoldali kódjaira való. A szervezői
+  // akciós kódot a szerver bírálja el, itt nem mutatunk rá választ.
+  if (!SZERVEZO) {
+    kodMezo.addEventListener("input", function () {
+      clearTimeout(kodIdozit);
+      kodIdozit = setTimeout(kodEllenoriz, 450);
+    });
+    if (kodMezo.value) kodEllenoriz();
+  }
 
   urlap.addEventListener("submit", async function (e) {
     e.preventDefault();
@@ -542,12 +609,14 @@ function allapotOldal(m, token) {
 
 /* ══════════════════════════════════════════════════ útvonalak ══ */
 
-export async function onRequest({ params }) {
+export async function onRequest({ params, request }) {
   const reszek = (params.ut ?? []).filter(Boolean);
 
-  // A megrendelő űrlap
+  // A megrendelő űrlap — párnak vagy esküvőszervező cégnek
   if (reszek.length === 0) {
-    return new Response(urlapOldal(), {
+    const szervezo = new URL(request.url).searchParams.get("tipus") === "szervezo";
+    const arak = await arakLekeres();
+    return new Response(urlapOldal(szervezo, arak), {
       headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" },
     });
   }
