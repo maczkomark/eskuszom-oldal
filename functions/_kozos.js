@@ -18,7 +18,7 @@ export const ALAP = "https://adminsite.mmdigital.hu";
  */
 export const ALAPARAK = {
   par: { alap: 45000, fizetendo: 45000, akcio: null },
-  emlek: 4900,
+  emlek: 7990,
   surgos: { nap: 21, felar: 10000 },
   kedvezmeny: 5000,
 };
@@ -283,6 +283,7 @@ ${tartalom}
         <a href="tel:+36204087765">+36 20 408 7765</a>
         <a href="mailto:info@mmdigital.hu">info@mmdigital.hu</a>
         <a href="/impresszum/">Impresszum</a>
+        <a href="/aszf/">ÁSZF</a>
         <a href="/adatkezeles/">Adatkezelés</a>
       </div>
     <div class="lablec-also">

@@ -99,7 +99,8 @@ export async function onRequest(context) {
       <div class="folcim" style="margin-bottom:.4rem">Teljes csomag</div>
       ${arSzam(par)}
       <p class="ar-alcim">
-        Egyszeri díj, az esküvőtök napjáig a tiétek.<br>
+        Egyszeri díj. Az oldal az esküvő után még 60 napig él —
+        a megrendeléstől számítva legfeljebb egy évig.<br>
         Nem kell előfizetni, és nincs vendégszám-korlát.
       </p>
 
@@ -120,8 +121,8 @@ export async function onRequest(context) {
       <div class="ar-extra">
         <strong style="color:var(--tinta-lagy)">Amit külön lehet kérni:</strong>
         saját domain (pl. <em>zsofiesmarci.hu</em>) a domain árán ·
-        emlékoldal az esküvő után, hogy a képek és az üzenetek megmaradjanak —
-        ${ft(a.emlek ?? ALAPARAK.emlek)} Ft/év
+        meghosszabbítás az esküvő után, hogy az oldal, a képek és az üzenetek
+        megmaradjanak — ${ft(a.emlek ?? ALAPARAK.emlek)} Ft/év
         ${(a.surgos?.felar ?? 0) > 0 ? ` · ${a.surgos.nap} napon belüli esküvőnél
           sürgősségi felár: ${ft(a.surgos.felar)} Ft` : ""}
       </div>

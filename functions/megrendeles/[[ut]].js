@@ -52,6 +52,14 @@ const STILUS = `
             margin-top: 1.4rem; }
   .ar-sor .osszeg { font-family: var(--serif); font-size: 1.9rem; color: var(--mauve); }
 
+  .jogi-elfogadas { border-top: 1px solid var(--vonal); margin-top: 1.4rem;
+                    padding-top: 1.2rem; display: grid; gap: .8rem; }
+  .jelolo { display: grid; grid-template-columns: 22px 1fr; gap: .7rem;
+            align-items: start; font-size: .88rem; line-height: 1.6;
+            color: var(--tinta-lagy); cursor: pointer; }
+  .jelolo input { width: 18px; height: 18px; margin-top: .2rem; accent-color: var(--mauve); }
+  .jelolo a { color: var(--mauve); }
+
   .kuldes { width: 100%; justify-content: center; margin-top: .4rem; }
   .urlap-hiba { margin-top: .9rem; font-size: .88rem; color: #a4453d;
                 background: #fdf1f0; border: 1px solid #f2d5d2;
@@ -253,6 +261,26 @@ function urlapOldal(arak) {
           <div class="osszeg" id="ar-osszeg">${ft(osszeg)}</div>
         </div>
 
+        <div class="jogi-elfogadas">
+          <label class="jelolo">
+            <input type="checkbox" name="aszf" value="1" required>
+            <span>
+              Elolvastam és elfogadom az
+              <a href="/aszf/" target="_blank" rel="noopener">általános szerződési feltételeket</a>
+              és az
+              <a href="/adatkezeles/" target="_blank" rel="noopener">adatkezelési tájékoztatót</a>.
+            </span>
+          </label>
+          <label class="jelolo">
+            <input type="checkbox" name="azonnali" value="1" required>
+            <span>
+              Kérem, hogy az oldal a fizetés beérkezése után azonnal induljon, a 14 napos
+              elállási határidő letelte előtt. Tudomásul veszem, hogy a szolgáltatás
+              teljesítése után az elállási jogom megszűnik.
+            </span>
+          </label>
+        </div>
+
         <button type="submit" class="gomb gomb-fo kuldes" id="kuldes">
           Megrendelem
         </button>
@@ -386,6 +414,8 @@ function urlapOldal(arak) {
 
     var adat = {};
     new FormData(urlap).forEach(function (ertek, kulcs) { adat[kulcs] = ertek; });
+    adat.aszf = urlap.querySelector("[name=aszf]").checked ? "1" : "";
+    adat.azonnali = urlap.querySelector("[name=azonnali]").checked ? "1" : "";
 
     try {
       var valasz = await fetch("${ALAP}/api/eskuvo/megrendeles", {
