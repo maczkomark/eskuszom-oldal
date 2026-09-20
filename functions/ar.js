@@ -82,7 +82,8 @@ export async function onRequest(context) {
 
     const cim = `Az Esküszöm ára – egyszeri ${ft(par.fizetendo)} Ft, havidíj nélkül`;
     const leiras = `Egyszeri ${ft(par.fizetendo)} Ft, és a tiétek az esküvő napjáig. `
-      + "Nincs havidíj, nincs vendéglétszám-korlát, nincs utólagos felár. "
+      + "Nincs havidíj és nincs vendéglétszám-korlát. Amit a megrendeléskor "
+      + "láttok, annyi — utólag nem kérünk pénzt. "
       + "Esküvőszervező cégeknek egyedi ajánlat.";
 
     const tartalom = `
@@ -99,8 +100,7 @@ export async function onRequest(context) {
       <div class="folcim" style="margin-bottom:.4rem">Teljes csomag</div>
       ${arSzam(par)}
       <p class="ar-alcim">
-        Egyszeri díj. Az oldal az esküvő után még 60 napig él —
-        a megrendeléstől számítva legfeljebb egy évig.<br>
+        Egyszeri díj. Az oldal az esküvő után még 90 napig él.<br>
         Nem kell előfizetni, és nincs vendégszám-korlát.
       </p>
 
@@ -125,6 +125,8 @@ export async function onRequest(context) {
         megmaradjanak — ${ft(a.emlek ?? ALAPARAK.emlek)} Ft/év
         ${(a.surgos?.felar ?? 0) > 0 ? ` · ${a.surgos.nap} napon belüli esküvőnél
           sürgősségi felár: ${ft(a.surgos.felar)} Ft` : ""}
+        ${(a.kedvezmeny ?? 0) > 0 ? ` · kedvezménykóddal
+          ${ft(a.kedvezmeny)} Ft engedmény (egyszerre egy kedvezmény érvényesíthető)` : ""}
       </div>
 
       <p class="ar-zaras" style="margin-top:1rem;padding-top:0;border-top:0">

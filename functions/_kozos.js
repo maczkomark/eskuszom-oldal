@@ -17,8 +17,8 @@ export const ALAP = "https://adminsite.mmdigital.hu";
  * szándékosan nincs: a cégek egyedi ajánlatot kérnek.
  */
 export const ALAPARAK = {
-  par: { alap: 45000, fizetendo: 45000, akcio: null },
-  emlek: 7990,
+  par: { alap: 49990, fizetendo: 49990, akcio: null },
+  emlek: 6990,
   surgos: { nap: 21, felar: 10000 },
   kedvezmeny: 5000,
 };
@@ -244,7 +244,6 @@ ${fejlecek ?? ""}
       <a href="/mit-tud/">Mit tud</a>
       <a href="/a-vendegeknek/">A vendégeknek</a>
       <a href="/hogyan-megy/">Hogyan megy</a>
-      <a href="/partnerek/">Partnerek</a>
       <a href="/tippek/">Tippek</a>
       <a href="/ar/">Ár</a>
       <a href="/kerdesek/">Kérdések</a>
@@ -270,8 +269,7 @@ ${tartalom}
         <a href="/mit-tud/">Mit tud</a>
         <a href="/a-vendegeknek/">A vendégeknek</a>
         <a href="/hogyan-megy/">Hogyan megy</a>
-        <a href="/partnerek/">Partnerek</a>
-        <a href="/tippek/">Tippek</a>
+          <a href="/tippek/">Tippek</a>
         <a href="/ar/">Ár</a>
         <a href="/kerdesek/">Kérdések</a>
         <a href="/minta/">Minta oldal</a>
@@ -298,7 +296,6 @@ ${tartalom}
 
 <script src="/script.js?v=20260911g"></script>
 <script src="/suti.js?v=20260911b"></script>
-<script defer src="https://adminsite.mmdigital.hu/analitika.js" data-kulcs="Rb3DJSMLP9XD"></script>
 </body>
 </html>`;
 }

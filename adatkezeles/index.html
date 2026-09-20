@@ -70,6 +70,14 @@
                    padding: 1.2rem 1.4rem; margin-top: 1.4rem; }
   .kiemelt-doboz p { color: var(--tinta-lagy); font-size: .92rem; }
 
+  /* Elállási nyilatkozatminta: kimásolható, ezért monospace és keret */
+  .minta-doboz { background: var(--papir-melyebb); border: 1px solid var(--vonal);
+                 border-radius: 14px; padding: 1.1rem 1.3rem; margin-top: 1rem;
+                 overflow-x: auto; }
+  .minta-doboz pre { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+                     font-size: .82rem; line-height: 1.7; color: var(--tinta-lagy);
+                     white-space: pre-wrap; word-break: break-word; margin: 0; }
+
   .jogi-lab { border-top: 1px solid var(--vonal); margin-top: 3rem;
               padding-top: 1.6rem; font-size: .86rem; color: var(--tinta-halvany); }
 </style>
@@ -83,7 +91,6 @@
       <a href="/mit-tud/">Mit tud</a>
       <a href="/a-vendegeknek/">A vendégeknek</a>
       <a href="/hogyan-megy/">Hogyan megy</a>
-      <a href="/partnerek/">Partnerek</a>
       <a href="/tippek/">Tippek</a>
       <a href="/ar/">Ár</a>
       <a href="/kerdesek/">Kérdések</a>
@@ -168,8 +175,9 @@
                   vendégeitek adják meg</td>
               <td>itt ti vagytok az adatkezelő, mi adatfeldolgozóként járunk el
                   (lásd a 4. pontot)</td>
-              <td>az esküvő után 3 hónapig, utána töröljük, hacsak nem kéritek
-                  az emlékoldalt</td>
+              <td>az esküvő után 90 napig, majd 30 nap türelmi idő a
+                  kimentésre — utána töröljük, hacsak nem kéritek az
+                  emlékoldalt</td>
             </tr>
             <tr>
               <td>Minden látogatásnál</td>
@@ -204,10 +212,28 @@
 
       <h2>3. Sütik</h2>
       <p>
-        A <strong>saját látogatásmérőnk nem használ sütit</strong> és nem tárol
-        semmit a gépeteken: a látogatót egy naponta cserélődő, visszafejthetetlen
-        ujjlenyomat azonosítja, amiből másnap már más lesz. Ezért nincs belőle
-        tartós követés.
+        A <strong>saját látogatásmérőnk nem használ sütit</strong>, és nem ír
+        semmit a gépetekre, illetve nem olvas róla semmit. A böngészőből csak
+        azt küldi el, amit amúgy is minden kéréssel elküldötök: a megnyitott
+        oldal útvonalát és azt, melyik oldalról érkeztetek. Az azonosítót a
+        szerverünkön számoljuk ki, három olyan adatból, ami a kéréssel együtt
+        érkezik — IP-cím, böngészőazonosító és egy naponta cserélődő titkos só
+        —, és az eredmény visszafejthetetlen. Másnap már más azonosítót kap
+        ugyanaz a látogató, ezért tartós követésre alkalmatlan.
+      </p>
+      <p>
+        Ez jogos érdeken alapul, de <strong>kikapcsolható</strong>: ha a
+        „Csak a szükséges” gombot választjátok, a saját mérésünk sem indul el.
+        A párok esküvői oldalain egyáltalán nem mérünk — oda vendégként
+        érkeztek, és annak a forgalmát nem figyeljük.
+      </p>
+      <p>
+        A <strong>Cloudflare</strong> — amely az oldalt kiszolgálja és védi —
+        két technikai sütit tehet le: a <code>__cf_bm</code> a robotforgalom
+        szűrésére szolgál és kb. 30 percig él, a <code>cf_clearance</code>
+        pedig azt jegyzi meg, ha egy biztonsági ellenőrzésen már túljutottatok.
+        Ezek a szolgáltatás működéséhez szükségesek, nem hirdetési célúak, és
+        nem kérünk hozzájuk hozzájárulást.
       </p>
       <p>
         A <strong>Google Analytics</strong> viszont sütit használ. Ezt csak akkor
@@ -278,8 +304,10 @@
       <ul>
         <li>Minden kapcsolat titkosított (HTTPS), a jelszavakat nem tároljuk
             visszafejthető formában.</li>
-        <li>A rendszerhez csak név szerint azonosított munkatárs fér hozzá, és
-            csak ahhoz, amihez a munkájához szükség van.</li>
+        <li>A rendszerhez a szolgáltató személyesen fér hozzá. Ha egy-egy
+            munkához segítőt vonunk be, ő névre szóló belépést kap,
+            titoktartási kötelezettséggel, és csak ahhoz fér hozzá, ami az
+            adott feladathoz kell. A belépéseket naplózzuk.</li>
         <li>Az adatbázisról rendszeres mentés készül.</li>
         <li>A vendégek a saját oldalukat egyedi, kitalálhatatlan kóddal érik el —
             egyik vendég nem látja a másik adatait.</li>
@@ -359,8 +387,7 @@
         <a href="/mit-tud/">Mit tud</a>
         <a href="/a-vendegeknek/">A vendégeknek</a>
         <a href="/hogyan-megy/">Hogyan megy</a>
-        <a href="/partnerek/">Partnerek</a>
-        <a href="/tippek/">Tippek</a>
+          <a href="/tippek/">Tippek</a>
         <a href="/ar/">Ár</a>
         <a href="/kerdesek/">Kérdések</a>
         <a href="/minta/">Minta oldal</a>
@@ -387,6 +414,5 @@
 
 <script src="/script.js?v=20260911b"></script>
 <script src="/suti.js?v=20260911b"></script>
-<script defer src="https://adminsite.mmdigital.hu/analitika.js" data-kulcs="Rb3DJSMLP9XD"></script>
 </body>
 </html>

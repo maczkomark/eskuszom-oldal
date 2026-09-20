@@ -267,6 +267,9 @@ function urlapOldal(arak) {
             <span>
               Elolvastam és elfogadom az
               <a href="/aszf/" target="_blank" rel="noopener">általános szerződési feltételeket</a>
+              — ideértve az
+              <a href="/aszf/#adatfeldolgozoi" target="_blank" rel="noopener">adatfeldolgozói
+              feltételeket</a> is, amelyek a vendégeitek adataira vonatkoznak —
               és az
               <a href="/adatkezeles/" target="_blank" rel="noopener">adatkezelési tájékoztatót</a>.
             </span>
@@ -282,7 +285,7 @@ function urlapOldal(arak) {
         </div>
 
         <button type="submit" class="gomb gomb-fo kuldes" id="kuldes">
-          Megrendelem
+          Megrendelés fizetési kötelezettséggel
         </button>
         <div class="urlap-hiba" id="hiba"></div>
 
@@ -429,7 +432,7 @@ function urlapOldal(arak) {
     } catch (err) {
       hiba.textContent = String(err.message || err);
       gomb.disabled = false;
-      gomb.textContent = "Megrendelem";
+      gomb.textContent = "Megrendelés fizetési kötelezettséggel";
     }
   });
 })();
