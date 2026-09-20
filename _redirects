@@ -1,0 +1,15 @@
+# Cloudflare Pages átirányítások.
+#
+# A minta oldal korábban kézzel írt statikus lapokból állt (minta/index.html
+# és társai). Az volt vele a baj, hogy nem a terméket mutatta: nem az volt a
+# stílusa, amit a pár kiválaszthat, és nem futott le rajta a nyitóanimáció.
+#
+# Helyette egy valódi, élő bemutató esküvő van a platformon — cinematic
+# elrendezés, selyemszalagos nyitás —, tehát pontosan az, amit a pár kap.
+# Ide küldjük a látogatót. 302, mert ha később máshová tennénk a bemutatót,
+# ne ragadjon be a böngészőkbe.
+#
+# FIGYELEM: a statikus fájl megelőzi az átirányítást, ezért a repóból a
+# minta/ mappát ki kell törölni — különben ez a szabály néma marad.
+/minta      https://minta.eskuszom.hu/          302
+/minta/*    https://minta.eskuszom.hu/:splat    302
