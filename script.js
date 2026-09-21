@@ -109,6 +109,14 @@ urlap?.addEventListener("submit", async (e) => {
     const eredmeny = await valasz.json().catch(() => ({}));
 
     if (valasz.ok && eredmeny.ok !== false) {
+      // A mézesbödönt a szerver csendben elnyeli, és sikert jelez vissza,
+      // hogy a robot ne tanuljon belőle. Nekünk viszont tudnunk kell:
+      // ilyenkor nem volt valódi érdeklődő, tehát konverzió sincs.
+      if (!String(adat.honeypot || "").trim()) {
+        try {
+          window.dispatchEvent(new CustomEvent("eskuszom:lead"));
+        } catch (e) { /* régi böngésző — a megkeresés akkor is megérkezett */ }
+      }
       urlap.reset();
       uzenet(
         "Köszönjük! Megkaptam a levelet, és egy napon belül válaszolok. " +

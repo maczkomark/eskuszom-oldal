@@ -32,6 +32,22 @@
     try {
       localStorage.setItem(KULCS, JSON.stringify({ elfogadva: elfogadva, mikor: Date.now() }));
     } catch (e) { /* privát ablakban nem tárolható — akkor csak most érvényes */ }
+    kihirdet(elfogadva);
+  }
+
+  /**
+   * A döntés közhírré tétele.
+   *
+   * A pixel.js a betöltéskor magától kiolvassa a tárolóból, de ha a
+   * látogató MOST dönt, arról tudnia kell — a sávot ő nem látja.
+   * Ugyanezen az eseményen tud bármi más is figyelni később.
+   */
+  function kihirdet(elfogadva) {
+    try {
+      window.dispatchEvent(new CustomEvent("eskuszom:suti", {
+        detail: { elfogadva: elfogadva },
+      }));
+    } catch (e) { /* nagyon régi böngésző: marad a tárolóból olvasás */ }
   }
 
   /** A saját mérőnk beemelése. Mindenkinél fut, aki nem mondott nemet. */
@@ -102,6 +118,8 @@
   // egyébként létre sem jönne — pedig pont ő az, aki módosítani akar.
   window.sutiUjra = function () {
     try { localStorage.removeItem(KULCS); } catch (e) { /* nincs mit törölni */ }
+    // Amíg újra nem dönt, nincs érvényes hozzájárulás — a Pixel álljon le.
+    kihirdet(null);
     if (!document.querySelector(".suti-sav")) savBe();
   };
 
