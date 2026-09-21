@@ -8,8 +8,15 @@
 // Meta felé semmilyen kérés nem megy ki. A `consent revoke` önmagában
 // kevés lenne: az csak az események küldését állítja le, a szkriptet
 // viszont már letöltötte volna a connect.facebook.net-ről, és az is
-// adatátadás. A revoke/grant így is végig ott van a sorrendben, mert
-// kell: ha valaki utólag meggondolja magát, azzal állítjuk le.
+// adatátadás.
+//
+// Ezért betöltéskor NINCS `consent revoke` — és nem is lehet. A hívások
+// a szkript letöltése előtt sorba kerülnek; az fbevents.js a sorban álló
+// revoke-nál megáll, és a sor többi részét (a sorban álló grant-ot is!)
+// visszatartja egy újabb, KÖZVETLEN grant hívásig. Ez sosem jönne, így a
+// pixel örökre némán állna — 2026-09-21-én pontosan ez történt, egyetlen
+// esemény sem jutott el a Metához. A revoke/grant csak a betöltés UTÁN
+// kell: ha valaki meggondolja magát, azzal állítjuk le és indítjuk újra.
 //
 // A hozzájárulás forrása a suti.js EGYETLEN döntése (localStorage,
 // "eskuszom-suti"). Nem kérdezünk rá külön, és nem tárolunk mellé semmit.
@@ -73,7 +80,11 @@
   }
 
   function betolt() {
-    if (betoltve) return;
+    if (betoltve) {
+      // Már fut, csak közben visszavonta — most újra engedi.
+      if (window.fbq) fbq("consent", "grant");
+      return;
+    }
     betoltve = true;
     alapkod();
 
@@ -82,10 +93,7 @@
     // telefonmezőjét, és elküldené a Metának — pont azt, amit nem akarunk.
     // Ezért nincs sem nyers, sem hashelt személyes adat a hívásokban.
     fbq("set", "autoConfig", false, PIXEL);
-
-    fbq("consent", "revoke");
     fbq("init", PIXEL);
-    fbq("consent", "grant");
 
     oldalEsemenyek();
   }
