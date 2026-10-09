@@ -13,3 +13,7 @@
 # minta/ mappát ki kell törölni — különben ez a szabály néma marad.
 /minta      https://minta.eskuszom.hu/          302
 /minta/*    https://minta.eskuszom.hu/:splat    302
+
+# A www-s cím ugyanoda visz, de a keresőnek egy oldal egy cím legyen.
+# (A canonical eddig is helyre tette, de egy 301 a tiszta megoldás.)
+https://www.eskuszom.hu/*   https://eskuszom.hu/:splat          301

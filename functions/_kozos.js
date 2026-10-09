@@ -227,9 +227,7 @@ export function oldal({ cim, leiras, fejlecek, tartalom, url, robots }) {
 <meta property="og:site_name" content="Esküszöm">
 <meta property="og:locale" content="hu_HU">
 <meta property="og:url" content="${ki(url)}">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/betuk/betuk.css">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/stilus.css?v=20260921b">
 <script defer src="/pixel.js?v=20260921b"></script>

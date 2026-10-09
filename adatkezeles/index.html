@@ -17,9 +17,7 @@
 <meta property="og:locale" content="hu_HU">
 <meta property="og:image" content="https://eskuszom.hu/og-kep.png">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/betuk/betuk.css">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/stilus.css?v=20260921b">
 
@@ -200,6 +198,16 @@
               <td>hozzájárulás (GDPR 6. cikk (1) a) pont)</td>
               <td>legfeljebb 14 hónap</td>
             </tr>
+            <tr>
+              <td>Ha elfogadjátok a sütiket</td>
+              <td>Meta Pixel: a megnyitott oldal címe, IP-cím, böngészőadatok,
+                  és hogy melyik lépésig jutottatok (pl. megnyitottátok-e az
+                  árlistát, elküldtétek-e a megkeresést)</td>
+              <td>hogy lássuk, melyik hirdetésünk hoz valódi érdeklődőt, és
+                  ne költsünk arra, ami nem működik</td>
+              <td>hozzájárulás (GDPR 6. cikk (1) a) pont)</td>
+              <td>a Meta legfeljebb 2 évig tárolja</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -243,6 +251,18 @@
         töltjük be, ha az oldal alján megjelenő sávon elfogadjátok — addig a
         kódja be sem kerül a lapba. Ha a „Csak a szükséges” gombot választjátok,
         semmilyen Google-süti nem kerül a gépetekre.
+      </p>
+      <p>
+        Ugyanez vonatkozik a <strong>Meta Pixelre</strong> (Facebook, Instagram).
+        Ezzel azt mérjük, melyik hirdetésünkből lesz valódi megkeresés.
+        Elfogadás előtt a Meta szkriptje <strong>le sem töltődik</strong>, tehát
+        a Meta felé semmilyen kérés nem megy ki — nem elég ugyanis az
+        eseményküldést letiltani, ha a kód már megérkezett a gépetekre. Ha
+        elfogadjátok, a Meta sütit tesz le (<code>_fbp</code>), és az
+        adatokat az Egyesült Államokban is kezelheti. Személyes adatot — nevet,
+        e-mail-címet, telefonszámot — <strong>nem adunk át</strong> neki, sem
+        nyersen, sem titkosított formában: a Pixel automatikus mezőbeolvasását
+        kifejezetten kikapcsoltuk.
       </p>
       <div class="kiemelt-doboz">
         <p>
@@ -290,9 +310,13 @@
             kiszolgálása, gyorsítás és védelem a támadások ellen.</li>
         <li><strong>Google Ireland Limited / Google LLC</strong> — a leveleink
             kiküldése, illetve hozzájárulás esetén a Google Analytics.</li>
+        <li><strong>Meta Platforms Ireland Limited</strong> (Merrion Road,
+            Dublin 4, Írország) — hozzájárulás esetén a hirdetéseink
+            eredményességének mérése (Meta Pixel).</li>
       </ul>
       <p>
-        A Cloudflare és a Google részben az Európai Unión kívül is kezel adatot.
+        A Cloudflare, a Google és a Meta részben az Európai Unión kívül is kezel
+        adatot.
         Ezek a cégek az Európai Bizottság által jóváhagyott adatvédelmi keretben,
         illetve általános szerződési feltételek alapján működnek, ami megfelelő
         védelmi szintet ír elő.

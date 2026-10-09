@@ -88,7 +88,9 @@
         '<strong>Sütikről röviden</strong>' +
         '<p>A saját látogatásmérésünk nem használ sütit, és nem olvas semmit ' +
         'a gépetekről — de a „Csak a szükséges” gombbal ezt is kikapcsolhatjátok. ' +
-        'A Google Analytics sütizik, ahhoz külön kérjük a hozzájárulásotokat. Bármikor ' +
+        'A <strong>Google Analytics</strong> és a <strong>Meta Pixel</strong> ' +
+        '(Facebook, Instagram) viszont sütizik, és adatot továbbít az Egyesült ' +
+        'Államokba is — ezekhez külön kérjük a hozzájárulásotokat. Bármikor ' +
         'meggondolhatjátok magatokat az <a href="/adatkezeles/">adatkezelési ' +
         'tájékoztatóban</a> leírtak szerint.</p>' +
       '</div>' +
