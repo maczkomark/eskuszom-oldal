@@ -14,6 +14,5 @@
 /minta      https://minta.eskuszom.hu/          302
 /minta/*    https://minta.eskuszom.hu/:splat    302
 
-# A www-s cím ugyanoda visz, de a keresőnek egy oldal egy cím legyen.
-# (A canonical eddig is helyre tette, de egy 301 a tiszta megoldás.)
-https://www.eskuszom.hu/*   https://eskuszom.hu/:splat          301
+# A www -> eskuszom.hu átirányítás a functions/_middleware.js-ben van:
+# ez a fájl csak útvonalra tud illeszteni, gépnévre nem.
