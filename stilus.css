@@ -976,16 +976,22 @@ section { padding: clamp(4rem, 9vw, 7rem) 0; }
 .suti-sav.lathato { transform: translate(-50%, 0); opacity: 1; }
 
 .suti-szoveg { flex: 1 1 300px; min-width: 0; }
-.suti-szoveg strong { display: block; font-size: .95rem; margin-bottom: .3rem; }
+.suti-szoveg > strong { display: block; font-size: .95rem; margin-bottom: .3rem; }
 .suti-szoveg p { font-size: .84rem; line-height: 1.6; color: var(--tinta-lagy); }
 .suti-szoveg a { color: var(--mauve); text-decoration: underline;
                  text-underline-offset: 2px; }
 
 .suti-gombok { display: flex; gap: .6rem; flex: 0 0 auto; }
 .suti-gombok .gomb { font-size: .86rem; padding: .6rem 1.2rem; }
+/* A két gomb pontosan egyforma: az elutasítás nem lehet halványabb. */
+.suti-gomb { background: var(--feher); color: var(--mauve-sotet);
+             border-color: var(--mauve); }
+.suti-gomb:hover { background: var(--mauve); color: #fff; }
 
 @media (max-width: 560px) {
-  .suti-sav { bottom: 10px; padding: 1rem; }
+  .suti-sav { bottom: 10px; padding: .85rem .95rem; gap: .7rem; }
+  .suti-szoveg > strong { display: none; }
+  .suti-szoveg p { font-size: .78rem; line-height: 1.5; margin: 0; }
   .suti-gombok { width: 100%; }
   .suti-gombok .gomb { flex: 1; justify-content: center; }
 }

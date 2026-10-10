@@ -83,20 +83,22 @@
     sav.className = "suti-sav";
     sav.setAttribute("role", "dialog");
     sav.setAttribute("aria-label", "Süti-beállítások");
+    // Rövid, mert telefonon különben az egész képernyőt eltakarja — a
+    // hirdetésből érkezőknél épp a gombokat. A részletek a tájékoztatóban.
+    // A két gomb EGYFORMA: az elutasítás se legyen nehezebb vagy halványabb.
     sav.innerHTML =
       '<div class="suti-szoveg">' +
-        '<strong>Sütikről röviden</strong>' +
-        '<p>A saját látogatásmérésünk nem használ sütit, és nem olvas semmit ' +
-        'a gépetekről — de a „Csak a szükséges” gombbal ezt is kikapcsolhatjátok. ' +
-        'A <strong>Google Analytics</strong> és a <strong>Meta Pixel</strong> ' +
-        '(Facebook, Instagram) viszont sütizik, és adatot továbbít az Egyesült ' +
-        'Államokba is — ezekhez külön kérjük a hozzájárulásotokat. Bármikor ' +
-        'meggondolhatjátok magatokat az <a href="/adatkezeles/">adatkezelési ' +
-        'tájékoztatóban</a> leírtak szerint.</p>' +
+        '<strong>Sütik</strong>' +
+        '<p>A <strong>Google Analytics</strong> és a <strong>Meta Pixel</strong> ' +
+        '(Facebook, Instagram) sütit használ, és az USA-ba is továbbíthat ' +
+        'adatot — ezeket csak akkor indítjuk, ha elfogadjátok. A „Csak a ' +
+        'szükséges” a saját, sütimentes mérésünket is kikapcsolja. Bármikor ' +
+        'meggondolhatjátok magatokat: <a href="/adatkezeles/">adatkezelési ' +
+        'tájékoztató</a>.</p>' +
       '</div>' +
       '<div class="suti-gombok">' +
-        '<button type="button" class="gomb gomb-halk" id="suti-nem">Csak a szükséges</button>' +
-        '<button type="button" class="gomb gomb-fo" id="suti-igen">Elfogadom</button>' +
+        '<button type="button" class="gomb suti-gomb" id="suti-nem">Csak a szükséges</button>' +
+        '<button type="button" class="gomb suti-gomb" id="suti-igen">Elfogadom</button>' +
       '</div>';
     document.body.appendChild(sav);
 
