@@ -32,27 +32,44 @@
   .fb-fej { padding: 14px 0; }
   .fb-fej .logo { font-size: 1.35rem; }
 
-  .fb-hos { text-align: center; padding: clamp(18px, 5vw, 64px) 0 clamp(44px, 8vw, 84px); }
+  .fb-hos { text-align: center; padding: clamp(10px, 4vw, 64px) 0 clamp(44px, 8vw, 84px); }
   .fb-hos .folcim { margin-bottom: .8rem; }
   .fb-hos h1 { font-size: clamp(2.15rem, 8.4vw, 3.8rem); margin-bottom: 1rem; }
   .fb-hos h1 em { font-style: italic; color: var(--mauve); }
-  .fb-hos .vezeto { margin: 0 auto 1.5rem; font-size: clamp(1rem, 3.6vw, 1.18rem); }
+  .fb-hos .vezeto { margin: 0 auto 1.2rem; font-size: clamp(.98rem, 3.5vw, 1.18rem); }
 
   .fb-ar { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: center;
            gap: .25rem .8rem; }
   .fb-ar s { color: var(--tinta-halvany); font-size: 1.2rem; text-decoration-thickness: 1px; }
   .fb-ar strong { font-family: var(--serif); font-weight: 500; color: var(--mauve);
                   font-size: clamp(2.1rem, 8vw, 2.7rem); line-height: 1.1; }
-  .fb-ar-apro { font-size: .82rem; color: var(--tinta-halvany); margin: .3rem 0 1.5rem; }
+  .fb-ar-apro { font-size: .82rem; color: var(--tinta-halvany); margin: .3rem 0 1.2rem; }
 
-  .fb-gombok { display: flex; flex-direction: column; gap: .7rem;
+  .fb-gombok { display: flex; flex-direction: column; gap: .6rem;
                max-width: 360px; margin: 0 auto; }
   .fb-gombok .gomb { justify-content: center; }
   .fb-gombok .gomb-halk { background: var(--feher); }
+  /* A vásárlás: aki már eldöntötte, ne kelljen a mintán keresztül mennie */
+  .fb-gombok .fb-vasarlas { background: var(--tinta); color: #fff;
+                            box-shadow: 0 6px 20px rgba(47, 42, 51, .22); }
+  .fb-gombok .fb-vasarlas:hover { background: #000; transform: translateY(-2px); }
+  .fb-gombok .fb-vasarlas strong { font-weight: 600; }
   @media (min-width: 640px) {
-    .fb-gombok { flex-direction: row; max-width: none; justify-content: center; }
+    .fb-gombok { flex-direction: row; flex-wrap: wrap; max-width: none; justify-content: center; }
   }
   .fb-apro { font-size: .8rem; color: var(--tinta-halvany); margin-top: .9rem; }
+  /* Alacsony telefonon (a Meta böngészőjében kevés hely marad) mindhárom
+     gomb férjen az első képernyőre: kisebb cím, rövidebb közök. */
+  @media (max-width: 480px) and (max-height: 680px) {
+    .fb-fej { padding: 8px 0; }
+    .fb-hos .folcim { margin-bottom: .45rem; }
+    .fb-hos h1 { font-size: 1.85rem; margin-bottom: .6rem; }
+    .fb-hos .vezeto { font-size: .9rem; line-height: 1.5; margin-bottom: .8rem; }
+    .fb-ar strong { font-size: 1.9rem; }
+    .fb-ar-apro { margin-bottom: .8rem; }
+    .fb-gombok { gap: .5rem; }
+    .fb-gombok .gomb { padding-block: .8rem; }
+  }
 
   .fb-szakasz { padding: clamp(48px, 9vw, 92px) 0; }
   .fb-szakasz h2 { font-size: clamp(1.75rem, 6.5vw, 2.6rem); text-align: center;
@@ -109,6 +126,9 @@
     <div class="fb-gombok">
         <a href="https://minta.eskuszom.hu/?forras=fb" class="gomb gomb-fo" data-tovabb data-minta>
           Megnézem a minta oldalt
+        </a>
+        <a href="/megrendeles/?kod=ESKUSZOM20" class="gomb fb-vasarlas" data-tovabb>
+          <span>Megrendelem — <strong data-ar="kodos">39 992 Ft</strong></span>
         </a>
         <a href="/kiprobalom/?forras=fb" class="gomb gomb-halk" data-tovabb>
           Kipróbálom 7 napig ingyen
@@ -248,6 +268,9 @@
     <div class="fb-gombok">
         <a href="https://minta.eskuszom.hu/?forras=fb" class="gomb gomb-fo" data-tovabb data-minta>
           Megnézem a minta oldalt
+        </a>
+        <a href="/megrendeles/?kod=ESKUSZOM20" class="gomb fb-vasarlas" data-tovabb>
+          <span>Megrendelem — <strong data-ar="kodos">39 992 Ft</strong></span>
         </a>
         <a href="/kiprobalom/?forras=fb" class="gomb gomb-halk" data-tovabb>
           Kipróbálom 7 napig ingyen
