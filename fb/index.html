@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Esküvői weboldal — nézzétek meg, próbáljátok ki | Esküszöm</title>
+<meta name="description" content="Saját esküvői weboldal: vendéglista, QR-kódos meghívó, visszajelzés és ültetésrend egy helyen. Nézzétek meg a mintát, vagy próbáljátok ki egy hétig ingyen.">
+<meta name="theme-color" content="#8c6b74">
+<link rel="canonical" href="https://eskuszom.hu/fb/">
+<meta name="robots" content="noindex, nofollow">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Esküszöm">
+<meta property="og:title" content="Esküvői weboldal — nézzétek meg, próbáljátok ki | Esküszöm">
+<meta property="og:description" content="Saját esküvői weboldal: vendéglista, QR-kódos meghívó, visszajelzés és ültetésrend egy helyen. Nézzétek meg a mintát, vagy próbáljátok ki egy hétig ingyen.">
+<meta property="og:url" content="https://eskuszom.hu/fb/">
+<meta property="og:locale" content="hu_HU">
+<meta property="og:image" content="https://eskuszom.hu/og-kep.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Esküszöm — esküvői weboldal pároknak: vendéglista, QR-kódos meghívó, ültetésrend">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Esküvői weboldal — nézzétek meg, próbáljátok ki | Esküszöm">
+<meta name="twitter:description" content="Saját esküvői weboldal: vendéglista, QR-kódos meghívó, visszajelzés és ültetésrend egy helyen. Nézzétek meg a mintát, vagy próbáljátok ki egy hétig ingyen.">
+<meta name="twitter:image" content="https://eskuszom.hu/og-kep.png">
+
+<link rel="stylesheet" href="/betuk/betuk.css">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/stilus.css?v=20261010">
+<script defer src="/pixel.js?v=20261010"></script>
+<style>
+  .fb-fej { padding: 14px 0; }
+  .fb-fej .logo { font-size: 1.35rem; }
+
+  .fb-hos { text-align: center; padding: clamp(18px, 5vw, 64px) 0 clamp(44px, 8vw, 84px); }
+  .fb-hos .folcim { margin-bottom: .8rem; }
+  .fb-hos h1 { font-size: clamp(2.15rem, 8.4vw, 3.8rem); margin-bottom: 1rem; }
+  .fb-hos h1 em { font-style: italic; color: var(--mauve); }
+  .fb-hos .vezeto { margin: 0 auto 1.5rem; font-size: clamp(1rem, 3.6vw, 1.18rem); }
+
+  .fb-ar { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: center;
+           gap: .25rem .8rem; }
+  .fb-ar s { color: var(--tinta-halvany); font-size: 1.2rem; text-decoration-thickness: 1px; }
+  .fb-ar strong { font-family: var(--serif); font-weight: 500; color: var(--mauve);
+                  font-size: clamp(2.1rem, 8vw, 2.7rem); line-height: 1.1; }
+  .fb-ar-apro { font-size: .82rem; color: var(--tinta-halvany); margin: .3rem 0 1.5rem; }
+
+  .fb-gombok { display: flex; flex-direction: column; gap: .7rem;
+               max-width: 360px; margin: 0 auto; }
+  .fb-gombok .gomb { justify-content: center; }
+  .fb-gombok .gomb-halk { background: var(--feher); }
+  @media (min-width: 640px) {
+    .fb-gombok { flex-direction: row; max-width: none; justify-content: center; }
+  }
+  .fb-apro { font-size: .8rem; color: var(--tinta-halvany); margin-top: .9rem; }
+
+  .fb-szakasz { padding: clamp(48px, 9vw, 92px) 0; }
+  .fb-szakasz h2 { font-size: clamp(1.75rem, 6.5vw, 2.6rem); text-align: center;
+                   margin-bottom: clamp(1.4rem, 4vw, 2.4rem); }
+
+  .fb-elonyok { display: grid; gap: .9rem; max-width: 900px; margin: 0 auto; }
+  @media (min-width: 760px) { .fb-elonyok { grid-template-columns: 1fr 1fr; gap: 1.1rem; } }
+  .fb-elony { background: var(--feher); border: 1px solid var(--vonal); border-radius: 16px;
+              padding: 1.2rem 1.3rem; }
+  .fb-elony h3 { font-size: 1.3rem; margin-bottom: .35rem; }
+  .fb-elony p { margin: 0; color: var(--tinta-lagy); font-size: .94rem; }
+
+  .fb-lepesek { list-style: none; padding: 0; margin: 0 auto; max-width: 620px;
+                counter-reset: fb; display: grid; gap: 1.3rem; }
+  .fb-lepesek li { counter-increment: fb; display: grid; grid-template-columns: 42px 1fr;
+                   gap: .9rem; align-items: start; }
+  .fb-lepesek li::before { content: counter(fb); width: 42px; height: 42px; border-radius: 50%;
+                           display: grid; place-items: center; font-family: var(--serif);
+                           font-size: 1.3rem; color: var(--mauve); background: var(--feher);
+                           border: 1px solid var(--mauve-vilagos); }
+  .fb-lepesek strong { display: block; font-size: 1.02rem; margin: .45rem 0 .2rem; }
+  .fb-lepesek p { margin: 0; color: var(--tinta-lagy); font-size: .94rem; }
+
+  .fb-zaras { text-align: center; }
+  .fb-zaras .vezeto { margin: 0 auto 1.4rem; }
+  .fb-kapcsolat { margin-top: 1.6rem; font-size: .88rem; color: var(--tinta-lagy); }
+  .fb-kapcsolat a { color: var(--mauve); }
+</style>
+</head>
+<body>
+
+<header class="fb-fej">
+  <div class="hatar"><a href="/" class="logo">Esk<em>ü</em>szöm</a></div>
+</header>
+
+<main>
+
+<section class="fb-hos">
+  <div class="hatar">
+    <div class="folcim">Esküvői weboldal pároknak</div>
+    <h1>Az esküvőtök<br>minden szála <em>egy helyen.</em></h1>
+    <p class="vezeto">
+      Saját esküvői weboldal, ahol a vendéglista, a QR-kódos meghívó, a
+      visszajelzések és az ültetésrend egy helyen van — a vendégek pedig a
+      telefonjukon látják, hova ülnek és mit esznek.
+    </p>
+
+    <div class="fb-ar">
+      <s data-ar="alap">49 990 Ft</s>
+      <strong data-ar="kodos">39 992 Ft</strong>
+    </div>
+    <p class="fb-ar-apro">egyszeri díj, havidíj nélkül · 20% kedvezmény az ESKUSZOM20 kóddal</p>
+
+    <div class="fb-gombok">
+        <a href="https://minta.eskuszom.hu/?forras=fb" class="gomb gomb-fo" data-tovabb data-minta>
+          Megnézem a minta oldalt
+        </a>
+        <a href="/kiprobalom/?forras=fb" class="gomb gomb-halk" data-tovabb>
+          Kipróbálom 7 napig ingyen
+        </a>
+      </div>
+    <p class="fb-apro">A próbához nem kell bankkártya.</p>
+  </div>
+</section>
+
+<section class="fb-szakasz vilagos">
+  <div class="hatar">
+    <h2>Amit egy helyen kaptok</h2>
+    <div class="fb-elonyok">
+      <div class="fb-elony">
+        <h3>A vendégek a saját oldalukat látják</h3>
+        <p>A meghívón egy QR-kód: beolvassák, és ott jeleznek vissza, ott
+           választanak menüt, ott látják, hova ülnek.</p>
+      </div>
+      <div class="fb-elony">
+        <h3>A vendéglista magától frissül</h3>
+        <p>Ha valaki lemond, a létszám, az ültetésrend és a vendéglátós
+           listája egyszerre változik.</p>
+      </div>
+      <div class="fb-elony">
+        <h3>Nyomdakész meghívó és kártyák</h3>
+        <p>Meghívó, ültetőkártya, asztalszám ugyanabból az adatból — senki
+           nem gépel újra kilencven nevet.</p>
+      </div>
+      <div class="fb-elony">
+        <h3>Havidíj nincs</h3>
+        <p>Egyszeri díj, és az oldal az esküvő után még 90 napig a tiétek.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fb-szakasz">
+  <div class="hatar">
+    <h2>Három lépés</h2>
+    <ol class="fb-lepesek">
+      <li>
+        <div>
+          <strong>Megnézitek a mintát</strong>
+          <p>Zsófi és Marci kitalált esküvője: kattintható, körbejárható —
+             a vendégoldal is.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>Kipróbáljátok egy hétig</strong>
+          <p>A saját neveitekkel, ingyen, bankkártya nélkül. Magától lejár,
+             nem lesz belőle előfizetés.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>Ha tetszik, megrendelitek</strong>
+          <p>Kártyával egy perc, a kóddal <span data-ar="kodos">39 992 Ft</span>.
+             Amit a próba alatt beírtatok, megmarad.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ── vélemények ────────────────────────────────────────────────────
+     SZÁNDÉKOSAN kikommentelve. Csak valódi, a pár engedélyével közölt
+     vélemény kerülhet ide — kitalált vagy „szerkesztett" véleményt
+     közölni tisztességtelen kereskedelmi gyakorlat. Ha lesz, vedd ki
+     a kommentből, és cseréld ki a szögletes zárójeles részeket:
+
+<section class="fb-szakasz vilagos">
+  <div class="hatar">
+    <h2>Akik már túl vannak rajta</h2>
+    <div class="velemenyek">
+      <article class="velemeny">
+        <p>„[A PÁR SAJÁT SZAVAI, VÁLTOZTATÁS NÉLKÜL]”</p>
+        <footer><strong>[Keresztnevek]</strong>[az esküvő hónapja]</footer>
+      </article>
+    </div>
+  </div>
+</section>
+-->
+
+<section class="fb-szakasz melyebb">
+  <div class="hatar">
+    <h2>Amit kérdezni szoktak</h2>
+    <div class="kerdesek">
+      <details class="kerdes">
+        <summary>És ha a nagyszülők nem tudják beolvasni a QR-kódot?</summary>
+        <p>
+          Számítottunk rá. A meghívón a kód mellett ott a rövid webcím is,
+          amit be lehet gépelni, és minden vendéghez tartozik egy egyszerű
+          négyjegyű kód. Aki pedig egyáltalán nem használ telefont, annak
+          ugyanúgy tudtok papíron mindent adni — a rendszer kinyomtatja.
+        </p>
+      </details>
+      <details class="kerdes">
+        <summary>Meddig a miénk az oldal?</summary>
+        <p>
+          Az esküvő után még 90 napig. Előtte e-mailben szólunk: ha meg
+          szeretnétek tartani a képekkel és a vendégek üzeneteivel, azt
+          évi 6 990 Ft-ért lehet kérni. Nem kötelező, és nem újul meg magától.
+        </p>
+      </details>
+      <details class="kerdes">
+        <summary>Mi van, ha nem értünk a számítógéphez?</summary>
+        <p>
+          Semmi baj — pont ezért így épült. Nem üres űrlapokat kaptok, hanem
+          egyszerre egy kérdést, mindig azt, ami épp aktuális. Amit nem tudtok,
+          azt kihagyhatjátok, és később visszatérhettek rá. Az induláskor
+          végigmegyünk rajta együtt.
+        </p>
+      </details>
+      <details class="kerdes">
+        <summary>És ha mégsem nekünk való? Visszakapjuk a pénzt?</summary>
+        <p>
+          Ezért van a 7 napos ingyenes próba: előbb kipróbáljátok, és csak
+          utána fizettek. Ha már megrendeltétek, 14 napon belül elállhattok:
+          amíg nem kezdtük el beállítani az oldalt, a teljes összeget
+          visszatérítjük; ha a kérésetekre már elkezdtük, az addig elvégzett
+          résszel arányos díjat levonjuk. A részletek az
+          <a href="/aszf/#elallas">ÁSZF-ben</a> vannak.
+        </p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="fb-szakasz fb-zaras">
+  <div class="hatar">
+    <h2>Nézzétek meg, aztán döntsetek.</h2>
+    <p class="vezeto">
+      A minta oldal pont olyan, amilyen a tiétek lesz. Ha tetszik, egy hétig
+      a sajátotokon is kipróbálhatjátok.
+    </p>
+    <div class="fb-gombok">
+        <a href="https://minta.eskuszom.hu/?forras=fb" class="gomb gomb-fo" data-tovabb data-minta>
+          Megnézem a minta oldalt
+        </a>
+        <a href="/kiprobalom/?forras=fb" class="gomb gomb-halk" data-tovabb>
+          Kipróbálom 7 napig ingyen
+        </a>
+      </div>
+    <p class="fb-kapcsolat">
+      Kérdésetek van? <a href="tel:+36204087765">+36 20 408 7765</a>
+      · <a href="mailto:info@mmdigital.hu">info@mmdigital.hu</a>
+    </p>
+  </div>
+</section>
+
+<script>
+/* A hirdetés címkéi (utm_*, fbclid) mennek tovább a mintára és a próbára,
+   hogy ott is lássuk, honnan jött a látogató. A kódot eltesszük: ha
+   napokkal később rendel, a megrendelő már ezzel számol. */
+(function () {
+  var be = new URLSearchParams(location.search);
+  var tovabb = new URLSearchParams();
+  ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid"]
+    .forEach(function (k) { var v = be.get(k); if (v) tovabb.set(k, v.slice(0, 200)); });
+  try { localStorage.setItem("eskuszom-kod", "ESKUSZOM20"); } catch (e) { /* privát ablak */ }
+  document.querySelectorAll("[data-tovabb]").forEach(function (a) {
+    var u = new URL(a.getAttribute("href"), location.href);
+    tovabb.forEach(function (v, k) { u.searchParams.set(k, v); });
+    a.setAttribute("href", u.toString());
+  });
+})();
+</script>
+</main>
+
+<footer class="lablec">
+  <div class="hatar">
+    <div class="lablec-sor">
+      <a href="/" class="logo">Esk<em>ü</em>szöm</a>
+      <nav class="lablec-menu">
+        <a href="/mit-tud/">Mit tud</a>
+        <a href="/a-vendegeknek/">A vendégeknek</a>
+        <a href="/hogyan-megy/">Hogyan megy</a>
+          <a href="/tippek/">Tippek</a>
+        <a href="/ar/">Ár</a>
+        <a href="/kerdesek/">Kérdések</a>
+        <a href="/minta/">Minta oldal</a>
+        <a href="/eskuvoszervezoknek/">Esküvőszervezőknek</a>
+        <a href="/#kapcsolat">Kapcsolat</a>
+      </nav>
+    </div>
+      <div class="lablec-kapcsolat">
+        <a href="tel:+36204087765">+36 20 408 7765</a>
+        <a href="mailto:info@mmdigital.hu">info@mmdigital.hu</a>
+        <a href="/impresszum/">Impresszum</a>
+        <a href="/aszf/">ÁSZF</a>
+        <a href="/adatkezeles/">Adatkezelés</a>
+      </div>
+    <div class="lablec-also">
+      <span>&copy; <span id="ev">2026</span> Esküszöm — minden jog fenntartva</span>
+      <span>
+        Üzemelteti az
+        <a href="https://mmdigital.hu" target="_blank" rel="noopener">MM Digital</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script src="/suti.js?v=20261010"></script>
+</body>
+</html>

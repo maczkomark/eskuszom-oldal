@@ -112,6 +112,9 @@ const MINTAK = {
   emlekEvi: new RegExp(String.raw`évi ${SZAM} Ft-ért`, "g"),
   jsonAr: /"price": "\d+"/g,
   arDobozKezd: '<div class="ar-doboz uszo">',
+  // Az /fb/ lap jelölt helyei: a teljes (áthúzott) és a kódos ár
+  dataAlap: new RegExp(String.raw`(data-ar="alap">)${SZAM} Ft`, "g"),
+  dataKodos: new RegExp(String.raw`(data-ar="kodos">)${SZAM} Ft`, "g"),
 };
 
 /** A statikus HTML-be az aktuális árak. */
@@ -124,7 +127,10 @@ export function arakBeillesztese(html, a) {
     .replace(MINTAK.egyszeri, `Egyszeri ${ft(par.fizetendo)} Ft`)
     .replace(MINTAK.emlekEv, `${emlek} Ft/év`)
     .replace(MINTAK.emlekEvi, `évi ${emlek} Ft-ért`)
-    .replace(MINTAK.jsonAr, `"price": "${par.fizetendo}"`);
+    .replace(MINTAK.jsonAr, `"price": "${par.fizetendo}"`)
+    // A kódos ár a Stripe-ban beállított alapárból számol, nem az akciósból
+    .replace(MINTAK.dataAlap, `$1${ft(par.alap)} Ft`)
+    .replace(MINTAK.dataKodos, `$1${ft(kodosAr(par.alap))} Ft`);
 
   const szalag = akcioSzalag(par.akcio);
   if (szalag) s = s.replace(MINTAK.arDobozKezd, szalag + "\n    " + MINTAK.arDobozKezd);
