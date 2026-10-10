@@ -23,6 +23,30 @@ export const ALAPARAK = {
   kedvezmeny: 5000,
 };
 
+/**
+ * Kártyás fizetés: a Stripe fizetési linkje.
+ *
+ * FIGYELEM: a kártyás ár NEM innen és nem a vezérlőpultból jön, hanem
+ * magában a Stripe-ban van beállítva a linkhez. Ha a vezérlőpultban
+ * árat változtatsz, a Stripe-ban is át kell írni (vagy új linket kell
+ * csinálni), különben a lapon más ár szerepel, mint amit a kártyáról
+ * levonnak. Ugyanígy: a vezérlőpultban indított akció a kártyás
+ * fizetésre nem hat.
+ *
+ * A kód a hirdetésből érkezőké. A Stripe-ban él, lejárat nélkül; a
+ * linkhez fűzve a fizetési oldalon már beírva várja őket.
+ */
+export const STRIPE = {
+  link: "https://buy.stripe.com/7sYdR20aMaREefFfeV8Vi00",
+  kod: "ESKUSZOM20",
+  szazalek: 20,
+};
+
+/** A kódos ár — ugyanúgy kerekítve, ahogy a Stripe számolja. */
+export function kodosAr(alap) {
+  return Math.round((Number(alap) * (100 - STRIPE.szazalek)) / 100);
+}
+
 export async function arakLekeres() {
   try {
     const v = await fetch(`${ALAP}/api/eskuvo/arak`, {
@@ -258,8 +282,8 @@ export function oldal({ cim, leiras, fejlecek, tartalom, url, robots, og }) {
 ${megosztas({ cim, leiras, url, ...(og ?? {}) })}
 <link rel="stylesheet" href="/betuk/betuk.css">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="/stilus.css?v=20260921b">
-<script defer src="/pixel.js?v=20260921b"></script>
+<link rel="stylesheet" href="/stilus.css?v=20261010">
+<script defer src="/pixel.js?v=20261010"></script>
 <style>${STILUS}</style>
 ${fejlecek ?? ""}
 </head>
@@ -322,8 +346,8 @@ ${tartalom}
   </div>
 </footer>
 
-<script src="/script.js?v=20260921b"></script>
-<script src="/suti.js?v=20260921b"></script>
+<script src="/script.js?v=20261010"></script>
+<script src="/suti.js?v=20261010"></script>
 </body>
 </html>`;
 }

@@ -136,53 +136,53 @@ export async function onRequest(context) {
       </p>
     </div>
 
-    <!-- ── fizetés ──────────────────────────────────────────────────
-         Egyelőre CSAK banki átutalás. A bankkártyás fizetés elő van
-         készítve, de szándékosan nincs bekapcsolva: amíg nincs mögötte
-         szolgáltatói szerződés, nem ígérünk olyat, amit nem tudunk
-         teljesíteni. -->
+    <!-- ── fizetés ─────────────────────────────────────────────────────
+         Két út: kártya (Stripe) és átutalás. Mindkettő a /megrendeles/
+         oldalon indul: a kártyás fizetés előtt is ott kell elfogadni az
+         ÁSZF-et és kérni az azonnali kezdést — ezt nem bízzuk a Stripe-ra. -->
     <div class="fizetes uszo">
       <h3>Hogyan lehet fizetni?</h3>
       <div class="fizetes-modok">
         <div class="fizetes-mod aktiv">
           <div class="fizetes-ikon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-              <path d="M3 21h18M4 21V10l8-6 8 6v11M9 21v-6h6v6"/>
-            </svg>
-          </div>
-          <div>
-            <strong>Banki átutalás</strong>
-            <p>
-              Kitöltötök egy rövid megrendelőt, és rögtön megkapjátok a
-              számlaszámot meg a közleményt, amivel utalni tudtok. Előleg
-              nincs, kötbér nincs. Ha megérkezett az összeg, szólunk, küldjük
-              a számlát, és két napon belül él az oldalatok.
-            </p>
-            <p class="fizetes-lepesek">
-              <span>1. Megrendelés</span>
-              <span>2. Utalás</span>
-              <span>3. Két nap, és kész</span>
-            </p>
-          </div>
-        </div>
-
-        <div class="fizetes-mod hamarosan">
-          <div class="fizetes-ikon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
               <rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/>
             </svg>
           </div>
           <div>
-            <strong>Bankkártya <span class="cimke-hamarosan">hamarosan</span></strong>
+            <strong>Bankkártyával</strong>
             <p>
-              A kártyás fizetést most készítjük elő. Amint él, itt is
-              választható lesz — addig az átutalás marad.
+              Egy perc, a Stripe biztonságos fizetési oldalán — Apple Pay és
+              Google Pay is működik. A kártyaadatok hozzánk nem jutnak el.
+              Utána 24 órán belül jelentkezünk e-mailben, és együtt beállítjuk
+              az oldalatokat.
+            </p>
+            <p class="fizetes-lepesek">
+              <span>1. Fizetés</span>
+              <span>2. Jelentkezünk</span>
+              <span>3. Él az oldalatok</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="fizetes-mod">
+          <div class="fizetes-ikon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M3 21h18M4 21V10l8-6 8 6v11M9 21v-6h6v6"/>
+            </svg>
+          </div>
+          <div>
+            <strong>Banki átutalással</strong>
+            <p>
+              Kitöltötök egy rövid megrendelőt, és rögtön megkapjátok a
+              számlaszámot meg a közleményt. Előleg nincs, kötbér nincs. Ha
+              megérkezett az összeg, két napon belül él az oldalatok.
             </p>
           </div>
         </div>
       </div>
       <p class="fizetes-apro">
-        Számlát minden esetben adunk. Magánszemélyként és cégként is fizethettek.
+        Számlát minden esetben adunk, e-mailben. Magánszemélyként és cégként is fizethettek.
       </p>
       <div class="fizetes-gomb">
         <a href="/megrendeles/" class="gomb gomb-fo">Megrendelem</a>

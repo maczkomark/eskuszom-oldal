@@ -41,10 +41,18 @@ a külső szolgáltató elszáll, az oldal attól még hibátlanul működik.
 
 ## Fizetés
 
-Egyelőre **csak banki átutalás**. A bankkártyás rész az oldalon látszik,
-de „hamarosan" jelöléssel — nem ígérünk olyat, ami még nincs mögötte.
-Bekapcsoláshoz az `index.html`-ben a `fizetes-mod hamarosan` osztályt kell
-`fizetes-mod aktiv`-ra cserélni, és megírni a fizetési folyamatot.
+Két út, mindkettő a `/megrendeles/` oldalon indul (`functions/megrendeles/[[ut]].js`):
+
+- **Kártya (Stripe fizetési link)** — az elsődleges. Előtte a mi oldalunkon
+  kell bepipálni az ÁSZF-et és az azonnali kezdés kérését; ezt egy
+  véletlen azonosítóval elküldjük a vezérlőpultnak, és ugyanez az azonosító
+  megy a Stripe-nak is (`client_reference_id`). A link és a hirdetési kód
+  (`ESKUSZOM20`) a `functions/_kozos.js` → `STRIPE` alatt van.
+  **A kártyás ár a Stripe-ban van beállítva**, nem a vezérlőpultban: ha ott
+  árat változtatsz, a Stripe-ban is át kell írni.
+- **Banki átutalás** — változatlan: megrendelő, közlemény, állapotlap.
+
+Sikeres kártyás fizetés után a Stripe a `/koszonjuk/` oldalra visz.
 
 ## Ami nem itt van
 

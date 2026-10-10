@@ -1,10 +1,21 @@
-// /megrendeles/ és /megrendeles/<token>/ — megrendelés és utalás.
+// /megrendeles/ és /megrendeles/<token>/ — megrendelés, kártya vagy utalás.
 //
-// Kártyás fizetés még nincs, ezért az átutalást vezetjük végig rendesen:
-// a pár megrendel, kap egy közleményt, elutalja, jelzi, mi igazoljuk.
-// A legfontosabb, hogy egy pillanatra se érezze úgy, hogy elküldött egy
-// űrlapot a semmibe — ezért van saját állapotlapja, amit bármikor megnyithat.
-import { ALAP, ALAPARAK, arakLekeres, ki, oldal, hibaOldal } from "../_kozos.js";
+// Két út van, és a kártya az elsődleges:
+//
+//   1. Kártya (Stripe). Itt csak a két kötelező jelölőnégyzet van — ÁSZF
+//      és az azonnali kezdés kérése —, utána a Stripe fizetési oldala jön.
+//      A jelölést NEM a Stripe-ra bízzuk: a fogyasztónak a mi oldalunkon
+//      kell kifejezetten kérnie az azonnali kezdést, különben az elállási
+//      joga nem szűnik meg (45/2014. Korm. r. 29. § (1) a)).
+//   2. Átutalás. A pár megrendel, kap egy közleményt, elutalja, jelzi, mi
+//      igazoljuk. A legfontosabb, hogy egy pillanatra se érezze úgy, hogy
+//      elküldött egy űrlapot a semmibe — ezért van saját állapotlapja.
+import {
+  ALAP, ALAPARAK, STRIPE, arakLekeres, kodosAr, ki, oldal, hibaOldal,
+} from "../_kozos.js";
+
+/** Az ÁSZF hatálybalépése — a kártyás elfogadás mellé ezt jegyezzük fel. */
+const ASZF_VALTOZAT = "2026-10-10";
 
 /** 45000 → „45 000 Ft" */
 function ft(n) {
@@ -118,6 +129,43 @@ const STILUS = `
                  font-size: .82rem; padding: .4rem .9rem; border-radius: 999px;
                  background: var(--papir-melyebb); color: var(--tinta-lagy); }
   .allapot-jel.kesz { background: #eaf3ec; color: #3f7a4f; }
+
+  /* ── kártya: az elsődleges út ── */
+  .kartya-doboz { border-color: var(--mauve-vilagos);
+                  box-shadow: 0 0 0 3px rgba(140, 107, 116, .07); }
+  .kartya-doboz .ar-sor { margin-top: 0; border-top: 0; padding-top: 0;
+                          flex-wrap: wrap; row-gap: .3rem; }
+  .kartya-doboz .osszeg { white-space: nowrap; }
+  .kartya-doboz .osszeg s { font-size: 1.25rem; color: var(--tinta-halvany);
+                            margin-right: .5rem; text-decoration-thickness: 1px; }
+  .kod-jelzes { font-size: .86rem; color: #3f7a4f; background: #eef6f0;
+                border: 1px solid #d3e6d8; border-radius: 10px;
+                padding: .6rem .85rem; margin-top: .2rem; }
+  .kartya-megjegyzes { font-size: .84rem; color: var(--tinta-lagy); margin-top: .7rem;
+                       line-height: 1.6; }
+  .kartya-megjegyzes:empty { display: none; }
+  .kartya-gomb { width: 100%; justify-content: center; margin-top: 1.2rem;
+                 font-size: 1.02rem; padding-block: 1.05rem; }
+  .kartya-gomb.var { opacity: .75; pointer-events: none; }
+  .fizetes-jelek { display: flex; flex-wrap: wrap; justify-content: center;
+                   gap: .35rem 1.1rem; margin-top: .9rem; font-size: .8rem;
+                   color: var(--tinta-halvany); }
+  .fizetes-jelek span { white-space: nowrap; }
+  .kartya-utana { font-size: .84rem; color: var(--tinta-lagy); text-align: center;
+                  margin-top: .9rem; line-height: 1.6; }
+
+  /* ── átutalás: a második út, összecsukva ── */
+  .atutalas { padding: 0; }
+  .atutalas > summary { list-style: none; cursor: pointer;
+                        padding: clamp(1.1rem, 3vw, 1.5rem) clamp(1.4rem, 4vw, 2.2rem);
+                        display: flex; align-items: center; gap: 1rem; }
+  .atutalas > summary::-webkit-details-marker { display: none; }
+  .atutalas > summary strong { display: block; font-weight: 500; }
+  .atutalas > summary .sugo { display: block; }
+  .atutalas > summary::after { content: "+"; margin-left: auto; font-size: 1.4rem;
+                               color: var(--mauve); line-height: 1; }
+  .atutalas[open] > summary::after { content: "–"; }
+  .atutalas form { padding: 0 clamp(1.4rem, 4vw, 2.2rem) clamp(1.4rem, 4vw, 2.2rem); }
 `;
 
 /* ═══════════════════════════════════════════════ a megrendelő ═══ */
@@ -126,14 +174,21 @@ const STILUS = `
  * A megrendelő űrlap — a pároknak. Az esküvőszervező cégek nem itt
  * rendelnek, hanem ajánlatot kérnek (/eskuvoszervezoknek/#ajanlat).
  */
-function urlapOldal(arak) {
+function urlapOldal(arak, kerdes) {
   const csomag = arak.par ?? ALAPARAK.par;
   const osszeg = csomag.fizetendo ?? csomag.alap;
 
+  // Kártyán a Stripe-ban beállított ár megy, ami az alapár — a vezérlőpulti
+  // akció oda nem ér el. A kódos változat a hirdetésből érkezőké.
+  const kartyaAr = csomag.alap;
+  const kartyaKodos = kodosAr(kartyaAr);
+  const kodosan = String(kerdes.get("kod") ?? "").trim().toUpperCase() === STRIPE.kod;
+  const surgos = arak.surgos ?? ALAPARAK.surgos;
+
   return oldal({
     cim: "Megrendelés – Esküszöm esküvői weboldal",
-    leiras: `Rendeljétek meg az esküvői weboldalatokat: egyszeri ${ft(osszeg)}, `
-      + "banki átutalással. Két nap alatt kész, havidíj nincs.",
+    leiras: `Rendeljétek meg az esküvői weboldalatokat: egyszeri ${ft(kartyaAr)}, `
+      + "bankkártyával vagy átutalással. Havidíj nincs.",
     url: "https://eskuszom.hu/megrendeles/",
     robots: "noindex, follow",
     fejlecek: `<style>${STILUS}</style>`,
@@ -145,12 +200,89 @@ function urlapOldal(arak) {
         <div class="folcim">Megrendelés</div>
         <h1>Kezdjük el.</h1>
         <p class="vezeto">
-          Néhány adat, és küldjük az utalási adatokat. Előleg nincs, kötbér nincs:
-          ha megérkezett az összeg, két napon belül él az oldalatok.
+          Kártyával egy perc. Utána 24 órán belül jelentkezünk e-mailben, és
+          együtt beállítjuk az oldalatokat. Havidíj nincs, előleg nincs.
         </p>
       </div>
 
-      <form id="rendeles" class="doboz" novalidate>
+      <!-- ── kártya ──────────────────────────────────────────────────
+           A két jelölőnégyzet NÁLUNK van, nem a Stripe-on: az azonnali
+           kezdést a fogyasztónak kifejezetten kérnie kell, és ezt nekünk
+           kell tudnunk bizonyítani. A jelölést egy azonosítóval elküldjük
+           a vezérlőpultnak, és ugyanezt az azonosítót kapja meg a Stripe
+           (client_reference_id) — így a fizetés és az elfogadás összeköthető. -->
+      <div class="doboz kartya-doboz" id="kartya">
+        <div class="ar-sor">
+          <div>
+            <strong>Esküvői weboldal</strong>
+            <div class="sugo">Egyszeri díj · nincs havidíj · nincs létszámkorlát</div>
+          </div>
+          <div class="osszeg" id="kartya-osszeg"
+               data-teljes="${kartyaAr}" data-kodos="${kartyaKodos}">${kodosan
+            ? `<s>${ft(kartyaAr)}</s>${ft(kartyaKodos)}`
+            : ft(kartyaAr)}</div>
+        </div>
+        <p class="kod-jelzes" id="kod-jelzes"${kodosan ? "" : " hidden"}>
+          A ${STRIPE.kod} kóddal ${STRIPE.szazalek}% kedvezmény jár — a fizetési
+          oldalon már beírva vár.
+        </p>
+        <p class="kartya-megjegyzes" id="kartya-megjegyzes">${
+          (surgos.felar ?? 0) > 0
+            ? `Ha az esküvő ${surgos.nap} napon belül lesz, ${ft(surgos.felar)} sürgősségi
+          felár jár — ezt a kártyás fizetés nem számolja, ezért ilyenkor lent,
+          átutalással rendeljetek.`
+            : ""}${csomag.fizetendo < csomag.alap
+            ? ` A most futó akció kedvezményét átutalásnál tudjuk érvényesíteni.`
+            : ""}</p>
+
+        <div class="jogi-elfogadas">
+          <label class="jelolo">
+            <input type="checkbox" id="k-aszf">
+            <span>
+              Elolvastam és elfogadom az
+              <a href="/aszf/" target="_blank" rel="noopener">általános szerződési feltételeket</a>
+              — ideértve az
+              <a href="/aszf/#adatfeldolgozoi" target="_blank" rel="noopener">adatfeldolgozói
+              feltételeket</a> is, amelyek a vendégeitek adataira vonatkoznak —
+              és az
+              <a href="/adatkezeles/" target="_blank" rel="noopener">adatkezelési tájékoztatót</a>.
+            </span>
+          </label>
+          <label class="jelolo">
+            <input type="checkbox" id="k-azonnali">
+            <span>
+              Kérem, hogy az oldal beállítását a fizetés után azonnal kezdjétek el,
+              a 14 napos elállási határidő letelte előtt. Tudomásul veszem, hogy a
+              szolgáltatás teljesítése után az elállási jogom megszűnik.
+            </span>
+          </label>
+        </div>
+
+        <a href="${STRIPE.link}${kodosan ? `?prefilled_promo_code=${STRIPE.kod}` : ""}"
+           class="gomb gomb-fo kartya-gomb" id="kartya-gomb">Fizetés kártyával</a>
+        <div class="urlap-hiba" id="kartya-hiba" role="alert"></div>
+
+        <p class="fizetes-jelek">
+          <span>Bankkártya</span><span>Apple Pay</span><span>Google Pay</span>
+        </p>
+        <p class="kartya-utana">
+          A fizetés a Stripe biztonságos oldalán történik, a kártyaadatok hozzánk
+          nem jutnak el. A számlát e-mailben küldjük. Utána 24 órán belül
+          jelentkezünk e-mailben, hogy beállítsuk az oldalatokat.
+        </p>
+      </div>
+
+      <!-- ── átutalás: ugyanúgy működik, mint eddig, csak másodlagos ── -->
+      <details class="doboz atutalas" id="atutalas">
+        <summary>
+          <span>
+            <strong>Inkább átutalással fizetnétek?</strong>
+            <span class="sugo">Kitöltötök egy rövid megrendelőt, és rögtön megkapjátok
+            a számlaszámot meg a közleményt.</span>
+          </span>
+        </summary>
+
+      <form id="rendeles" novalidate>
         <div class="csoport">
           <h2>Rólatok</h2>
           <p class="halk">Ez kerül majd az oldalatokra — később bármit átírhattok.</p>
@@ -294,11 +426,108 @@ function urlapOldal(arak) {
           a számlaszámot és a közleményt, amivel utalni tudtok.
         </p>
       </form>
+      </details>
+
+      <p class="sugo" style="margin-top:1.4rem;text-align:center">
+        Kérdésetek van? Hívjatok: <a href="tel:+36204087765">+36 20 408 7765</a>
+        · <a href="mailto:info@mmdigital.hu">info@mmdigital.hu</a>
+      </p>
     </div>
   </div>
 </section>
 
 <script>
+/* ── kártya ── */
+(function () {
+  var STRIPE = ${JSON.stringify(STRIPE.link)};
+  var KOD = ${JSON.stringify(STRIPE.kod)};
+  var gomb = document.getElementById("kartya-gomb");
+  var hiba = document.getElementById("kartya-hiba");
+  var aszf = document.getElementById("k-aszf");
+  var azonnali = document.getElementById("k-azonnali");
+  var osszegDoboz = document.getElementById("kartya-osszeg");
+  var TELJES = Number(osszegDoboz.dataset.teljes);
+  var KODOS = Number(osszegDoboz.dataset.kodos);
+
+  function forint(n) { return n.toLocaleString("hu-HU") + " Ft"; }
+
+  /* A hirdetésből érkezők kódja: a címben (?kod=) vagy amit az /fb/ oldal
+     eltett. Más kódot (pl. egy esküvői oldal aljáról) a Stripe nem ismer —
+     azt átutalásnál tudjuk beváltani, és ezt meg is mondjuk. */
+  var kod = "";
+  try {
+    kod = (new URLSearchParams(location.search).get("kod")
+           || localStorage.getItem("eskuszom-kod") || "").trim().toUpperCase();
+  } catch (e) { /* privát ablakban nincs tároló */ }
+  var kodos = kod === KOD;
+
+  if (kodos) {
+    osszegDoboz.innerHTML = "<s>" + forint(TELJES) + "</s>" + forint(KODOS);
+    document.getElementById("kod-jelzes").hidden = false;
+  } else if (kod) {
+    var m = document.getElementById("kartya-megjegyzes");
+    var p = document.createElement("span");
+    p.textContent = " A(z) " + kod + " kedvezménykódot átutalásnál tudjuk beváltani — lent.";
+    m.appendChild(p);
+  }
+
+  function visszaallit() {
+    gomb.classList.remove("var");
+    gomb.textContent = "Fizetés kártyával";
+  }
+  // Ha a Stripe-ról a Vissza gombbal jönnek, a lap a gyorsítótárból
+  // töltődik be — a gomb ne maradjon „átirányítunk" állapotban.
+  window.addEventListener("pageshow", visszaallit);
+
+  gomb.addEventListener("click", function (e) {
+    e.preventDefault();
+    hiba.textContent = "";
+    if (!aszf.checked || !azonnali.checked) {
+      hiba.textContent = !aszf.checked
+        ? "Kérjük, fogadjátok el az ÁSZF-et és az adatkezelési tájékoztatót — enélkül nem indulhat a fizetés."
+        : "Kérjük, jelöljétek be, hogy az oldal beállítását a fizetés után azonnal kezdhetjük.";
+      (!aszf.checked ? aszf : azonnali).focus();
+      return;
+    }
+
+    // Egy azonosító a fizetéshez. Nem személyes adat: véletlen szám, ami
+    // a Stripe-ban is megjelenik a fizetés mellett.
+    var azon = "esk-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 10);
+    var ertek = kodos ? KODOS : TELJES;
+    var cel = STRIPE + "?" + (kodos ? "prefilled_promo_code=" + KOD + "&" : "")
+            + "client_reference_id=" + azon;
+
+    // Az elfogadás feljegyzése. text/plain, hogy ne kelljen előzetes CORS-kérés,
+    // és keepalive, hogy az átirányítás ne vágja el. Ha nem megy át, a
+    // fizetést nem tartjuk fel miatta.
+    try {
+      fetch("${ALAP}/api/eskuvo/kartya-elfogadas", {
+        method: "POST", keepalive: true,
+        headers: { "Content-Type": "text/plain" },
+        body: JSON.stringify({
+          azon: azon, aszf: true, azonnali: true, aszf_valtozat: "${ASZF_VALTOZAT}",
+          kod: kodos ? KOD : "", osszeg: ertek,
+        }),
+      }).catch(function () {});
+    } catch (err) { /* régi böngésző */ }
+
+    // A mérőnek (pixel.js) — ő dönti el, mérhet-e.
+    try {
+      window.dispatchEvent(new CustomEvent("eskuszom:fizetes", {
+        detail: { ertek: ertek, azon: azon, kodos: kodos },
+      }));
+    } catch (err) { /* régi böngésző */ }
+
+    gomb.classList.add("var");
+    gomb.textContent = "Átirányítunk a fizetéshez…";
+    setTimeout(function () { location.href = cel; }, 300);
+  });
+
+  // Aki átutalást keres (#atutalas), annak nyissuk ki
+  if (location.hash === "#atutalas") document.getElementById("atutalas").open = true;
+})();
+
+/* ── átutalás ── */
 (function () {
   var urlap = document.getElementById("rendeles");
   var gomb = document.getElementById("kuldes");
@@ -595,11 +824,12 @@ export async function onRequest({ params, request }) {
   // A megrendelő űrlap. A régi szervezői link az ajánlatkérőre visz:
   // a cégeknek nincs kiírt ár.
   if (reszek.length === 0) {
-    if (new URL(request.url).searchParams.get("tipus") === "szervezo") {
+    const kerdes = new URL(request.url).searchParams;
+    if (kerdes.get("tipus") === "szervezo") {
       return Response.redirect(new URL("/eskuvoszervezoknek/#ajanlat", request.url), 302);
     }
     const arak = await arakLekeres();
-    return new Response(urlapOldal(arak), {
+    return new Response(urlapOldal(arak, kerdes), {
       headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" },
     });
   }

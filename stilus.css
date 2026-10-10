@@ -406,8 +406,8 @@ section { padding: clamp(4rem, 9vw, 7rem) 0; }
 .funkcio p { font-size: .93rem; color: var(--tinta-lagy); margin: 0; }
 
 /* ── fizetés ────────────────────────────────────────────────────────
-   Egyelőre csak átutalás. A kártyás mód halványan látszik „hamarosan"
-   jelöléssel — így nem ígérünk olyat, amit még nem tudunk. */
+   Két út: kártya (Stripe, kiemelve) és átutalás. Mindkettő a
+   /megrendeles/ oldalon indul. */
 
 .fizetes {
   max-width: 660px;
@@ -431,7 +431,6 @@ section { padding: clamp(4rem, 9vw, 7rem) 0; }
   padding: 1.3rem 1.4rem;
 }
 .fizetes-mod.aktiv { border-color: var(--mauve); box-shadow: 0 0 0 3px rgba(140, 107, 116, .09); }
-.fizetes-mod.hamarosan { opacity: .62; }
 .fizetes-ikon {
   width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0;
   display: grid; place-items: center;
@@ -440,18 +439,6 @@ section { padding: clamp(4rem, 9vw, 7rem) 0; }
 }
 .fizetes-mod strong { display: block; font-size: .98rem; margin-bottom: .3rem; }
 .fizetes-mod p { font-size: .87rem; color: var(--tinta-lagy); margin: 0; }
-.cimke-hamarosan {
-  display: inline-block;
-  font-size: .62rem;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  background: var(--papir-melyebb);
-  color: var(--tinta-halvany);
-  border-radius: 999px;
-  padding: .18rem .55rem;
-  margin-left: .4rem;
-  vertical-align: middle;
-}
 .fizetes-apro {
   margin-top: 1.2rem;
   font-size: .82rem;
@@ -958,6 +945,10 @@ section { padding: clamp(4rem, 9vw, 7rem) 0; }
   transition: color .2s ease;
 }
 .lablec-kapcsolat a:hover { color: var(--mauve); }
+/* A sötét láblécben a fenti színek szinte eltűnnek: ott világos kell. */
+.lablec .lablec-kapcsolat { border-top-color: rgba(255, 255, 255, .1); }
+.lablec .lablec-kapcsolat a { color: rgba(255, 255, 255, .72); }
+.lablec .lablec-kapcsolat a:hover { color: #fff; }
 
 /* ═══════════════════════════════════════════════════ süti-sáv */
 
