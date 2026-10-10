@@ -207,11 +207,42 @@ const STILUS = `
   .tipp .mikor { color: var(--tinta-halvany); font-size: .76rem; margin-top: .8rem; }
 `;
 
+/** A megosztási kép — minden lapon ez, hacsak egy cikknek nincs sajátja. */
+export const OG_KEP = "https://eskuszom.hu/og-kep.png";
+
+/**
+ * Megosztási címkék (Facebook, Messenger, Viber, X).
+ *
+ * Minden lapon ugyanabból a függvényből jönnek, hogy egy képcsere ne
+ * maradjon le egyik oldalról sem. A méretet csak a saját képünkhöz írjuk
+ * ki: egy cikk képének nem tudjuk a méretét, és a rossz méret rosszabb,
+ * mint a hiányzó.
+ */
+function megosztas({ tipus = "website", cim, leiras, kep, url }) {
+  const sajat = !kep || kep === OG_KEP;
+  const k = kep || OG_KEP;
+  return `<meta property="og:type" content="${ki(tipus)}">
+<meta property="og:site_name" content="Esküszöm">
+<meta property="og:locale" content="hu_HU">
+<meta property="og:url" content="${ki(url)}">
+<meta property="og:title" content="${ki(cim)}">
+${leiras ? `<meta property="og:description" content="${ki(leiras)}">\n` : ""}<meta property="og:image" content="${ki(k)}">
+${sajat ? `<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Esküszöm — esküvői weboldal pároknak: vendéglista, QR-kódos meghívó, ültetésrend">
+` : ""}<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${ki(cim)}">
+${leiras ? `<meta name="twitter:description" content="${ki(leiras)}">\n` : ""}<meta name="twitter:image" content="${ki(k)}">`;
+}
+
 /**
  * A teljes oldal köré ugyanaz a keret, mint a hirdető oldalon: azonos
  * fejléc, betűk és lábléc, hogy ne érződjön külön világnak.
+ *
+ * Az `og` a megosztási címkéket írja felül (pl. egy cikk saját címe és
+ * képe); ha nincs megadva, a lap címe és leírása megy ki.
  */
-export function oldal({ cim, leiras, fejlecek, tartalom, url, robots }) {
+export function oldal({ cim, leiras, fejlecek, tartalom, url, robots, og }) {
   return `<!doctype html>
 <html lang="hu">
 <head>
@@ -224,9 +255,7 @@ export function oldal({ cim, leiras, fejlecek, tartalom, url, robots }) {
 <!-- A megrendelés és a hibaoldalak felülírják: két robots-címke egy lapon
      zavaros, ezért itt csak egy van, és az oldal mondja meg, mi legyen. -->
 <meta name="robots" content="${ki(robots || "index, follow, max-snippet:-1, max-image-preview:large")}">
-<meta property="og:site_name" content="Esküszöm">
-<meta property="og:locale" content="hu_HU">
-<meta property="og:url" content="${ki(url)}">
+${megosztas({ cim, leiras, url, ...(og ?? {}) })}
 <link rel="stylesheet" href="/betuk/betuk.css">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/stilus.css?v=20260921b">

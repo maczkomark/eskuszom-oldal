@@ -77,10 +77,8 @@ function listaOldal(cikkek) {
     leiras: "Gyakorlati tippek esküvőszervezéshez: vendéglista, meghívó, "
           + "ültetésrend, program és időzítés — abból, amit valódi esküvőkön láttunk.",
     url: "https://eskuszom.hu/tippek/",
-    fejlecek: `<meta property="og:type" content="website">
-<meta property="og:title" content="Esküvőszervezési tippek — Esküszöm">
-<meta property="og:image" content="https://eskuszom.hu/og-kep.png">
-<script type="application/ld+json">${JSON.stringify({
+    og: { cim: "Esküvőszervezési tippek — Esküszöm" },
+    fejlecek: `<script type="application/ld+json">${JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Blog",
       "@id": "https://eskuszom.hu/tippek/#blog",
@@ -139,11 +137,11 @@ function cikkOldal(c, torzs) {
     cim: `${c.title} | Esküszöm`,
     leiras: c.lead || `${c.title} — esküvőszervezési tipp az Esküszömtől.`,
     url,
-    fejlecek: `<meta property="og:type" content="article">
-<meta property="og:title" content="${ki(c.title)}">
-${c.lead ? `<meta property="og:description" content="${ki(c.lead)}">` : ""}
-<meta property="og:image" content="${ki(c.kep || "https://eskuszom.hu/og-kep.png")}">
-<script type="application/ld+json">${JSON.stringify({
+    og: {
+      tipus: "article", cim: c.title, kep: c.kep || undefined,
+      ...(c.lead ? { leiras: c.lead } : {}),
+    },
+    fejlecek: `<script type="application/ld+json">${JSON.stringify({
       "@context": "https://schema.org",
       "@type": "BlogPosting",
       headline: c.title,
