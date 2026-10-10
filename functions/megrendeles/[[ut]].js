@@ -17,7 +17,7 @@ import {
 /** Az ÁSZF hatálybalépése — a kártyás elfogadás mellé ezt jegyezzük fel. */
 const ASZF_VALTOZAT = "2026-10-10";
 
-/** 45000 → „45 000 Ft" */
+/** 49990 → „49 990 Ft" */
 function ft(n) {
   return Number(n ?? 0).toLocaleString("hu-HU") + " Ft";
 }

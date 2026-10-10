@@ -61,7 +61,7 @@ export async function arakLekeres() {
   }
 }
 
-/** 45000 → „45 000" */
+/** 49990 → „49 990" */
 export function ft(n) {
   return Number(n ?? 0).toLocaleString("hu-HU");
 }
