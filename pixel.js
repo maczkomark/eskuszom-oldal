@@ -29,7 +29,7 @@
 //   InitiateCheckout  amikor a /megrendeles lapról elindul a kártyás fizetés
 //   Purchase          a /koszonjuk lapon, fizetésenként egyszer
 //   StartTrial        az önkiszolgáló próba sikeres kérésekor (érték: 0)
-//   Lead              a kapcsolati űrlap (főoldal, /fb/) és a próbakérés sikerekor
+//   Lead              a kapcsolati űrlap (főoldal, /fb40/, /fb20/) és a próbakérés sikerekor
 //   Contact           telefon- vagy e-mail-linkre kattintáskor
 // Személyes adat (név, e-mail, telefon) egyikben sincs, se nyersen, se hashelve.
 (function () {

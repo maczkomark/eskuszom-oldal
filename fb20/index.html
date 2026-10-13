@@ -4,16 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Esküvői weboldal — nézzétek meg, próbáljátok ki | Esküszöm</title>
-<meta name="description" content="Esküvői weboldal, ahol minden vendég QR-kóddal visszajelez, menüt választ és látja, hova ül. Bevezető ár az első 10 párnak: −40%.">
+<meta name="description" content="Esküvői weboldal, ahol minden vendég QR-kóddal visszajelez, menüt választ és látja, hova ül. −20% az ESKUSZOM20 kóddal.">
 <meta name="theme-color" content="#8c6b74">
-<link rel="canonical" href="https://eskuszom.hu/fb/">
+<link rel="canonical" href="https://eskuszom.hu/fb20/">
 <meta name="robots" content="noindex, nofollow">
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Esküszöm">
 <meta property="og:title" content="Esküvői weboldal — nézzétek meg, próbáljátok ki | Esküszöm">
-<meta property="og:description" content="Esküvői weboldal, ahol minden vendég QR-kóddal visszajelez, menüt választ és látja, hova ül. Bevezető ár az első 10 párnak: −40%.">
-<meta property="og:url" content="https://eskuszom.hu/fb/">
+<meta property="og:description" content="Esküvői weboldal, ahol minden vendég QR-kóddal visszajelez, menüt választ és látja, hova ül. −20% az ESKUSZOM20 kóddal.">
+<meta property="og:url" content="https://eskuszom.hu/fb20/">
 <meta property="og:locale" content="hu_HU">
 <meta property="og:image" content="https://eskuszom.hu/og-kep.png">
 <meta property="og:image:width" content="1200">
@@ -21,7 +21,7 @@
 <meta property="og:image:alt" content="Esküszöm — esküvői weboldal pároknak: vendéglista, QR-kódos meghívó, ültetésrend">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Esküvői weboldal — nézzétek meg, próbáljátok ki | Esküszöm">
-<meta name="twitter:description" content="Esküvői weboldal, ahol minden vendég QR-kóddal visszajelez, menüt választ és látja, hova ül. Bevezető ár az első 10 párnak: −40%.">
+<meta name="twitter:description" content="Esküvői weboldal, ahol minden vendég QR-kóddal visszajelez, menüt választ és látja, hova ül. −20% az ESKUSZOM20 kóddal.">
 <meta name="twitter:image" content="https://eskuszom.hu/og-kep.png">
 
 <link rel="stylesheet" href="/betuk/betuk.css">
@@ -54,6 +54,20 @@
   .fb-ar strong { font-family: var(--serif); font-weight: 500; color: var(--mauve);
                   font-size: clamp(2.1rem, 8vw, 2.6rem); line-height: 1.1; }
   .fb-ar-apro { font-size: .8rem; color: var(--tinta-halvany); }
+  /* Kupon-jelvény (csak a /fb40/-en): lassú pulzálás, nem gyors villogás —
+     a 3/mp feletti villanás rohamot válthat ki. Mozgáscsökkentésnél áll. */
+  .fb-kupon { display: inline-flex; align-items: center; gap: .45rem; margin-bottom: .45rem;
+              font-size: .78rem; font-weight: 600; color: #9b2c2c; background: #fdeeee;
+              border: 1px solid #f3c9c9; border-radius: 999px; padding: .28rem .75rem; }
+  .fb-kupon::before { content: ""; width: .5rem; height: .5rem; border-radius: 50%;
+                      background: #c53030; flex: none; }
+  @media (prefers-reduced-motion: no-preference) {
+    .fb-kupon { animation: fb-kupon-fenyl 1.6s ease-in-out infinite; }
+    .fb-kupon::before { animation: fb-kupon-pont 1.6s ease-in-out infinite; }
+  }
+  @keyframes fb-kupon-fenyl { 0%, 100% { box-shadow: 0 0 0 0 rgba(197,48,48,0); }
+                              50% { box-shadow: 0 0 0 6px rgba(197,48,48,.16); } }
+  @keyframes fb-kupon-pont { 0%, 100% { opacity: 1; } 50% { opacity: .2; } }
 
   .fb-gombok { display: flex; flex-direction: column; gap: .55rem; max-width: 360px; margin: 0 auto; }
   @media (min-width: 900px) { .fb-hos .fb-gombok { margin-left: 0; } }
@@ -168,16 +182,17 @@
       </p>
 
       <div class="fb-ajanlat">
-        <span class="cimke">Bevezető ár · az első 10 párnak −40%</span>
+        
+        <span class="cimke">Hirdetési kedvezmény · −20%</span>
         <div class="fb-ar">
-          <strong data-ar="kodos">29 994 Ft</strong>
+          <strong data-ar="kodos-20">39 992 Ft</strong>
           <s data-ar="alap">49 990 Ft</s>
         </div>
-        <span class="fb-ar-apro">egyszeri díj · havidíj nincs · ESKUSZOM40 kóddal</span>
+        <span class="fb-ar-apro">egyszeri díj · havidíj nincs · ESKUSZOM20 kóddal</span>
       </div>
 
       <div class="fb-gombok">
-        <a href="https://minta.eskuszom.hu/?forras=fb" class="gomb gomb-fo" data-tovabb data-minta>
+        <a href="https://minta.eskuszom.hu/?forras=fb20" class="gomb gomb-fo" data-tovabb data-minta>
           Megnézem a minta oldalt
         </a>
         <a href="/megrendeles/" class="gomb fb-vasarlas" data-tovabb>
@@ -380,7 +395,7 @@
     <h2>Nézzétek meg, aztán döntsetek.</h2>
     <p class="alcim">A minta oldal pont olyan, amilyen a tiétek lesz.</p>
     <div class="fb-gombok">
-        <a href="https://minta.eskuszom.hu/?forras=fb" class="gomb gomb-fo" data-tovabb data-minta>
+        <a href="https://minta.eskuszom.hu/?forras=fb20" class="gomb gomb-fo" data-tovabb data-minta>
           Megnézem a minta oldalt
         </a>
         <a href="/megrendeles/" class="gomb fb-vasarlas" data-tovabb>
@@ -442,7 +457,7 @@
       var v = await fetch("https://adminsite.mmdigital.hu/api/eskuvo/megkereses", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ couple_names: nev, email: email, phone: telefon,
-          message: (uzenet || "Kérdés az /fb/ oldalról.") + forras, honeypot: mez }),
+          message: (uzenet || "Kérdés az /fb20/ oldalról.") + forras, honeypot: mez }),
       });
       var j = await v.json().catch(function () { return {}; });
       if (!v.ok || j.ok === false) throw new Error(j.hiba || "");
