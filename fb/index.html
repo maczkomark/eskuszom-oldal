@@ -180,8 +180,8 @@
         <a href="https://minta.eskuszom.hu/?forras=fb" class="gomb gomb-fo" data-tovabb data-minta>
           Megnézem a minta oldalt
         </a>
-        <a href="/megrendeles/?kod=ESKUSZOM40" class="gomb fb-vasarlas" data-tovabb>
-          <span>Megrendelem — <strong data-ar="kodos">29 994 Ft</strong></span>
+        <a href="/megrendeles/" class="gomb fb-vasarlas" data-tovabb>
+          <span>Megrendelem</span>
         </a>
         <a href="/kiprobalom/?forras=fb" class="gomb gomb-halk" data-tovabb>
           Kipróbálom 7 napig ingyen
@@ -383,8 +383,8 @@
         <a href="https://minta.eskuszom.hu/?forras=fb" class="gomb gomb-fo" data-tovabb data-minta>
           Megnézem a minta oldalt
         </a>
-        <a href="/megrendeles/?kod=ESKUSZOM40" class="gomb fb-vasarlas" data-tovabb>
-          <span>Megrendelem — <strong data-ar="kodos">29 994 Ft</strong></span>
+        <a href="/megrendeles/" class="gomb fb-vasarlas" data-tovabb>
+          <span>Megrendelem</span>
         </a>
         <a href="/kiprobalom/?forras=fb" class="gomb gomb-halk" data-tovabb>
           Kipróbálom 7 napig ingyen
@@ -400,13 +400,13 @@
 <script>
 /* A hirdetés címkéi (utm_*, fbclid) mennek tovább a mintára, a próbára és
    a megrendelőre, hogy ott is lássuk, honnan jött a látogató. A kódot
-   eltesszük: ha napokkal később rendel, a megrendelő már ezzel számol. */
+   nem tesszük el és nem visszük tovább: senkire nem tesszük rá magától. */
 (function () {
   var be = new URLSearchParams(location.search);
   var tovabb = new URLSearchParams();
   ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid"]
     .forEach(function (k) { var v = be.get(k); if (v) tovabb.set(k, v.slice(0, 200)); });
-  try { localStorage.setItem("eskuszom-kod", "ESKUSZOM40"); } catch (e) { /* privát ablak */ }
+  try { localStorage.removeItem("eskuszom-kod"); } catch (e) { /* privát ablak */ }
   document.querySelectorAll("[data-tovabb]").forEach(function (a) {
     var u = new URL(a.getAttribute("href"), location.href);
     tovabb.forEach(function (v, k) { u.searchParams.set(k, v); });

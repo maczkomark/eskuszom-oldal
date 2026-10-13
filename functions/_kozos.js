@@ -35,16 +35,17 @@ export const ALAPARAK = {
  *
  * A `kod` a hirdetésből érkezőké (az /fb/ ezt teszi el): 2026-10-13 óta a
  * bevezető ár, 40% az első 10 párnak — a Stripe-ban a promóciós kód 10
- * beváltásra van korlátozva, így a „10 pár" magától igaz marad. A `kodok`
- * minden kód, amit a Stripe elfogad: a linkhez fűzve a fizetési oldalon
- * már beírva várja őket. Új kód csak akkor kerülhet ide, ha a Stripe-ban
- * PROMÓCIÓS KÓDKÉNT (nem csak kuponként) létezik.
+ * beváltásra van korlátozva, így a „10 pár" magától igaz marad.
+ *
+ * A kódot SENKIRE nem tesszük rá magától (a felhasználó kérése, 2026-10-13):
+ * a fizetési link `prefilled_promo_code` nélkül megy, a megrendelő nem tölti
+ * ki a kódmezőt, és nem ír ki „ezzel a kóddal X% jár" szöveget. Aki kódot
+ * kapott, maga írja be a Stripe „Promóciós kód" mezőjébe.
  */
 export const STRIPE = {
   link: "https://buy.stripe.com/7sYdR20aMaREefFfeV8Vi00",
   kod: "ESKUSZOM40",
   szazalek: 40,
-  kodok: { ESKUSZOM40: 40, ESKUSZOM20: 20 },
 };
 
 /** A kódos ár — ugyanúgy kerekítve, ahogy a Stripe számolja. */

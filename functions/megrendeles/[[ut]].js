@@ -11,7 +11,7 @@
 //      igazoljuk. A legfontosabb, hogy egy pillanatra se érezze úgy, hogy
 //      elküldött egy űrlapot a semmibe — ezért van saját állapotlapja.
 import {
-  ALAP, ALAPARAK, STRIPE, arakLekeres, kodosAr, ki, oldal, hibaOldal,
+  ALAP, ALAPARAK, STRIPE, arakLekeres, ki, oldal, hibaOldal,
 } from "../_kozos.js";
 
 /** Az ÁSZF hatálybalépése — a kártyás elfogadás mellé ezt jegyezzük fel. */
@@ -138,9 +138,8 @@ const STILUS = `
   .kartya-doboz .osszeg { white-space: nowrap; }
   .kartya-doboz .osszeg s { font-size: 1.25rem; color: var(--tinta-halvany);
                             margin-right: .5rem; text-decoration-thickness: 1px; }
-  .kod-jelzes { font-size: .86rem; color: #3f7a4f; background: #eef6f0;
-                border: 1px solid #d3e6d8; border-radius: 10px;
-                padding: .6rem .85rem; margin-top: .2rem; }
+  .kod-sugo { font-size: .84rem; color: var(--tinta-lagy); margin-top: .2rem;
+              line-height: 1.6; }
   .kartya-megjegyzes { font-size: .84rem; color: var(--tinta-lagy); margin-top: .7rem;
                        line-height: 1.6; }
   .kartya-megjegyzes:empty { display: none; }
@@ -179,13 +178,10 @@ function urlapOldal(arak, kerdes) {
   const osszeg = csomag.fizetendo ?? csomag.alap;
 
   // Kártyán a Stripe-ban beállított ár megy, ami az alapár — a vezérlőpulti
-  // akció oda nem ér el. A kódos változat a hirdetésből érkezőké.
+  // akció oda nem ér el. Kedvezménykódot SENKINEK nem teszünk rá magától,
+  // és nem is írjuk ki (a felhasználó kérése, 2026-10-13): aki kódot kapott,
+  // maga írja be a Stripe fizetési oldalán, vagy lent, az átutalásnál.
   const kartyaAr = csomag.alap;
-  // A címben érkező kód (?kod=) — csak az, amit a Stripe is elfogad
-  const cimKod = String(kerdes.get("kod") ?? "").trim().toUpperCase();
-  const kodosan = Object.hasOwn(STRIPE.kodok, cimKod);
-  const kodSzazalek = kodosan ? STRIPE.kodok[cimKod] : 0;
-  const kartyaKodos = kodosan ? kodosAr(kartyaAr, kodSzazalek) : kartyaAr;
   const surgos = arak.surgos ?? ALAPARAK.surgos;
 
   return oldal({
@@ -221,14 +217,11 @@ function urlapOldal(arak, kerdes) {
             <div class="sugo">Egyszeri díj · nincs havidíj · nincs létszámkorlát</div>
           </div>
           <div class="osszeg" id="kartya-osszeg"
-               data-teljes="${kartyaAr}">${kodosan
-            ? `<s>${ft(kartyaAr)}</s>${ft(kartyaKodos)}`
-            : ft(kartyaAr)}</div>
+               data-teljes="${kartyaAr}">${ft(kartyaAr)}</div>
         </div>
-        <p class="kod-jelzes" id="kod-jelzes"${kodosan ? "" : " hidden"}>
-          Az <span id="kod-nev">${kodosan ? cimKod : ""}</span> kóddal
-          <span id="kod-szazalek">${kodSzazalek}</span>% kedvezmény jár — a fizetési
-          oldalon már beírva vár.
+        <p class="kod-sugo">
+          Van kedvezménykódotok? A fizetési oldalon, a „Promóciós kód
+          hozzáadása" mezőbe írjátok be.
         </p>
         <p class="kartya-megjegyzes" id="kartya-megjegyzes">${
           (surgos.felar ?? 0) > 0
@@ -262,7 +255,7 @@ function urlapOldal(arak, kerdes) {
           </label>
         </div>
 
-        <a href="${STRIPE.link}${kodosan ? `?prefilled_promo_code=${cimKod}` : ""}"
+        <a href="${STRIPE.link}"
            class="gomb gomb-fo kartya-gomb" id="kartya-gomb">Fizetés kártyával</a>
         <div class="urlap-hiba" id="kartya-hiba" role="alert"></div>
 
@@ -444,7 +437,6 @@ function urlapOldal(arak, kerdes) {
 /* ── kártya ── */
 (function () {
   var STRIPE = ${JSON.stringify(STRIPE.link)};
-  var KODOK = ${JSON.stringify(STRIPE.kodok)};
   var gomb = document.getElementById("kartya-gomb");
   var hiba = document.getElementById("kartya-hiba");
   var aszf = document.getElementById("k-aszf");
@@ -452,41 +444,8 @@ function urlapOldal(arak, kerdes) {
   var osszegDoboz = document.getElementById("kartya-osszeg");
   var TELJES = Number(osszegDoboz.dataset.teljes);
 
-
-  function forint(n) { return n.toLocaleString("hu-HU") + " Ft"; }
-
-  /* A hirdetésből érkezők kódja: a címben (?kod=) vagy amit az /fb/ oldal
-     eltett. Ha mindkettő él, a nagyobb kedvezmény nyer — a minta oldal sávja
-     még a régi kódot teheti a címbe, a pár viszont az /fb/-n a mostanit látta.
-     Más kódot (pl. egy esküvői oldal aljáról) a Stripe nem ismer — azt
-     átutalásnál tudjuk beváltani, és ezt meg is mondjuk. */
-  var kod = "";
-  try {
-    var jeloltek = [new URLSearchParams(location.search).get("kod"),
-                    localStorage.getItem("eskuszom-kod")]
-      .map(function (k) { return String(k || "").trim().toUpperCase(); })
-      .filter(Boolean);
-    var ismert = jeloltek.filter(function (k) {
-      return Object.prototype.hasOwnProperty.call(KODOK, k);
-    }).sort(function (a, b) { return KODOK[b] - KODOK[a]; });
-    kod = ismert[0] || jeloltek[0] || "";
-  } catch (e) { /* privát ablakban nincs tároló */ }
-  var kodos = Object.prototype.hasOwnProperty.call(KODOK, kod);
-  var KOD = kodos ? kod : "";
-  // Ugyanúgy kerekítve, ahogy a Stripe számolja
-  var KODOS = kodos ? Math.round(TELJES * (100 - KODOK[kod]) / 100) : TELJES;
-
-  if (kodos) {
-    osszegDoboz.innerHTML = "<s>" + forint(TELJES) + "</s>" + forint(KODOS);
-    document.getElementById("kod-nev").textContent = KOD;
-    document.getElementById("kod-szazalek").textContent = String(KODOK[KOD]);
-    document.getElementById("kod-jelzes").hidden = false;
-  } else if (kod) {
-    var m = document.getElementById("kartya-megjegyzes");
-    var p = document.createElement("span");
-    p.textContent = " A(z) " + kod + " kedvezménykódot átutalásnál tudjuk beváltani — lent.";
-    m.appendChild(p);
-  }
+  /* Kedvezménykódot nem teszünk rá senkire magától: a Stripe-link kód
+     nélkül megy, a kódot a fizetési oldalon maguk írják be. */
 
   function visszaallit() {
     gomb.classList.remove("var");
@@ -510,9 +469,8 @@ function urlapOldal(arak, kerdes) {
     // Egy azonosító a fizetéshez. Nem személyes adat: véletlen szám, ami
     // a Stripe-ban is megjelenik a fizetés mellett.
     var azon = "esk-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 10);
-    var ertek = kodos ? KODOS : TELJES;
-    var cel = STRIPE + "?" + (kodos ? "prefilled_promo_code=" + KOD + "&" : "")
-            + "client_reference_id=" + azon;
+    var ertek = TELJES;
+    var cel = STRIPE + "?client_reference_id=" + azon;
 
     // Az elfogadás feljegyzése. text/plain, hogy ne kelljen előzetes CORS-kérés,
     // és keepalive, hogy az átirányítás ne vágja el. Ha nem megy át, a
@@ -523,7 +481,7 @@ function urlapOldal(arak, kerdes) {
         headers: { "Content-Type": "text/plain" },
         body: JSON.stringify({
           azon: azon, aszf: true, azonnali: true, aszf_valtozat: "${ASZF_VALTOZAT}",
-          kod: kodos ? KOD : "", osszeg: ertek,
+          kod: "", osszeg: ertek,
         }),
       }).catch(function () {});
     } catch (err) { /* régi böngésző */ }
@@ -531,7 +489,7 @@ function urlapOldal(arak, kerdes) {
     // A mérőnek (pixel.js) — ő dönti el, mérhet-e.
     try {
       window.dispatchEvent(new CustomEvent("eskuszom:fizetes", {
-        detail: { ertek: ertek, azon: azon, kodos: kodos },
+        detail: { ertek: ertek, azon: azon, kodos: false },
       }));
     } catch (err) { /* régi böngésző */ }
 
@@ -577,14 +535,8 @@ function urlapOldal(arak, kerdes) {
       : "Egyszeri díj · nincs havidíj · nincs létszámkorlát";
   }
 
-  // A kód jöhet a címből (?kod=…) vagy abból, amit korábban eltettünk:
-  // a vendég a saját esküvői oldaláról indul, és nem gépeli be újra.
-  try {
-    var cimKod = new URLSearchParams(location.search).get("kod");
-    var tarolt = localStorage.getItem("eskuszom-kod");
-    if (cimKod) { kodMezo.value = cimKod.toUpperCase(); localStorage.setItem("eskuszom-kod", cimKod.toUpperCase()); }
-    else if (tarolt) { kodMezo.value = tarolt; }
-  } catch (e) { /* privát ablakban nincs tároló — nem baj */ }
+  // A kódmezőt nem töltjük ki magunktól (se a címből, se tárolóból):
+  // kedvezménykódot senkire nem teszünk rá automatikusan, beírják, ha van.
 
   var kodIdozit = null;
   async function kodEllenoriz() {
