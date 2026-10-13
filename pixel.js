@@ -29,7 +29,7 @@
 //   InitiateCheckout  amikor a /megrendeles lapról elindul a kártyás fizetés
 //   Purchase          a /koszonjuk lapon, fizetésenként egyszer
 //   StartTrial        az önkiszolgáló próba sikeres kérésekor (érték: 0)
-//   Lead              a kapcsolati űrlap sikeres elküldésekor
+//   Lead              a kapcsolati űrlap (főoldal, /fb/) és a próbakérés sikerekor
 //   Contact           telefon- vagy e-mail-linkre kattintáskor
 // Személyes adat (név, e-mail, telefon) egyikben sincs, se nyersen, se hashelve.
 (function () {
@@ -203,9 +203,12 @@
     ir(FIZETES_KULCS, { azon: d.azon || azonosito(), ertek: ertek, mikor: Date.now() });
   });
 
-  // Önkiszolgáló próba: a vezérlőpult elfogadta, a levél elment.
+  // Önkiszolgáló próba: a vezérlőpult elfogadta, a levél elment. Ez valódi
+  // érdeklődő (nevet és e-mailt adott), ezért Lead is — a kampány erre
+  // optimalizál, és így több jelből tud tanulni.
   window.addEventListener("eskuszom:proba", function () {
     esemeny("StartTrial", { value: 0, currency: PENZNEM });
+    esemeny("Lead", { content_name: "proba", value: ERTEK, currency: PENZNEM });
   });
 
   // A minta oldal másik címen fut (minta.eskuszom.hu), ott nincs pixel —

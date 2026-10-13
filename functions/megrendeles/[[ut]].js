@@ -181,8 +181,11 @@ function urlapOldal(arak, kerdes) {
   // Kártyán a Stripe-ban beállított ár megy, ami az alapár — a vezérlőpulti
   // akció oda nem ér el. A kódos változat a hirdetésből érkezőké.
   const kartyaAr = csomag.alap;
-  const kartyaKodos = kodosAr(kartyaAr);
-  const kodosan = String(kerdes.get("kod") ?? "").trim().toUpperCase() === STRIPE.kod;
+  // A címben érkező kód (?kod=) — csak az, amit a Stripe is elfogad
+  const cimKod = String(kerdes.get("kod") ?? "").trim().toUpperCase();
+  const kodosan = Object.hasOwn(STRIPE.kodok, cimKod);
+  const kodSzazalek = kodosan ? STRIPE.kodok[cimKod] : 0;
+  const kartyaKodos = kodosan ? kodosAr(kartyaAr, kodSzazalek) : kartyaAr;
   const surgos = arak.surgos ?? ALAPARAK.surgos;
 
   return oldal({
@@ -218,12 +221,13 @@ function urlapOldal(arak, kerdes) {
             <div class="sugo">Egyszeri díj · nincs havidíj · nincs létszámkorlát</div>
           </div>
           <div class="osszeg" id="kartya-osszeg"
-               data-teljes="${kartyaAr}" data-kodos="${kartyaKodos}">${kodosan
+               data-teljes="${kartyaAr}">${kodosan
             ? `<s>${ft(kartyaAr)}</s>${ft(kartyaKodos)}`
             : ft(kartyaAr)}</div>
         </div>
         <p class="kod-jelzes" id="kod-jelzes"${kodosan ? "" : " hidden"}>
-          A ${STRIPE.kod} kóddal ${STRIPE.szazalek}% kedvezmény jár — a fizetési
+          Az <span id="kod-nev">${kodosan ? cimKod : ""}</span> kóddal
+          <span id="kod-szazalek">${kodSzazalek}</span>% kedvezmény jár — a fizetési
           oldalon már beírva vár.
         </p>
         <p class="kartya-megjegyzes" id="kartya-megjegyzes">${
@@ -258,7 +262,7 @@ function urlapOldal(arak, kerdes) {
           </label>
         </div>
 
-        <a href="${STRIPE.link}${kodosan ? `?prefilled_promo_code=${STRIPE.kod}` : ""}"
+        <a href="${STRIPE.link}${kodosan ? `?prefilled_promo_code=${cimKod}` : ""}"
            class="gomb gomb-fo kartya-gomb" id="kartya-gomb">Fizetés kártyával</a>
         <div class="urlap-hiba" id="kartya-hiba" role="alert"></div>
 
@@ -440,14 +444,14 @@ function urlapOldal(arak, kerdes) {
 /* ── kártya ── */
 (function () {
   var STRIPE = ${JSON.stringify(STRIPE.link)};
-  var KOD = ${JSON.stringify(STRIPE.kod)};
+  var KODOK = ${JSON.stringify(STRIPE.kodok)};
   var gomb = document.getElementById("kartya-gomb");
   var hiba = document.getElementById("kartya-hiba");
   var aszf = document.getElementById("k-aszf");
   var azonnali = document.getElementById("k-azonnali");
   var osszegDoboz = document.getElementById("kartya-osszeg");
   var TELJES = Number(osszegDoboz.dataset.teljes);
-  var KODOS = Number(osszegDoboz.dataset.kodos);
+
 
   function forint(n) { return n.toLocaleString("hu-HU") + " Ft"; }
 
@@ -459,10 +463,15 @@ function urlapOldal(arak, kerdes) {
     kod = (new URLSearchParams(location.search).get("kod")
            || localStorage.getItem("eskuszom-kod") || "").trim().toUpperCase();
   } catch (e) { /* privát ablakban nincs tároló */ }
-  var kodos = kod === KOD;
+  var kodos = Object.prototype.hasOwnProperty.call(KODOK, kod);
+  var KOD = kodos ? kod : "";
+  // Ugyanúgy kerekítve, ahogy a Stripe számolja
+  var KODOS = kodos ? Math.round(TELJES * (100 - KODOK[kod]) / 100) : TELJES;
 
   if (kodos) {
     osszegDoboz.innerHTML = "<s>" + forint(TELJES) + "</s>" + forint(KODOS);
+    document.getElementById("kod-nev").textContent = KOD;
+    document.getElementById("kod-szazalek").textContent = String(KODOK[KOD]);
     document.getElementById("kod-jelzes").hidden = false;
   } else if (kod) {
     var m = document.getElementById("kartya-megjegyzes");

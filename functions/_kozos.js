@@ -33,18 +33,23 @@ export const ALAPARAK = {
  * levonnak. Ugyanígy: a vezérlőpultban indított akció a kártyás
  * fizetésre nem hat.
  *
- * A kód a hirdetésből érkezőké. A Stripe-ban él, lejárat nélkül; a
- * linkhez fűzve a fizetési oldalon már beírva várja őket.
+ * A `kod` a hirdetésből érkezőké (az /fb/ ezt teszi el): 2026-10-13 óta a
+ * bevezető ár, 40% az első 10 párnak — a Stripe-ban a promóciós kód 10
+ * beváltásra van korlátozva, így a „10 pár" magától igaz marad. A `kodok`
+ * minden kód, amit a Stripe elfogad: a linkhez fűzve a fizetési oldalon
+ * már beírva várja őket. Új kód csak akkor kerülhet ide, ha a Stripe-ban
+ * PROMÓCIÓS KÓDKÉNT (nem csak kuponként) létezik.
  */
 export const STRIPE = {
   link: "https://buy.stripe.com/7sYdR20aMaREefFfeV8Vi00",
-  kod: "ESKUSZOM20",
-  szazalek: 20,
+  kod: "ESKUSZOM40",
+  szazalek: 40,
+  kodok: { ESKUSZOM40: 40, ESKUSZOM20: 20 },
 };
 
 /** A kódos ár — ugyanúgy kerekítve, ahogy a Stripe számolja. */
-export function kodosAr(alap) {
-  return Math.round((Number(alap) * (100 - STRIPE.szazalek)) / 100);
+export function kodosAr(alap, szazalek = STRIPE.szazalek) {
+  return Math.round((Number(alap) * (100 - szazalek)) / 100);
 }
 
 export async function arakLekeres() {
