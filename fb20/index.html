@@ -56,18 +56,21 @@
   .fb-ar-apro { font-size: .8rem; color: var(--tinta-halvany); }
   /* Kupon-jelvény (csak a /fb40/-en): lassú pulzálás, nem gyors villogás —
      a 3/mp feletti villanás rohamot válthat ki. Mozgáscsökkentésnél áll. */
-  .fb-kupon { display: inline-flex; align-items: center; gap: .45rem; margin-bottom: .45rem;
-              font-size: .78rem; font-weight: 600; color: #9b2c2c; background: #fdeeee;
-              border: 1px solid #f3c9c9; border-radius: 999px; padding: .28rem .75rem; }
+  .fb-kupon { display: inline-flex; align-items: center; gap: .45rem; margin-bottom: .5rem;
+              font-size: .8rem; font-weight: 700; color: #fff; background: #d42a2a;
+              border-radius: 999px; padding: .34rem .85rem; text-align: left;
+              box-shadow: 0 4px 14px rgba(212,42,42,.35); }
   .fb-kupon::before { content: ""; width: .5rem; height: .5rem; border-radius: 50%;
-                      background: #c53030; flex: none; }
+                      background: #fff; flex: none; }
   @media (prefers-reduced-motion: no-preference) {
-    .fb-kupon { animation: fb-kupon-fenyl 1.6s ease-in-out infinite; }
-    .fb-kupon::before { animation: fb-kupon-pont 1.6s ease-in-out infinite; }
+    .fb-kupon { animation: fb-kupon-pulzal 1.4s ease-in-out infinite; }
+    .fb-kupon::before { animation: fb-kupon-pont 1.4s ease-in-out infinite; }
   }
-  @keyframes fb-kupon-fenyl { 0%, 100% { box-shadow: 0 0 0 0 rgba(197,48,48,0); }
-                              50% { box-shadow: 0 0 0 6px rgba(197,48,48,.16); } }
-  @keyframes fb-kupon-pont { 0%, 100% { opacity: 1; } 50% { opacity: .2; } }
+  @keyframes fb-kupon-pulzal {
+    0%, 100% { transform: scale(1); box-shadow: 0 4px 14px rgba(212,42,42,.35), 0 0 0 0 rgba(212,42,42,.45); }
+    50% { transform: scale(1.045); box-shadow: 0 4px 14px rgba(212,42,42,.35), 0 0 0 9px rgba(212,42,42,0); }
+  }
+  @keyframes fb-kupon-pont { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
 
   .fb-gombok { display: flex; flex-direction: column; gap: .55rem; max-width: 360px; margin: 0 auto; }
   @media (min-width: 900px) { .fb-hos .fb-gombok { margin-left: 0; } }
