@@ -293,8 +293,8 @@ export function oldal({ cim, leiras, fejlecek, tartalom, url, robots, og }) {
 ${megosztas({ cim, leiras, url, ...(og ?? {}) })}
 <link rel="stylesheet" href="/betuk/betuk.css">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="/stilus.css?v=20261010">
-<script defer src="/pixel.js?v=20261010"></script>
+<link rel="stylesheet" href="/stilus.css?v=20261013">
+<script defer src="/pixel.js?v=20261013"></script>
 <style>${STILUS}</style>
 ${fejlecek ?? ""}
 </head>
@@ -357,8 +357,8 @@ ${tartalom}
   </div>
 </footer>
 
-<script src="/script.js?v=20261010"></script>
-<script src="/suti.js?v=20261010"></script>
+<script src="/script.js?v=20261013"></script>
+<script src="/suti.js?v=20261013"></script>
 </body>
 </html>`;
 }
