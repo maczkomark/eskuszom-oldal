@@ -456,12 +456,20 @@ function urlapOldal(arak, kerdes) {
   function forint(n) { return n.toLocaleString("hu-HU") + " Ft"; }
 
   /* A hirdetésből érkezők kódja: a címben (?kod=) vagy amit az /fb/ oldal
-     eltett. Más kódot (pl. egy esküvői oldal aljáról) a Stripe nem ismer —
-     azt átutalásnál tudjuk beváltani, és ezt meg is mondjuk. */
+     eltett. Ha mindkettő él, a nagyobb kedvezmény nyer — a minta oldal sávja
+     még a régi kódot teheti a címbe, a pár viszont az /fb/-n a mostanit látta.
+     Más kódot (pl. egy esküvői oldal aljáról) a Stripe nem ismer — azt
+     átutalásnál tudjuk beváltani, és ezt meg is mondjuk. */
   var kod = "";
   try {
-    kod = (new URLSearchParams(location.search).get("kod")
-           || localStorage.getItem("eskuszom-kod") || "").trim().toUpperCase();
+    var jeloltek = [new URLSearchParams(location.search).get("kod"),
+                    localStorage.getItem("eskuszom-kod")]
+      .map(function (k) { return String(k || "").trim().toUpperCase(); })
+      .filter(Boolean);
+    var ismert = jeloltek.filter(function (k) {
+      return Object.prototype.hasOwnProperty.call(KODOK, k);
+    }).sort(function (a, b) { return KODOK[b] - KODOK[a]; });
+    kod = ismert[0] || jeloltek[0] || "";
   } catch (e) { /* privát ablakban nincs tároló */ }
   var kodos = Object.prototype.hasOwnProperty.call(KODOK, kod);
   var KOD = kodos ? kod : "";
