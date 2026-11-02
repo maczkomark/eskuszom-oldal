@@ -467,8 +467,14 @@ function urlapOldal(arak, kerdes) {
     }
 
     // Egy azonosító a fizetéshez. Nem személyes adat: véletlen szám, ami
-    // a Stripe-ban is megjelenik a fizetés mellett.
-    var azon = "esk-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 10);
+    // a Stripe-ban is megjelenik a fizetés mellett. Ha a próbaoldalukról
+    // jöttek (?oldal=…), az oldal neve is a végére kerül: így a menedzser
+    // akkor is azt az oldalt élesíti, ha más e-mail-címmel fizetnek.
+    var oldal = "";
+    try { oldal = (new URLSearchParams(location.search).get("oldal") || "").toLowerCase(); } catch (err) { /* régi böngésző */ }
+    if (!/^[a-z0-9-]{2,60}$/.test(oldal)) oldal = "";
+    var azon = "esk-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 10)
+             + (oldal ? "-" + oldal : "");
     var ertek = TELJES;
     var cel = STRIPE + "?client_reference_id=" + azon;
 
@@ -481,7 +487,7 @@ function urlapOldal(arak, kerdes) {
         headers: { "Content-Type": "text/plain" },
         body: JSON.stringify({
           azon: azon, aszf: true, azonnali: true, aszf_valtozat: "${ASZF_VALTOZAT}",
-          kod: "", osszeg: ertek,
+          kod: "", osszeg: ertek, oldal: oldal,
         }),
       }).catch(function () {});
     } catch (err) { /* régi böngésző */ }
