@@ -1,7 +1,7 @@
 // /tippek/ és /tippek/<cikk>/ — a blog oldalai.
 //
 // Két forrásból dolgozik:
-//   • a Soro (trysoro.com), ami magától ír és publikál,
+//   • a Soro (trysoro.com) régi cikkei — 2026-11-08 óta a saját mentésünkből,
 //   • a vezérlőpult, ha saját cikket teszünk ki.
 // Ha az egyik nem elérhető, a másik akkor is megjelenik.
 //

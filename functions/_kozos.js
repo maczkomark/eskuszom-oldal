@@ -389,67 +389,24 @@ export function hibaOldal(uzenet, kod) {
 /* ═══════════════════════════════════════════════════ Soro cikkek ═══ */
 
 /**
- * A Soro (trysoro.com) blogja.
+ * A Soro (trysoro.com) által írt cikkek — 2026-11-08 óta a saját mentésünkből.
  *
- * A Soro beágyazó kódja böngészőben rajzolja ki a cikkeket, és `?post=slug`
- * alakú címeket ad. Kettő is baj van ezzel: az MI-robotok nem futtatnak
- * JavaScriptet, a lekérdezőjeles cím pedig a keresőnek egyetlen oldal.
- *
- * Ezért a beágyazó szkriptet MI kérjük le itt, kiszedjük belőle a cikkek
- * listáját, és rendes HTML-t rajzolunk saját címekre. A tartalom ugyanabból
- * a nyilvános végpontból jön, amit a szkript is hív.
+ * Eddig minden látogatáskor a Soro beágyazó végpontjáról kértük le őket, és a
+ * képek is náluk voltak. Az előfizetés megszűnt, ezért a 37 cikk és a képeik
+ * átkerültek hozzánk (functions/_tippek-archivum.js, kepek/tippek/). A címek
+ * ugyanazok maradtak. A két függvény neve és alakja nem változott, hogy a
+ * /tippek/ és a sitemap kódjához ne kelljen nyúlni.
  */
-export const SORO_TOKEN = "ae5705a7-538a-4668-a744-06d66764f1eb";
-const SORO_ALAP = "https://app.trysoro.com";
+import { ARCHIVUM } from "./_tippek-archivum.js";
 
-/**
- * A Soro CSAK akkor adja oda a cikkeket, ha a kérésben ott a Referer —
- * anélkül üres listával válaszol, hibaüzenet nélkül. A válaszán ott is van
- * a `Vary: Referer`, csakhogy a Cloudflare éle a Vary-t (az Accept-Encoding
- * kivételével) nem veszi figyelembe, ezért egy fejléc nélküli, üres válasz
- * be tud ragadni a gyorsítótárba. Emiatt megy vele az `?src=eskuszom` is:
- * saját gyorsítótár-kulcsot ad, és mindig ugyanezzel a fejléccel kérünk.
- */
-const SORO_FEJLEC = {
-  Referer: "https://eskuszom.hu/tippek/",
-  Origin: "https://eskuszom.hu",
-  "User-Agent": "Mozilla/5.0 (compatible; EskuszomSSR/1.0; +https://eskuszom.hu/)",
-};
-const SORO_KULCS = "?src=eskuszom";
-
-/** A cikkek listája a beágyazó szkriptből. */
+/** A mentett Soro-cikkek listája. */
 export async function soroLista() {
-  try {
-    const v = await fetch(`${SORO_ALAP}/api/embed/${SORO_TOKEN}${SORO_KULCS}`, {
-      headers: SORO_FEJLEC,
-      cf: { cacheTtl: 300, cacheEverything: true },
-    });
-    if (!v.ok) return [];
-    const js = await v.text();
-    const m = js.match(/var SORO_ARTICLES\s*=\s*(\[[\s\S]*?\]);/);
-    if (!m) return [];
-    const lista = JSON.parse(m[1]);
-    return Array.isArray(lista) ? lista : [];
-  } catch {
-    // Ha a Soro nem elérhető, a saját cikkek akkor is menjenek ki
-    return [];
-  }
+  return ARCHIVUM;
 }
 
-/** Egy cikk törzse. A listában is jöhet, olyankor nem kérdezünk újra. */
+/** Egy cikk törzse — a mentésben már benne van. */
 export async function soroTartalom(cikk) {
-  if (cikk?.content) return cikk.content;
-  try {
-    const v = await fetch(
-      `${SORO_ALAP}/api/embed/${SORO_TOKEN}/article/${cikk.id}${SORO_KULCS}`,
-      { headers: SORO_FEJLEC, cf: { cacheTtl: 300, cacheEverything: true } },
-    );
-    if (!v.ok) return "";
-    const j = await v.json();
-    return String(j?.content ?? "");
-  } catch {
-    return "";
-  }
+  return String(cikk?.content ?? "");
 }
 
 /* ─────────────────────────────────────────────────── tisztítás ─── */
