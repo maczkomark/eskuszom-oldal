@@ -148,8 +148,8 @@
         </form>
 
         <div class="proba-kesz" id="p-kesz" hidden>
-          <h2>Kész!</h2>
-          <p>A próbaoldalatok belépési linkjét elküldtük e-mailben.</p>
+          <h2>Elküldtük!</h2>
+          <p>Ezzel a címmel már kértetek próbát: a belépési linket újra elküldtük e-mailben.</p>
           <p class="halk">
             A levélben lévő gombbal indul az oldalatok, és a 7 nap is onnan számít.
             Nem jött meg pár perc alatt? Nézzétek meg a Promóciók és a Spam mappát is,
@@ -238,6 +238,20 @@
       if (!honeypot && !j.ujra) {
         try { window.dispatchEvent(new CustomEvent("eskuszom:proba")); } catch (err) { /* régi böngésző */ }
       }
+
+      // Új kérés: nem kell a levélre várni, rögtön elindítjuk az oldalt
+      // (POST — a /proba/ megnyitása önmagában szándékosan nem indít semmit).
+      if (j.indit && /^\/proba\/[A-Za-z0-9_-]+$/.test(j.indit)) {
+        gomb.textContent = "Készítjük az oldalatokat…";
+        var indito = document.createElement("form");
+        indito.method = "POST";
+        indito.action = j.indit;
+        document.body.appendChild(indito);
+        // Egy pillanat a mérőnek, hogy elküldhesse a jelzést
+        setTimeout(function () { indito.submit(); }, 600);
+        return;
+      }
+
       urlap.hidden = true;
       document.getElementById("p-kesz").hidden = false;
     } catch (err) {

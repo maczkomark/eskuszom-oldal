@@ -27,7 +27,7 @@
 <link rel="stylesheet" href="/betuk/betuk.css">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/stilus.css?v=20261013">
-<link rel="stylesheet" href="/blokkok.css?v=20261108">
+<link rel="stylesheet" href="/blokkok.css?v=20261109">
 <script defer src="/pixel.js?v=20261013"></script>
 <style>
   .fb-fej { padding: 12px 0; }
@@ -408,6 +408,33 @@
   </div>
 </section>
 
+<section id="osszehasonlitas" class="blokk vilagos">
+  <div class="hatar">
+    <div class="blokk-fej">
+      <div class="folcim">Mi a különbség?</div>
+      <h2>Excel és Google Űrlap, vagy Esküszöm?</h2>
+      <p>A legtöbb pár házilag kezdi. Ennyi a különbség.</p>
+    </div>
+    <div class="ossz-keret">
+      <table class="ossz">
+        <thead><tr><th scope="col"><span class="rejtett">Mire kell</span></th><th scope="col">Excel + Google Űrlap</th><th scope="col">Esküszöm</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Visszajelzés</th><td>Egy űrlap-link mindenkinek</td><td>Saját QR-kód minden vendégnek</td></tr>
+          <tr><th scope="row">Ki nem válaszolt még?</th><td>Kézzel kell összevetni</td><td>Egy pillantás</td></tr>
+          <tr><th scope="row">Menü, ételérzékenység</th><td>Kézzel számoljátok össze</td><td>Magától összesít</td></tr>
+          <tr><th scope="row">Ültetésrend</th><td>Külön papíron</td><td>Ugyanabból a listából</td></tr>
+          <tr><th scope="row">A vendég látja, hova ül</th><td>—</td><td>A telefonján</td></tr>
+          <tr><th scope="row">Meghívó, ültetőkártya</th><td>Újragépelés egyenként</td><td>Sablonból, névre szólóan</td></tr>
+          <tr><th scope="row">Közös fotók</th><td>Külön mappa-link</td><td>Közös galéria</td></tr>
+          <tr><th scope="row">Esküvői weboldal</th><td>—</td><td>6 elrendezésben</td></tr>
+          <tr><th scope="row">Költségkeret</th><td>Még egy táblázat</td><td>Ugyanott</td></tr>
+          <tr><th scope="row">Ára</th><td>Ingyenes, de sok óra munka</td><td>Egyszeri díj, nincs havidíj</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
 <section class="fb-szakasz vilagos">
   <div class="hatar">
     <h2>Mit kaptok ennyiért?</h2>
@@ -461,6 +488,70 @@
   </div>
 </section>
 -->
+
+
+<section id="teendolista" class="blokk melyebb">
+  <div class="hatar tl-racs">
+    <div class="tl-kep" aria-hidden="true">
+      <img src="/kepek/teendolista-borito.webp" width="794" height="1123" loading="lazy" alt="">
+    </div>
+    <div>
+      <div class="folcim">Ingyenes</div>
+      <h2 class="tl-cim">Esküvői teendőlista, egy évtől az utolsó napig.</h2>
+      <p class="tl-alcim">36 teendő PDF-ben, kinyomtatható. Ha megadjátok a dátumot, a határidőket a ti napotokra számoljuk.</p>
+      <form class="tl-urlap" id="tl-urlap" novalidate>
+        <div class="tl-mezok">
+          <label class="mezo"><span>E-mail-cím *</span>
+            <input type="email" id="tl-email" maxlength="160" autocomplete="email" placeholder="zsofi.marci@pelda.hu"></label>
+          <label class="mezo"><span>Keresztnevek</span>
+            <input id="tl-nev" maxlength="160" autocomplete="off" placeholder="Zsófi és Marci"></label>
+          <label class="mezo"><span>Az esküvő napja</span>
+            <input type="date" id="tl-datum"></label>
+        </div>
+        <input class="mezesbodon" type="text" id="tl-mez" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <label class="tl-jelolo"><input type="checkbox" id="tl-aszf">
+          <span>Elfogadom az <a href="/adatkezeles/" target="_blank" rel="noopener">adatkezelési tájékoztatót</a>. *</span></label>
+        <label class="tl-jelolo"><input type="checkbox" id="tl-hirlevel">
+          <span>Kérek havonta legfeljebb egy levelet ötletekkel és ajánlatokkal (bármikor leiratkozhatok).</span></label>
+        <button type="submit" class="gomb gomb-fo" id="tl-kuldes">Kérem a teendőlistát</button>
+        <p class="tl-uzenet" id="tl-uzenet" role="status"></p>
+      </form>
+    </div>
+  </div>
+<script>
+(function () {
+  var urlap = document.getElementById("tl-urlap");
+  if (!urlap) return;
+  var gomb = document.getElementById("tl-kuldes"), doboz = document.getElementById("tl-uzenet");
+  function mutat(html, hiba) { doboz.innerHTML = html; doboz.className = "tl-uzenet " + (hiba ? "hiba" : "siker"); }
+  urlap.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    var email = document.getElementById("tl-email").value.trim();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { mutat("Adjatok meg egy működő e-mail-címet — ide küldjük a listát.", true); return; }
+    if (!document.getElementById("tl-aszf").checked) { mutat("Kérjük, fogadjátok el az adatkezelési tájékoztatót.", true); return; }
+    gomb.disabled = true; gomb.textContent = "Küldjük…";
+    try {
+      var v = await fetch("https://adminsite.mmdigital.hu/api/eskuvo/erdeklodo", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ forras: "teendolista", email: email,
+          nev: document.getElementById("tl-nev").value.trim(), datum: document.getElementById("tl-datum").value,
+          aszf: true, hirlevel: document.getElementById("tl-hirlevel").checked,
+          honeypot: document.getElementById("tl-mez").value }),
+      });
+      var j = await v.json().catch(function () { return {}; });
+      if (!v.ok || j.ok === false) throw new Error(j.hiba || "");
+      try { window.dispatchEvent(new CustomEvent("eskuszom:lead")); } catch (err) {}
+      urlap.querySelectorAll("input, button").forEach(function (x) { x.disabled = true; });
+      mutat("Elküldtük e-mailben! Most is letölthetitek: <a href=\"" + (j.link || "/letoltes/eskuvoi-teendolista.pdf") + "\" target=\"_blank\" rel=\"noopener\">Letöltöm (PDF)</a>", false);
+      gomb.textContent = "Elküldtük";
+    } catch (err) {
+      mutat((err && err.message ? err.message + " " : "Most nem sikerült elküldeni. ") + "Próbáljátok újra pár perc múlva.", true);
+      gomb.disabled = false; gomb.textContent = "Kérem a teendőlistát";
+    }
+  });
+})();
+</script>
+</section>
 
 <section class="fb-szakasz melyebb">
   <div class="hatar">

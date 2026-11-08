@@ -127,3 +127,59 @@
   .elr-kartya { transition: none; }
   .elr-kartya:hover { transform: none; }
 }
+
+/* ── összehasonlítás: Excel + Google Űrlap vagy Esküszöm (17.) ── */
+
+.ossz-keret {
+  max-width: 760px; margin: clamp(1.6rem, 4vw, 2.4rem) auto 0;
+  background: var(--feher); border: 1px solid var(--vonal); border-radius: 18px; overflow: hidden;
+}
+.ossz { width: 100%; border-collapse: collapse; font-size: .92rem; }
+.ossz th, .ossz td {
+  padding: .72rem .85rem; text-align: left; vertical-align: top; line-height: 1.4;
+  border-top: 1px solid var(--vonal);
+}
+.ossz thead th {
+  border-top: 0; font-size: .8rem; font-weight: 600; color: var(--tinta-lagy); background: var(--papir-melyebb);
+}
+.ossz thead th:last-child { color: #fff; background: var(--mauve); }
+.ossz tbody th { width: 34%; font-weight: 600; color: var(--tinta); }
+.ossz td { color: var(--tinta-halvany); }
+.ossz td:last-child { color: var(--tinta); font-weight: 500; background: rgba(140, 107, 116, .06); }
+.ossz td:last-child::before { content: "✓ "; color: var(--mauve); font-weight: 700; }
+.ossz .rejtett {
+  position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+@media (max-width: 520px) {
+  .ossz { font-size: .84rem; }
+  .ossz th, .ossz td { padding: .62rem .55rem; }
+}
+
+/* ── ingyenes teendőlista (14.) ── */
+
+.tl-racs { display: grid; gap: clamp(1.6rem, 4vw, 3rem); align-items: center; max-width: 980px; }
+@media (min-width: 860px) { .tl-racs { grid-template-columns: .8fr 1.2fr; } }
+.tl-kep { display: flex; justify-content: center; }
+.tl-kep img {
+  width: min(300px, 70vw); height: auto; background: #fff; border-radius: 6px;
+  box-shadow: 0 24px 60px rgba(60, 40, 50, .18), 0 4px 14px rgba(60, 40, 50, .1);
+  transform: rotate(-2deg);
+}
+@media (prefers-reduced-motion: reduce) { .tl-kep img { transform: none; } }
+.tl-cim { font-size: clamp(1.7rem, 5vw, 2.4rem); margin: .4rem 0 .6rem; }
+.tl-alcim { color: var(--tinta-lagy); margin: 0 0 1.3rem; }
+.tl-mezok { display: grid; gap: .2rem .9rem; }
+@media (min-width: 560px) { .tl-mezok { grid-template-columns: 1fr 1fr; } .tl-mezok .mezo:first-child { grid-column: 1 / -1; } }
+.tl-mezok .mezo > span { display: block; font-size: .8rem; color: var(--tinta-lagy); margin-bottom: .4rem; font-weight: 500; }
+.tl-jelolo {
+  display: grid; grid-template-columns: 22px 1fr; gap: .6rem; align-items: start;
+  font-size: .86rem; line-height: 1.55; color: var(--tinta-lagy); margin: .2rem 0 .7rem; cursor: pointer;
+}
+.tl-jelolo input { width: 18px; height: 18px; margin-top: .15rem; accent-color: var(--mauve); }
+.tl-jelolo a { color: var(--mauve); }
+.tl-urlap .gomb { margin-top: .4rem; }
+.tl-uzenet { margin: .9rem 0 0; font-size: .92rem; line-height: 1.55; border-radius: 10px; padding: .7rem .9rem; }
+.tl-uzenet:empty { display: none; }
+.tl-uzenet.hiba { color: #a4453d; background: #fdf1f0; border: 1px solid #f2d5d2; }
+.tl-uzenet.siker { color: #3f7a4f; background: #eef6f0; border: 1px solid #d3e6d8; }
+.tl-uzenet a { color: inherit; font-weight: 600; }
