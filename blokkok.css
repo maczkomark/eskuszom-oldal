@@ -1,0 +1,129 @@
+/* ══════════════════════════════════════════════════════════════════════
+   Képes blokkok (blokkok.mjs): az elrendezés-galéria és a „Mit kaptok?".
+   A főoldal és a hirdetési landolók (/fb40/, /fb20/) közös stílusa —
+   külön fájl, hogy a többi aloldalhoz ne kelljen nyúlni.
+   Telefonon vízszintesen lapozható sor, gépen rács.
+   ══════════════════════════════════════════════════════════════════════ */
+
+.blokk { padding: clamp(3.2rem, 8vw, 6rem) 0; }
+.blokk-fej { text-align: center; max-width: 640px; margin: 0 auto clamp(1.6rem, 4vw, 2.6rem); }
+.blokk-fej h2 { font-size: clamp(1.8rem, 5.6vw, 2.8rem); margin: .45rem 0 .6rem; }
+.blokk-fej p { color: var(--tinta-lagy); margin: 0; font-size: clamp(.98rem, 2.6vw, 1.08rem); }
+.blokk-lapozz { text-align: center; font-size: .78rem; color: var(--tinta-halvany); margin: .1rem 0 0; }
+.blokk-apro { text-align: center; font-size: .9rem; color: var(--tinta-lagy); margin: 1.3rem auto 0; max-width: 56ch; }
+
+.elr-racs, .kap-sor {
+  display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory;
+  padding: .3rem 1rem 1.2rem; margin: 0 -1rem;
+  scrollbar-width: none; -webkit-overflow-scrolling: touch;
+}
+.elr-racs::-webkit-scrollbar, .kap-sor::-webkit-scrollbar { display: none; }
+.elr-kartya, .kap { flex: 0 0 84%; max-width: 360px; scroll-snap-align: center; }
+
+@media (min-width: 900px) {
+  .elr-racs, .kap-sor {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6rem;
+    overflow: visible; margin: 0; padding: 0;
+  }
+  .elr-kartya, .kap { max-width: none; }
+  .blokk-lapozz { display: none; }
+}
+
+/* ── elrendezés-galéria ── */
+
+.elr-kartya {
+  display: flex; flex-direction: column; text-decoration: none; color: inherit;
+  background: var(--papir); border: 1px solid var(--vonal); border-radius: 18px; overflow: hidden;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.elr-kartya:hover { transform: translateY(-3px); box-shadow: var(--arnyek-nagy); }
+.elr-kartya:focus-visible { outline: 2px solid var(--mauve); outline-offset: 3px; }
+
+.elr-kepek {
+  position: relative; overflow: hidden; padding: 16px 16px 0;
+  background: linear-gradient(160deg, var(--papir-melyebb), #ece2de);
+}
+.elr-gep {
+  width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: top;
+  border-radius: 10px 10px 0 0; box-shadow: 0 10px 30px rgba(60, 40, 50, .18);
+}
+.elr-tel {
+  position: absolute; right: 7%; bottom: -34%; width: 24%; height: auto;
+  border: 4px solid #16141a; border-radius: 14px; background: #16141a;
+  box-shadow: 0 14px 30px rgba(30, 20, 26, .35);
+}
+.elr-jel {
+  position: absolute; top: 24px; left: 24px;
+  background: rgba(20, 18, 24, .74); color: #fff; font-size: .72rem; font-weight: 600;
+  border-radius: 999px; padding: .2rem .65rem;
+}
+.elr-szoveg { padding: 1rem 1.2rem 1.25rem; }
+.elr-szoveg h3 { font-size: 1.5rem; }
+.elr-szoveg p { margin: .3rem 0 .7rem; font-size: .92rem; color: var(--tinta-lagy); line-height: 1.5; }
+.elr-link { color: var(--mauve); font-weight: 600; font-size: .92rem; }
+.elr-kartya:hover .elr-link { text-decoration: underline; }
+
+/* ── mit kaptok ── */
+
+.kap-csoport {
+  font-size: clamp(1.4rem, 4vw, 1.75rem); text-align: center;
+  margin: clamp(1.8rem, 4vw, 2.6rem) 0 1rem;
+}
+@media (min-width: 900px) { .kap-csoport { text-align: left; } }
+
+.kap {
+  display: flex; flex-direction: column;
+  background: var(--feher); border: 1px solid var(--vonal); border-radius: 18px; overflow: hidden;
+}
+.kap-kep {
+  position: relative; height: 290px; overflow: hidden;
+  display: flex; justify-content: center; align-items: flex-start; padding-top: 22px;
+  background: linear-gradient(160deg, var(--papir-melyebb), #ece2de);
+}
+@media (min-width: 900px) { .kap-kep { height: 320px; } }
+.kap-kep:has(.kap-gep) { align-items: center; padding-top: 0; }
+
+.kap-tel {
+  width: 62%; max-width: 214px; background: #16141a; border-radius: 28px; padding: 7px;
+  box-shadow: 0 20px 44px rgba(60, 40, 50, .24), 0 4px 12px rgba(60, 40, 50, .12);
+}
+.kap-tel img { width: 100%; height: auto; border-radius: 22px; }
+
+.kap-gep {
+  width: 90%; background: #fff; border: 1px solid var(--vonal); border-radius: 10px; overflow: hidden;
+  box-shadow: 0 16px 40px rgba(60, 40, 50, .16);
+}
+.kap-gep-sav {
+  height: 18px; display: flex; align-items: center; gap: 5px; padding: 0 8px;
+  background: var(--papir-melyebb); border-bottom: 1px solid var(--vonal);
+}
+.kap-gep-sav i { width: 6px; height: 6px; border-radius: 50%; background: #d9cbc6; display: block; }
+.kap-gep img { width: 100%; height: auto; }
+
+.kap h4 {
+  font-family: var(--serif); font-weight: 500; font-size: 1.42rem; line-height: 1.15;
+  margin: 1rem 1.2rem .4rem;
+}
+.kap p { margin: 0 1.2rem .35rem; font-size: .92rem; color: var(--tinta-lagy); line-height: 1.5; }
+.kap p:last-child { margin-bottom: 1.25rem; }
+.kap p b { color: var(--tinta); font-weight: 600; }
+
+.kap-hamarosan {
+  position: absolute; top: 14px; right: 14px;
+  background: var(--mauve); color: #fff; font-size: .75rem; font-weight: 600;
+  border-radius: 999px; padding: .25rem .7rem;
+}
+.kap-mi-chat { width: 84%; display: flex; flex-direction: column; gap: .6rem; padding-top: 8px; }
+.kap-buborek {
+  max-width: 92%; padding: .65rem .85rem; font-size: .86rem; line-height: 1.45; color: var(--tinta);
+  background: #fff; border: 1px solid var(--vonal); border-radius: 16px 16px 16px 4px; box-shadow: var(--arnyek);
+}
+.kap-buborek-ti {
+  align-self: flex-end; color: #fff; background: var(--mauve); border-color: var(--mauve);
+  border-radius: 16px 16px 4px 16px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .elr-kartya { transition: none; }
+  .elr-kartya:hover { transform: none; }
+}

@@ -100,7 +100,7 @@ export async function onRequest(context) {
       <div class="folcim" style="margin-bottom:.4rem">Teljes csomag</div>
       ${arSzam(par)}
       <p class="ar-alcim">
-        Egyszeri díj. Az oldal az esküvő után még 90 napig él.<br>
+        Egyszeri díj. Az oldal az esküvő után még 90 napig él — akár két évre előre.<br>
         Nem kell előfizetni, és nincs vendégszám-korlát.
       </p>
 
