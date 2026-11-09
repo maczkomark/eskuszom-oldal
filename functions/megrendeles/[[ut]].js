@@ -15,7 +15,7 @@ import {
 } from "../_kozos.js";
 
 /** Az ÁSZF hatálybalépése — a kártyás elfogadás mellé ezt jegyezzük fel. */
-const ASZF_VALTOZAT = "2026-10-10";
+const ASZF_VALTOZAT = "2026-11-09";
 
 /** 49990 → „49 990 Ft" */
 function ft(n) {
@@ -82,6 +82,9 @@ const STILUS = `
   .kod-valasz { font-size: .8rem; margin-top: .4rem; min-height: 1.1rem; }
   .kod-valasz.jo { color: #4a7c59; }
   .kod-valasz.rossz { color: #a4453d; }
+  .ajanlo-mezo { margin-top: .9rem; }
+  .ajanlo-mezo label { display: block; font-size: .88rem; margin-bottom: .3rem; }
+  .ajanlo-mezo input { width: 100%; max-width: 20rem; }
 
   .surgos-jelzes { margin-top: .8rem; padding: .85rem 1rem; border-radius: 12px;
                    background: #fdf6ec; border: 1px solid #f0dcc0;
@@ -223,6 +226,15 @@ function urlapOldal(arak, kerdes) {
           Van kedvezménykódotok? A fizetési oldalon, a „Promóciós kód
           hozzáadása" mezőbe írjátok be.
         </p>
+        <!-- Pár-ajánló (2026-11-09): egy másik pár kódja (az oldaluk neve).
+             A Stripe teljes árat von le — a kedvezményt a fizetés után
+             visszaadjuk a kártyára. Előre NEM töltjük ki: a vevő gépeli be. -->
+        <div class="mezo ajanlo-mezo">
+          <label for="k-ajanlo">Egy pár ajánlott minket? Az ő kódjuk <span class="halk">(nem kötelező)</span></label>
+          <input id="k-ajanlo" autocomplete="off" spellcheck="false" maxlength="60"
+                 placeholder="pl. ZSOFIESMARCI" style="text-transform:uppercase">
+          <div class="kod-valasz" id="k-ajanlo-valasz" aria-live="polite"></div>
+        </div>
         <p class="kartya-megjegyzes" id="kartya-megjegyzes">${
           (surgos.felar ?? 0) > 0
             ? `Ha az esküvő ${surgos.nap} napon belül lesz, ${ft(surgos.felar)} sürgősségi
@@ -444,6 +456,42 @@ function urlapOldal(arak, kerdes) {
   var osszegDoboz = document.getElementById("kartya-osszeg");
   var TELJES = Number(osszegDoboz.dataset.teljes);
 
+  // Pár-ajánló kód: csak egy másik pár kódját fogadjuk itt el, és csak azt
+  // küldjük tovább, amit a vezérlőpult annak ismert fel
+  var ajanloMezo = document.getElementById("k-ajanlo");
+  var ajanloValasz = document.getElementById("k-ajanlo-valasz");
+  var ajanloKod = "";
+  var ajanloIdozit = null;
+  function forintK(n) { return Number(n).toLocaleString("hu-HU") + " Ft"; }
+  async function ajanloEllenoriz() {
+    var k = (ajanloMezo.value || "").trim().toUpperCase();
+    ajanloKod = "";
+    ajanloValasz.className = "kod-valasz";
+    ajanloValasz.textContent = "";
+    if (!k) return;
+    try {
+      var v = await fetch("${ALAP}/api/eskuvo/megrendeles?kod=" + encodeURIComponent(k));
+      var j = await v.json();
+      if (j.ervenyes && j.parKod) {
+        ajanloKod = k;
+        ajanloValasz.className = "kod-valasz jo";
+        ajanloValasz.textContent = j.parKedvezmeny > 0
+          ? "Rendben — a fizetés után " + forintK(j.parKedvezmeny) + "-ot visszaadunk a kártyátokra."
+          : "Rendben — feljegyeztük, kitől jöttetek.";
+      } else if (j.ervenyes) {
+        ajanloValasz.className = "kod-valasz rossz";
+        ajanloValasz.textContent = "Ez nem egy pár kódja. A kedvezménykódot a fizetési oldalon írjátok be.";
+      } else {
+        ajanloValasz.className = "kod-valasz rossz";
+        ajanloValasz.textContent = j.hiba || "Ezt a kódot nem ismerjük fel.";
+      }
+    } catch (e) { /* ha nem érjük el, a fizetést nem tartjuk fel */ }
+  }
+  ajanloMezo.addEventListener("input", function () {
+    clearTimeout(ajanloIdozit);
+    ajanloIdozit = setTimeout(ajanloEllenoriz, 500);
+  });
+
   /* Kedvezménykódot nem teszünk rá senkire magától: a Stripe-link kód
      nélkül megy, a kódot a fizetési oldalon maguk írják be. */
 
@@ -487,7 +535,7 @@ function urlapOldal(arak, kerdes) {
         headers: { "Content-Type": "text/plain" },
         body: JSON.stringify({
           azon: azon, aszf: true, azonnali: true, aszf_valtozat: "${ASZF_VALTOZAT}",
-          kod: "", osszeg: ertek, oldal: oldal,
+          kod: ajanloKod, osszeg: ertek, oldal: oldal,
         }),
       }).catch(function () {});
     } catch (err) { /* régi böngésző */ }
